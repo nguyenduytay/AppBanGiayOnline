@@ -18,5 +18,6 @@ class MainActivity : AppCompatActivity() {
         }
         //anh ly toi day
         //t làm việc gì
+        // tay thu
     }
 }
