@@ -17,5 +17,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         //anh ly toi day
+        //t làm việc gì
     }
 }
