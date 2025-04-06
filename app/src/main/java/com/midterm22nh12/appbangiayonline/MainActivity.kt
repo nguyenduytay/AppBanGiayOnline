@@ -1,5 +1,4 @@
-package com.midterm22nh12.appbangiayonline
-
+package com.midterm22nh12.appbangiayonline.view
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
