@@ -50,80 +50,80 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("com.github.Dimezis:BlurView:version-2.0.6")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+    implementation(libs.blurview)
+    implementation(libs.androidx.constraintlayout.v214)
+    implementation(libs.androidx.constraintlayout.compose)
     //cài đặt layout load
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.androidx.swiperefreshlayout)
 
     // add realtime database
-    implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation(libs.firebase.database)
 
     //add cloud firestore
-    implementation("com.google.firebase:firebase-firestore:25.1.2")
+    implementation(libs.firebase.firestore)
 
     // FirebaseUI for Firebase Realtime Database
-    implementation("com.firebaseui:firebase-ui-database:8.0.2")
+    implementation(libs.firebase.ui.database)
 
     // FirebaseUI for Cloud Firestore
-    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
+    implementation(libs.firebase.ui.firestore)
 
     // FirebaseUI for Firebase Auth
-    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation(libs.firebase.ui.auth)
 
     // FirebaseUI for Cloud Storage
-    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+    implementation(libs.firebase.ui.storage)
 
-    implementation(platform("com.google.firebase:firebase-bom:32.2.0")) // Cập nhật BOM để đồng bộ phiên bản
-    implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.firebase.bom) // Cập nhật BOM để đồng bộ phiên bản
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.auth)
+    implementation(libs.google.firebase.firestore)
 
     // Thêm Firebase App Check nếu thiếu
-    implementation("com.google.firebase:firebase-appcheck-playintegrity:16.0.0")
+    implementation(libs.firebase.appcheck.playintegrity)
 
     //xây dựng giao diện theo phong cách Material Design
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.material)
 
-    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation(libs.androidx.viewpager2)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation(libs.firebase.bom)
 
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.analytics)
 
     val room_version = "2.6.1"
 
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation(libs.androidx.room.runtime)
 
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp(libs.androidx.room.compiler)
 
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    annotationProcessor(libs.androidx.room.compiler)
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.ktx)
 
     // optional - RxJava2 support for Room
-    implementation("androidx.room:room-rxjava2:$room_version")
+    implementation(libs.androidx.room.rxjava2)
 
     // optional - RxJava3 support for Room
-    implementation("androidx.room:room-rxjava3:$room_version")
+    implementation(libs.androidx.room.rxjava3)
 
     // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation("androidx.room:room-guava:$room_version")
+    implementation(libs.androidx.room.guava)
 
     // optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
+    testImplementation(libs.androidx.room.testing)
 
     // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
+    implementation(libs.androidx.room.paging)
 
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
+    implementation(libs.androidx.work.runtime.ktx)
 
-    implementation("com.google.gms:google-services:4.3.15")
+    implementation(libs.google.services)
 
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation(libs.google.firebase.messaging.ktx)
 }
