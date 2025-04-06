@@ -16,8 +16,5 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //anh ly toi day
-        //t làm việc gì
-        // tay thu hoi lam gi
     }
 }
