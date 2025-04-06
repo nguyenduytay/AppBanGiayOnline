@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "26819701052",
+    "project_id": "app-ban-giay-bc7ad",
+    "storage_bucket": "app-ban-giay-bc7ad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26819701052:android:fb955d1c4303335b39d639",
+        "android_client_info": {
+          "package_name": "com.midterm22nh12.appbangiayonline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaXtfWdVYc9YKiHD982al3hzPVmbeUr-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

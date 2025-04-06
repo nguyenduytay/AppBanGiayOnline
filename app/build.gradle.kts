@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    id("com.google.gms.google-services")
 }
-
 android {
     namespace = "com.midterm22nh12.appbangiayonline"
     compileSdk = 35
@@ -48,4 +49,81 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.github.Dimezis:BlurView:version-2.0.6")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+    //cài đặt layout load
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // add realtime database
+    implementation("com.google.firebase:firebase-database:21.0.0")
+
+    //add cloud firestore
+    implementation("com.google.firebase:firebase-firestore:25.1.2")
+
+    // FirebaseUI for Firebase Realtime Database
+    implementation("com.firebaseui:firebase-ui-database:8.0.2")
+
+    // FirebaseUI for Cloud Firestore
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
+
+    // FirebaseUI for Firebase Auth
+    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+
+    // FirebaseUI for Cloud Storage
+    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0")) // Cập nhật BOM để đồng bộ phiên bản
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Thêm Firebase App Check nếu thiếu
+    implementation("com.google.firebase:firebase-appcheck-playintegrity:16.0.0")
+
+    //xây dựng giao diện theo phong cách Material Design
+    implementation("com.google.android.material:material:1.12.0")
+
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+
+    implementation("com.google.firebase:firebase-analytics")
+
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+
+    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+    // See Add the KSP plugin to your project
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    // optional - RxJava2 support for Room
+    implementation("androidx.room:room-rxjava2:$room_version")
+
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:$room_version")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation("androidx.room:room-guava:$room_version")
+
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+    // optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:$room_version")
+
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
+    implementation("com.google.gms:google-services:4.3.15")
+
+    implementation("com.google.firebase:firebase-messaging-ktx")
 }
