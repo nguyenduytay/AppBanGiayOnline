@@ -11,15 +11,16 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp">
+        android:layout_height="231dp">
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="220dp"
             android:background="#C78A8A" />
+
         <View
-            android:layout_width="286dp"
-            android:layout_height="240dp"
+            android:layout_width="247dp"
+            android:layout_height="245dp"
             android:layout_gravity="bottom|end"
             android:background="@drawable/intro_logo"
             android:visibility="visible" />
@@ -27,8 +28,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="160dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="110dp"
             android:text="Đăng Ký"
             android:textColor="#000000"
             android:textSize="36sp"
@@ -36,19 +37,20 @@
     </FrameLayout>
 
     <ScrollView
-        android:id="@+id/form_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:background="@drawable/rounded_bg"
+        android:fillViewport="false"
+        android:padding="8dp">
 
         <LinearLayout
             android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#FFFFFF"
             android:layout_margin="16dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
             android:padding="16dp">
 
 
@@ -56,8 +58,8 @@
                 android:id="@+id/lastname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/lastname_label"
@@ -73,32 +75,31 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="textPersonName"
                     android:hint=""
+                    android:inputType="textPersonName"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/lastname_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/image7"
-                  />
+                    android:src="@drawable/image7" />
             </LinearLayout>
 
             <View
                 android:id="@+id/lastname_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
 
             <!-- Tên (First Name) Field -->
             <LinearLayout
                 android:id="@+id/firstname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
@@ -112,32 +113,31 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="textPersonName"
                     android:hint=""
+                    android:inputType="textPersonName"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/firstname_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/image6"
-                   />
+                    android:src="@drawable/image6" />
             </LinearLayout>
 
             <View
                 android:id="@+id/firstname_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
 
             <!-- Tên tài khoản (Username) Field -->
             <LinearLayout
                 android:id="@+id/username_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
@@ -152,32 +152,31 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="text"
                     android:hint=""
+                    android:inputType="text"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/username_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/avatar"
-                   />
+                    android:src="@drawable/avatar" />
             </LinearLayout>
 
             <View
                 android:id="@+id/username_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
 
 
             <LinearLayout
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
@@ -191,8 +190,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="textPassword"
                     android:hint=""
+                    android:inputType="textPassword"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -204,16 +203,16 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#DACFCF"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#DACFCF" />
 
 
             <LinearLayout
                 android:id="@+id/password_xac_minh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="160dp"
@@ -227,69 +226,67 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="textPassword"
                     android:hint=""
+                    android:inputType="textPassword"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/img"
-                   />
+                    android:src="@drawable/img" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E2DBDB"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#E2DBDB" />
 
             <!-- Email Field -->
             <LinearLayout
                 android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="textEmailAddress"
                     android:hint="ddxxx.gmail.com"
+                    android:inputType="textEmailAddress"
                     android:textColorHint="#909090"
                     android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/sym_action_email"
-               />
+                    android:src="@android:drawable/sym_action_email" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#E0E0E0" />
 
 
             <LinearLayout
                 android:id="@+id/phone_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:inputType="phone"
                     android:hint="Phone"
+                    android:inputType="phone"
                     android:textColorHint="#909090"
                     android:textSize="16sp" />
 
@@ -297,22 +294,21 @@
                     android:id="@+id/phone_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_call"
-                    />
+                    android:src="@android:drawable/ic_menu_call" />
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:background="#E0E0E0" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/account_text"
@@ -326,11 +322,11 @@
                     android:id="@+id/login_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:text="Đăng Nhập"
                     android:textColor="#0066CC"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="8dp" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
 
