@@ -50,10 +50,10 @@
 
                         <ImageView
                             android:layout_width="385dp"
-                            android:layout_height="295dp"
+                            android:layout_height="match_parent"
                             android:rotation="2"
-                            android:rotationX="-18"
-                            android:rotationY="-6"
+                            android:rotationX="-2"
+                            android:rotationY="-2"
                             android:scaleType="fitXY"
                             android:src="@drawable/intro_logo" />
                     </LinearLayout>
