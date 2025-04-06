@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F5F5F5"
+    android:background="@color/nen"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,7 +15,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="match_parent"
             android:background="#C78A8A" />
 
         <View
@@ -40,16 +40,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/rounded_bg"
+        android:background="@color/nen"
         android:fillViewport="false"
         android:padding="8dp">
 
         <LinearLayout
-            android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="#FFFFFF"
+            android:background="@drawable/rounded_bg"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -87,13 +86,12 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/lastname_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="16dp"
                 android:background="#E0E0E0" />
 
-            <!-- Tên (First Name) Field -->
+
             <LinearLayout
                 android:id="@+id/firstname_input"
                 android:layout_width="match_parent"
@@ -118,20 +116,18 @@
                     android:textSize="16sp" />
 
                 <ImageView
-                    android:id="@+id/firstname_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/image6" />
             </LinearLayout>
 
             <View
-                android:id="@+id/firstname_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="16dp"
                 android:background="#E0E0E0" />
 
-            <!-- Tên tài khoản (Username) Field -->
+
             <LinearLayout
                 android:id="@+id/username_input"
                 android:layout_width="match_parent"
@@ -157,14 +153,12 @@
                     android:textSize="16sp" />
 
                 <ImageView
-                    android:id="@+id/username_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/avatar" />
             </LinearLayout>
 
             <View
-                android:id="@+id/username_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginBottom="16dp"
@@ -242,7 +236,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="#E2DBDB" />
 
-            <!-- Email Field -->
+
             <LinearLayout
                 android:id="@+id/email_input"
                 android:layout_width="match_parent"
@@ -291,7 +285,6 @@
                     android:textSize="16sp" />
 
                 <ImageView
-                    android:id="@+id/phone_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@android:drawable/ic_menu_call" />
@@ -332,10 +325,10 @@
 
             <Button
                 android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="331dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:padding="12dp"
+                android:backgroundTint="@color/gray"
                 android:text="Đăng Ký"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"

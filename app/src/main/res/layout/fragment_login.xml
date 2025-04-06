@@ -12,7 +12,7 @@
     <ScrollView
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:id="@+id/rxpe507ji8u"
+     android:backgroundTint="@color/nen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -23,21 +23,24 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="#C78A8A"
-                android:paddingBottom="69dp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="69dp">
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="76dp"
                     android:layout_marginStart="86dp"
+                    android:layout_marginBottom="76dp"
                     android:clipChildren="false"
                     android:clipToPadding="false">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -54,26 +57,29 @@
                             android:scaleType="fitXY"
                             android:src="@drawable/intro_logo" />
                     </LinearLayout>
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="-52dp"
+                        android:layout_marginBottom="14dp"
+                        android:text="Đăng nhập"
                         android:textColor="#000000"
                         android:textSize="40sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="14dp"
-                        android:layout_marginStart="-52dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="Đăng nhập" />
+                        android:textStyle="bold" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/r09r7bu0icnb4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
                     android:clipChildren="false"
                     android:clipToPadding="false"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:id="@+id/rwte5ifhg949"
                         android:layout_width="199dp"
@@ -81,127 +87,137 @@
                         android:background="#C78A8A"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:orientation="vertical"></LinearLayout>
                 </LinearLayout>
+
+
                 <LinearLayout
-                    android:id="@+id/rq1p69ovof3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="29dp"
-                    android:paddingBottom="19dp"
                     android:layout_marginHorizontal="20dp"
-                    android:background="#FFFFFF"
+                    android:background="@drawable/rounded_bg"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="29dp"
+                    android:paddingBottom="19dp">
+
                     <LinearLayout
                         android:id="@+id/Ten_tk"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
                         android:layout_marginHorizontal="26dp"
+                        android:layout_marginBottom="7dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal">
+
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_weight="1"
+                            android:text="Tài khoản"
                             android:textColor="#928585"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="6dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:text="Tài khoản" />
+                            android:textStyle="bold" />
+
                         <ImageView
                             android:layout_width="37dp"
                             android:layout_height="37dp"
-                            android:src="@drawable/avatar"
-                            android:scaleType="fitXY" />
+                            android:scaleType="fitXY"
+                            android:src="@drawable/avatar" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#CDC8C8"
-                        android:layout_marginBottom="24dp"
                         android:layout_marginHorizontal="22dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="#CDC8C8"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="vertical">
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/mat_khau"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp"
                         android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="8dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
+
                         <TextView
 
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Mật khẩu"
                             android:textColor="#928585"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:text="Mật khẩu" />
+                            android:textStyle="bold" />
+
                         <ImageView
                             android:layout_width="37dp"
                             android:layout_height="37dp"
-                            android:src="@drawable/img"
-                            android:scaleType="fitXY" />
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img" />
                     </LinearLayout>
+
                     <LinearLayout
 
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#BBB7B7"
-                        android:layout_marginBottom="24dp"
                         android:layout_marginHorizontal="22dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="#BBB7B7"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:orientation="vertical">
-                    </LinearLayout>
+                        android:orientation="vertical"></LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="20dp"
                         android:layout_marginStart="24dp"
+                        android:layout_marginBottom="20dp"
                         android:clipChildren="false"
                         android:clipToPadding="false"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/quen_mk"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:text="Quên mật khẩu ?"
                             android:textColor="#176448"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="12dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="Quên mật khẩu ?" />
+                            android:textStyle="bold" />
+
                         <TextView
                             android:id="@+id/register_link"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đăng ký"
                             android:textColor="#0066CC"
                             android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="Đăng ký" />
+                            android:textStyle="bold" />
                     </LinearLayout>
 
 
                     <Button
                         android:id="@+id/login_button"
-                        android:layout_width="330dp"
-                        android:layout_height="54dp"
+                        android:layout_width="320dp"
+                        android:layout_height="60dp"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/gray"
                         android:padding="12dp"
                         android:text="Đăng nhập"
                         android:textColor="#FFFFFF"
