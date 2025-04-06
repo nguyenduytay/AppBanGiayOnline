@@ -71,7 +71,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/r09r7bu0icnb4"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -80,14 +80,7 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/rwte5ifhg949"
-                        android:layout_width="199dp"
-                        android:layout_height="5dp"
-                        android:background="#C78A8A"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="vertical"></LinearLayout>
+
                 </LinearLayout>
 
 
@@ -178,7 +171,9 @@
                         android:background="#BBB7B7"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:orientation="vertical"></LinearLayout>
+                        android:orientation="vertical">
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
