@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="5dp">
 
     <!-- Background with diagonal effect -->
     <View
@@ -16,28 +16,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="10dp"
         android:background="#F4EEE9"
-        android:rotation="-10"
-        android:rotationX="-22"
-        android:rotationY="2"
+        android:rotation="-62"
+        android:rotationX="-189"
+        android:rotationY="6"
         android:translationY="400dp" />
 
     <!-- Main content container -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@android:color/transparent">
+        android:layout_height="986dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
 
         <!-- Header section -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="231dp">
+            android:layout_height="216dp">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="253dp"
+                android:layout_height="219dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
                 android:background="#E2AEA8" />
 
             <View
@@ -61,7 +63,7 @@
         <!-- Scrollable content area -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="621dp"
             android:background="@android:color/transparent"
             android:fillViewport="true"
             android:padding="10dp">
@@ -69,8 +71,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background=""
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="-3dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/rounded_bg"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -79,40 +83,38 @@
                     android:id="@+id/lastname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Họ"
                         android:inputType="textPersonName"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
-                        android:layout_margin="10dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
                         android:src="@drawable/image7" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
 
                 <!-- First name input -->
                 <LinearLayout
                     android:id="@+id/firstname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
@@ -120,99 +122,94 @@
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Tên"
                         android:inputType="textPersonName"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="35dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
                         android:src="@drawable/image6" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
 
                 <!-- Username input -->
                 <LinearLayout
                     android:id="@+id/username_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <EditText
+
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Tên đăng nhập"
                         android:inputType="text"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="10dp"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="0dp"
                         android:layout_marginStart="6dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
                         android:src="@drawable/avatar" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
 
                 <!-- Password input -->
                 <LinearLayout
                     android:id="@+id/password_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/editTextTextPassword"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Mật khẩu "
                         android:inputType="textPassword"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
                         android:cropToPadding="false"
+                        android:padding="6dp"
                         android:src="@drawable/account_login" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#DACFCF" />
 
                 <!-- Password confirmation input -->
                 <LinearLayout
                     android:id="@+id/password_xac_minh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
@@ -220,95 +217,95 @@
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Xác minh mât khẩu"
                         android:inputType="textPassword"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="center"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
                         android:src="@drawable/account_login" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E2DBDB" />
 
                 <!-- Email input -->
                 <LinearLayout
                     android:id="@+id/email_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Email"
                         android:inputType="textEmailAddress"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textColorHint="#909090"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/sym_action_email" />
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
+                        android:src="@drawable/mail">
+
+                    </ImageView>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
 
                 <!-- Phone input -->
                 <LinearLayout
                     android:id="@+id/phone_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="12dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:layout_weight="1"
-                        android:background="@null"
                         android:hint="Phone"
                         android:inputType="phone"
                         android:padding="10dp"
-                        android:paddingStart="6dp"
-                        android:textColorHint="#909090"
-                        android:textSize="16sp" />
+                        android:textColor="#0C0C0C"
+                        android:textColorHint="#595151"
+                        android:textSize="13sp" />
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_menu_call" />
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="0.01"
+                        android:padding="6dp"
+                        android:src="@drawable/phone" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="#E0E0E0" />
 
                 <!-- Login link -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="horizontal">
 
@@ -326,7 +323,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Đăng Nhập"
-                        android:textColor="#0066CC"
+                        android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -334,10 +331,16 @@
                 <!-- Register button -->
                 <Button
                     android:id="@+id/bt_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_width="229dp"
+                    android:layout_height="61dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="40dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:backgroundTint="@color/gray"
+                    android:padding="10dp"
                     android:text="Đăng Ký"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
