@@ -14,9 +14,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMainActivity = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(bindingMainActivity.root)
-          setContentView(R.layout.create_account)
-//        setUpViewpager2()
+        setContentView(bindingMainActivity.root)
+//          setContentView(R.layout.create_account)
+        setUpViewpager2()
     }
 
     //sự kiện chuyển đổi fragment
