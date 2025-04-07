@@ -15,9 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bindingMainActivity = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMainActivity.root)
-
+//          setContentView(R.layout.create_account)
         setUpViewpager2()
     }
+
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {
         // Chọn menu System (ở giữa) ngay từ đầu
