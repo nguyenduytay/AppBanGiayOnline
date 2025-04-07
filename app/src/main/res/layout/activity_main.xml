@@ -7,13 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".view.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/main_body_view_pager2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_above="@+id/main_menu_bottom_navigation"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/main_menu_bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.11"
+                android:layout_alignParentBottom="true"
+                app:menu="@menu/menu_bottom_navigation"
+                android:background="#645555"
+                app:itemTextColor="@color/custom_bottom_navigation"
+                app:itemIconTint="@color/custom_bottom_navigation"
+                />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
