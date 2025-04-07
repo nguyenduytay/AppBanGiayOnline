@@ -71,5 +71,8 @@
             android:id="@+id/include_notification_home"
             layout="@layout/notification_home"
             />
+        <include
+            android:id="@+id/include_brand_home"
+            layout="@layout/brand_home"/>
     </LinearLayout>
 </FrameLayout>

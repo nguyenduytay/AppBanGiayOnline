@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/notification_home">
 
     <LinearLayout
@@ -14,8 +14,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_home_notification"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:background="@drawable/item_notification_home">
 
@@ -28,12 +29,12 @@
             android:gravity="center">
 
             <TextView
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="3dp"
                 android:background="@drawable/item_notification_home"
                 android:backgroundTint="#3A3030"/>
             <TextView
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="3dp"
                 android:background="@drawable/item_notification_home"
                 android:backgroundTint="#B99E9E"
