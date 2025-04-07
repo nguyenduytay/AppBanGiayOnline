@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingTop="5dp">
 
     <!-- Background with diagonal effect -->
@@ -34,6 +34,13 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="216dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="219dp"
+                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#E2AEA8" />
 
             <View
                 android:layout_width="247dp"
