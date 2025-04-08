@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 //         setContentView(R.layout.create_account)
 //        setContentView(R.layout.login)
 
+
     }
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {
