@@ -105,7 +105,7 @@ class CartAdapter(
     private class ViewHolder(view: View) {
         val checkItem: CheckBox = view.findViewById(R.id.checkItem)
         val imgProduct: ImageView = view.findViewById(R.id.imgProduct)
-        val tvProductName: TextView = view.findViewById(R.id.tvProductName)
+        val tvProductName: TextView = view.findViewById(R.id.tvgiamgia)
         val tvColor: TextView = view.findViewById(R.id.tvColor)
         val tvSize: TextView = view.findViewById(R.id.tvSize)
         val tvQuantity: TextView = view.findViewById(R.id.tvQuantity)

@@ -42,7 +42,7 @@
             android:paddingTop="4dp">
 
             <TextView
-                android:id="@+id/tvProductName"
+                android:id="@+id/tvgiamgia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giày Jordan - hàng auth"
