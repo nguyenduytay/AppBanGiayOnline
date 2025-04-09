@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    tools:ignore="ExtraText">
 
     <!-- Top bar with title and buttons -->
     <LinearLayout
@@ -76,8 +77,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#F1EBEB"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
         android:backgroundTint="#F8F4F4"
-        android:padding="8dp"
+        android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutCheckout"
         app:layout_constraintTop_toBottomOf="@id/layoutTopBar" />
 
