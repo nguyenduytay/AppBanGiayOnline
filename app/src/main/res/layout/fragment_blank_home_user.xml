@@ -69,10 +69,10 @@
     </LinearLayout>
         <include
             android:id="@+id/include_notification_home"
-            layout="@layout/notification_home"
+            layout="@layout/notification_home_user"
             />
         <include
             android:id="@+id/include_brand_home"
-            layout="@layout/brand_home"/>
+            layout="@layout/brand_home_user"/>
     </LinearLayout>
 </FrameLayout>
