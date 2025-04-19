@@ -16,6 +16,11 @@ class MainActivity : AppCompatActivity() {
         bindingMainActivity = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMainActivity.root)
         setUpViewpager2()
+
+//         setContentView(R.layout.create_account)
+//        setContentView(R.layout.promotion)
+
+
     }
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {

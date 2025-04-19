@@ -21,9 +21,9 @@ class MyAdapterRecyclerViewNotificationHome(private val itemList : List<ItemRecy
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-       bindingItemRecyclerViewNotificationHome.tvTitleNotificationHome.text = itemList[position].title
-       bindingItemRecyclerViewNotificationHome.tvContentNotificationHome.text = itemList[position].content
-       // Glide.with(bindingItemRecyclerViewNotificationHome.ivNotification.context).load(itemList.imageUrl).into(imageViewItem)
+        bindingItemRecyclerViewNotificationHome.tvTitleNotificationHome.text = itemList[position].title
+        bindingItemRecyclerViewNotificationHome.tvContentNotificationHome.text = itemList[position].content
+        // Glide.with(bindingItemRecyclerViewNotificationHome.ivNotification.context).load(itemList.imageUrl).into(imageViewItem)
         bindingItemRecyclerViewNotificationHome.ivNotification.setBackgroundResource(itemList[position].image)
     }
 

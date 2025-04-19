@@ -52,7 +52,7 @@ class BlankFragmentHome : Fragment() {
         bindingBrandHomeUser.rcBrandHome.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false )
         //tạo danh sách list ví dụ
         val list= listOf(
-           ItemRecyclerViewBrandHome(R.drawable.cat1),
+            ItemRecyclerViewBrandHome(R.drawable.cat1),
             ItemRecyclerViewBrandHome(R.drawable.cat2),
             ItemRecyclerViewBrandHome(R.drawable.cat3),
             ItemRecyclerViewBrandHome(R.drawable.cat4),
