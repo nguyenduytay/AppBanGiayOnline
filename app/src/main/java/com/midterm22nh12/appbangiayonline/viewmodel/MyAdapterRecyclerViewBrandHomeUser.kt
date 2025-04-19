@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.midterm22nh12.appbangiayonline.databinding.ItemRecyclerViewBrandHomeUserBinding
-import com.midterm22nh12.appbangiayonline.model.ItemRecyclerViewBrandHome
-class MyAdapterRecyclerViewBrandHome(private val itemList : List<ItemRecyclerViewBrandHome>)
-    : RecyclerView.Adapter<MyAdapterRecyclerViewBrandHome.MyViewHolderBrandHome>()
+import com.midterm22nh12.appbangiayonline.model.ItemRecyclerViewBrandHomeUser
+class MyAdapterRecyclerViewBrandHomeUser(private val itemList : List<ItemRecyclerViewBrandHomeUser>)
+    : RecyclerView.Adapter<MyAdapterRecyclerViewBrandHomeUser.MyViewHolderBrandHome>()
 {
     private lateinit var bindingItemRecyclerBrandHomeUser : ItemRecyclerViewBrandHomeUserBinding
     class MyViewHolderBrandHome(val binding: ItemRecyclerViewBrandHomeUserBinding) : RecyclerView.ViewHolder(binding.root)
