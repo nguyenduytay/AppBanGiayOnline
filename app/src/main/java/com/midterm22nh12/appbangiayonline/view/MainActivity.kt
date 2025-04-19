@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         bindingMainActivity = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindingMainActivity.root)
-
         setUpViewpager2()
-
 
 //         setContentView(R.layout.create_account)
 //        setContentView(R.layout.promotion)
