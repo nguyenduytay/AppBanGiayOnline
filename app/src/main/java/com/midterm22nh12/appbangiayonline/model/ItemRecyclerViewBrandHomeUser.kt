@@ -1,5 +1,5 @@
 package com.midterm22nh12.appbangiayonline.model
 
-data class ItemRecyclerViewBrandHome (
+data class ItemRecyclerViewBrandHomeUser (
     val image: Int
 )
