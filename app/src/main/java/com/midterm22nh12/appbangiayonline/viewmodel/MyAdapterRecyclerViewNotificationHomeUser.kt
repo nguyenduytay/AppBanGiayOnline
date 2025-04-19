@@ -1,16 +1,13 @@
 package com.midterm22nh12.appbangiayonline.viewmodel
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.midterm22nh12.appbangiayonline.databinding.ItemRecyclerViewNotificationHomeUserBinding
-import com.midterm22nh12.appbangiayonline.model.ItemRecyclerViewNotificationHome
+import com.midterm22nh12.appbangiayonline.model.ItemRecyclerViewNotificationHomeUser
 
-class MyAdapterRecyclerViewNotificationHome(private val itemList : List<ItemRecyclerViewNotificationHome>)
-    :RecyclerView.Adapter<MyAdapterRecyclerViewNotificationHome.MyViewHolder>()
+class MyAdapterRecyclerViewNotificationHomeUser(private val itemList : List<ItemRecyclerViewNotificationHomeUser>)
+    :RecyclerView.Adapter<MyAdapterRecyclerViewNotificationHomeUser.MyViewHolder>()
 {
     private lateinit var bindingItemRecyclerViewNotificationHome : ItemRecyclerViewNotificationHomeUserBinding
     class MyViewHolder(val binding: ItemRecyclerViewNotificationHomeUserBinding) : RecyclerView.ViewHolder(binding.root)
