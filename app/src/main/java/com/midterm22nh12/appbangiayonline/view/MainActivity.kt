@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(bindingMainActivity.root)
         setUpViewpager2()
 
-//         setContentView(R.layout.create_account)
+//        setContentView(R.layout.create_account)
 //        setContentView(R.layout.promotion)
 
 
