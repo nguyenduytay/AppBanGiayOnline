@@ -14,60 +14,48 @@
         android:layout_height="wrap_content"
         android:background="#EFE2E2"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_Back"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_Delete"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp"
-            android:backgroundTint="#EFE2E2"
-            android:padding="1dp"
-            android:paddingTop="0.5dp"
-            android:paddingRight="0.5dp"
-            android:src="@drawable/back" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="2"
+            android:backgroundTint="#B61D1D"
+            android:gravity="center"
+            android:padding="0dp"
+            android:text="Xóa"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_weight="7"
             android:gravity="center"
             android:text="Giỏ hàng"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/btn_Delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
-            android:background="?attr/selectableItemBackground"
-            android:padding="6dp"
-            android:text="Xóa"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/btn_sms"
-            android:layout_width="28dp"
-            android:layout_height="31dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:background="@drawable/sms"
-            android:padding="4dp"
-            android:text="Xóa"
-            android:textColor="#000000"
-            android:textSize="16sp">
-
-        </ImageButton>
+        <ImageView
+            android:id="@+id/iv_back_shopping_cart_user"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:paddingLeft="50dp"
+            android:layout_weight="3"
+            app:srcCompat="@drawable/arrow_right" />
 
     </LinearLayout>
 
@@ -86,34 +74,41 @@
 
     <!-- Promotion section -->
     <LinearLayout
-        android:id="@+id/LO_Promotion"
+        android:id="@+id/ll_promotion_shopping_cart_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#D9D9D9"
-        app:cardCornerRadius="18dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:orientation="horizontal"
-        android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@id/layoutCheckout">
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/layoutCheckout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/sale" />
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/sale"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
+            android:layout_weight="8"
             android:text="Khuyến mãi"
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="0dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/arrow_right" />
     </LinearLayout>
@@ -123,10 +118,8 @@
         android:id="@+id/layoutCheckout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="0dp"
         android:background="#D9D9D9"
         android:orientation="vertical"
-        android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="5dp">
 
@@ -139,10 +132,11 @@
                 android:id="@+id/cb_check_All"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center"
                 android:text="Tất cả"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -151,30 +145,31 @@
                 android:layout_marginStart="8dp"
                 android:text="Tổng : "
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_Total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="0 đ"
+                android:text="1000000 đ"
                 android:textColor="#FF0000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginRight="20dp"/>
 
             <Button
                 android:id="@+id/btnBuy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:backgroundTint="#F60B0B"
-                android:padding="5dp"
                 android:text="Mua (0)"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                app:cornerRadius="10dp" />
         </LinearLayout>
     </LinearLayout>
 

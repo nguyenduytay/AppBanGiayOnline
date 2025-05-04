@@ -35,7 +35,7 @@ class LoginEndCreateAccount : AppCompatActivity() {
             return
         }
         // Hiển thị màn hình login đầu tiên
-        binding.viewFlipper.displayedChild = 0
+        binding.viewFlipperMain.displayedChild = 0
 
         setupLoginPasswordVisibility()         //sự kiện hiển thị mật khẩu trong đăng nhập
         setupCreateAccountPasswordVisibility() //sự kiện hiển thị mật khẩu trong đăng kí
@@ -206,12 +206,12 @@ class LoginEndCreateAccount : AppCompatActivity() {
     private fun setupNavigationButtons() {
         // Chuyển đến trang đăng ký
         binding.loginLayout.tvLinkCreateAccountLogin.setOnClickListener {
-            binding.viewFlipper.displayedChild = 1 // Chuyển sang màn hình đăng ký
+            binding.viewFlipperMain.displayedChild = 1 // Chuyển sang màn hình đăng ký
         }
 
         // Quay lại trang đăng nhập
         binding.createAccountLayout.tvLinkLoginCreate.setOnClickListener {
-            binding.viewFlipper.displayedChild = 0 // Chuyển về màn hình đăng nhập
+            binding.viewFlipperMain.displayedChild = 0 // Chuyển về màn hình đăng nhập
         }
     }
 
@@ -260,7 +260,7 @@ class LoginEndCreateAccount : AppCompatActivity() {
                     onSuccess = { _ ->
                         //đăng kí thành công chuyển về màn hình đăng nhập
                         Toast.makeText(this, "Đăng kí thành công", Toast.LENGTH_SHORT).show()
-                        binding.viewFlipper.displayedChild = 0
+                        binding.viewFlipperMain.displayedChild = 0
                     },
                     onFailure = { exception ->
                         //hiển thị thông báo lỗi
@@ -363,4 +363,5 @@ class LoginEndCreateAccount : AppCompatActivity() {
             else -> 1
         }
     }
+
 }

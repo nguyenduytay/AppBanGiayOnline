@@ -4,11 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.User.BlankFragmentShopUser">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ViewFlipper
+        android:id="@+id/view_flipper_shop_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:layout_height="match_parent">
+        <!--        layout tài khoản -->
+        <include
+            android:id="@+id/include_shopping_cart_user"
+            layout="@layout/shopping_cart_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFE2E2"/>
+        <!--       layout cài đặt tài khoản-->
+        <include
+            android:id="@+id/include_promotion_user"
+            layout="@layout/promotion_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFE2E2"/>
+    </ViewFlipper>
 </FrameLayout>

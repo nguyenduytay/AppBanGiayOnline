@@ -1,12 +1,19 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,6 +25,8 @@ import com.midterm22nh12.appbangiayonline.Ui.Animations.DepthPageTransformer
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyViewpager2Adapter
 import com.midterm22nh12.appbangiayonline.databinding.ItemNotificationUserBinding
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewNotificationUser
+import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
+import com.midterm22nh12.appbangiayonline.viewmodel.Auth.AuthViewModel
 
 class MainActivityUser : AppCompatActivity() {
     private lateinit var bindingMainActivityUser: ActivityMainUserBinding
@@ -25,6 +34,8 @@ class MainActivityUser : AppCompatActivity() {
     private lateinit var drawerLayoutNotification: DrawerLayout
     private lateinit var navigationViewNotification: NavigationView
     private lateinit var headerView: View
+    private lateinit var authViewModel: AuthViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMainActivityUser = ActivityMainUserBinding.inflate(layoutInflater)
@@ -36,10 +47,13 @@ class MainActivityUser : AppCompatActivity() {
         //lấy header view từ navigationView
         headerView = navigationViewNotification.getHeaderView(0)
 
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+
         //thiết lập sự kiện cho nút back trong header của navigationView
         setUpNavigationView()
         // chuyển trang
         setUpViewpager2()
+
     }
 
     //sự kiện chuyển đổi fragment
@@ -62,6 +76,12 @@ class MainActivityUser : AppCompatActivity() {
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                // Ẩn/hiện menu dựa vào Fragment
+                when (position) {
+                    0 -> hideBottomNav() // Shopping cart - ẩn menu
+                    1 -> showBottomNav() // Home - hiện menu
+                    2 -> hideBottomNav() // Account - ẩn menu
+                }
                 bindingMainActivityUser.mainMenuBottomNavigationUser.selectedItemId =
                     when (position) {
                         0 -> R.id.menu_shopping_cart_user
@@ -129,5 +149,40 @@ class MainActivityUser : AppCompatActivity() {
         )
         val adapter = MyAdapterRecyclerViewNotificationUser(list)
         recyclerViewNotificationUser.adapter = adapter
+    }
+    //ẩn menu
+    fun hideBottomNav() {
+        bindingMainActivityUser.mainMenuBottomNavigationUser.visibility=View.GONE
+    }
+    //hiện menu
+    fun showBottomNav() {
+        bindingMainActivityUser.mainMenuBottomNavigationUser.visibility = View.VISIBLE
+    }
+    // sự kiện quay về trang chủ
+    fun returnHomeUser()
+    {
+        bindingMainActivityUser.mainBodyViewPager2User.currentItem = 1
+    }
+    //sự kiện đăng xuất
+    fun logout() {
+        authViewModel.logoutUser()
+        //thiết lập quan sát kết quả
+        authViewModel.logoutResult.observe(this)
+        { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                result.fold(
+                    onSuccess = {
+                        val intent = Intent(this, LoginEndCreateAccount::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        //đóng activity hiện tại
+                        finish()
+                    },
+                    onFailure = {
+                        Toast.makeText(this,"Đăng xuất thất bại", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
     }
 }

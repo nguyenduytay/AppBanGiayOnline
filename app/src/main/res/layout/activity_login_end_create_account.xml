@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".view.Auth.LoginEndCreateAccount">
     <ViewFlipper
-        android:id="@+id/viewFlipper"
+        android:id="@+id/view_flipper_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
