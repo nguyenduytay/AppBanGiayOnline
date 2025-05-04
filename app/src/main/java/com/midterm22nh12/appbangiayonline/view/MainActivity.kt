@@ -14,11 +14,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindingMainActivity = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bindingMainActivity.root)
-        setUpViewpager2()
+//        setContentView(bindingMainActivity.root)
+//        setUpViewpager2()
 
-//        setContentView(R.layout.create_account)
-//        setContentView(R.layout.promotion)
+        setContentView(R.layout.account_setup_user)
+//        setContentView(R.layout.account_user)
 
 
     }

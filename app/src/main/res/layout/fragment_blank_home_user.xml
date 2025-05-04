@@ -69,7 +69,7 @@
     </LinearLayout>
         <include
             android:id="@+id/include_notification_home"
-            layout="@layout/notification_home_user"
+            layout="@layout/notification_product_home_user"
             />
         <include
             android:id="@+id/include_brand_home"

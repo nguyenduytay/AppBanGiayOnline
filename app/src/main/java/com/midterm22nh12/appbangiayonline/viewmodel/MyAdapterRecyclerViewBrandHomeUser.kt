@@ -3,23 +3,26 @@ package com.midterm22nh12.appbangiayonline.viewmodel
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.midterm22nh12.appbangiayonline.databinding.ItemRecyclerViewBrandHomeUserBinding
+import com.midterm22nh12.appbangiayonline.databinding.ItemBrandHomeUserBinding
 import com.midterm22nh12.appbangiayonline.model.ItemRecyclerViewBrandHomeUser
-class MyAdapterRecyclerViewBrandHomeUser(private val itemList : List<ItemRecyclerViewBrandHomeUser>)
-    : RecyclerView.Adapter<MyAdapterRecyclerViewBrandHomeUser.MyViewHolderBrandHome>()
-{
-    private lateinit var bindingItemRecyclerBrandHomeUser : ItemRecyclerViewBrandHomeUserBinding
-    class MyViewHolderBrandHome(val binding: ItemRecyclerViewBrandHomeUserBinding) : RecyclerView.ViewHolder(binding.root)
+
+class MyAdapterRecyclerViewBrandHomeUser(
+    private val itemList: List<ItemRecyclerViewBrandHomeUser>
+) : RecyclerView.Adapter<MyAdapterRecyclerViewBrandHomeUser.MyViewHolderBrandHome>() {
+
+    class MyViewHolderBrandHome(val binding: ItemBrandHomeUserBinding)
+        : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolderBrandHome {
-        bindingItemRecyclerBrandHomeUser= ItemRecyclerViewBrandHomeUserBinding.inflate(
-            LayoutInflater.from(parent.context),parent,false)
-        return MyViewHolderBrandHome(bindingItemRecyclerBrandHomeUser)
+        val binding = ItemBrandHomeUserBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return MyViewHolderBrandHome(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolderBrandHome, position: Int) {
-        // Glide.with(bindingItemRecyclerViewNotificationHome.ivNotification.context).load(itemList.imageUrl).into(imageViewItem)
-        bindingItemRecyclerBrandHomeUser.ibBrandHome.setBackgroundResource(itemList[position].image)
+        val item = itemList[position]
+        holder.binding.ibBrandHome.setBackgroundResource(item.image)
     }
 
     override fun getItemCount() = itemList.size
