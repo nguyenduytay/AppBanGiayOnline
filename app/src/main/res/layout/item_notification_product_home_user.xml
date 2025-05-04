@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:background="@drawable/item_notification_home">
+    android:background="@drawable/item_notification_product_home_user">
 
     <LinearLayout
         android:layout_width="match_parent"

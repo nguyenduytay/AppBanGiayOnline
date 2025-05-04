@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:background="@drawable/item_notification_home">
+            android:background="@drawable/item_notification_product_home_user">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -31,12 +31,12 @@
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="3dp"
-                android:background="@drawable/item_notification_home"
+                android:background="@drawable/item_notification_product_home_user"
                 android:backgroundTint="#3A3030"/>
             <TextView
                 android:layout_width="30dp"
                 android:layout_height="3dp"
-                android:background="@drawable/item_notification_home"
+                android:background="@drawable/item_notification_product_home_user"
                 android:backgroundTint="#B99E9E"
                 android:layout_marginLeft="15dp"/>
         </LinearLayout>

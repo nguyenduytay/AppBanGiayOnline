@@ -5,4 +5,6 @@
     <string name="menu_shopping_cart">Giỏ hàng</string>
     <string name="menu_home">Trang chủ</string>
     <string name="menu_account">Tài khoản</string>
+    <string name="menu_bill">Đơn hàng</string>
+    <string name="menu_revenue">Doanh thu</string>
 </resources>
