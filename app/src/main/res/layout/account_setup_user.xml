@@ -10,30 +10,29 @@
     <LinearLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="15dp"
         android:background="#c49697"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_Back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_back_account_setup_user"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="0.5dp"
-            android:padding="1dp"
-            android:paddingTop="0.1dp"
-            android:paddingRight="0.1dp"
-            android:src="@drawable/back" />
+            android:layout_weight="1"
+            android:src="@drawable/back_1" />
 
         <TextView
             android:id="@+id/header_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_weight="15"
             android:text="Thiết lập tài khoản"
             android:textColor="#000000"
             android:textSize="20sp"
@@ -265,7 +264,7 @@
 
     <!-- Bottom Button - Improved styling -->
     <Button
-        android:id="@+id/btn_logout"
+        android:id="@+id/bt_logout_account_setup_user"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="16dp"
@@ -278,7 +277,6 @@
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="12sp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
