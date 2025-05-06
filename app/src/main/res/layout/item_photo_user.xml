@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:layout_margin="4dp">
+
+    <ImageView
+        android:id="@+id/img_photo_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="#F0F0F0" />
+
+    <ImageView
+        android:id="@+id/img_add_photo"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/add"
+        android:contentDescription="Thêm ảnh" />
+
+    <ImageButton
+        android:id="@+id/btn_remove_photo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="4dp"
+        android:background="@drawable/circle_button_bg"
+        android:src="@drawable/remove"
+        android:contentDescription="Xóa ảnh"
+        android:visibility="gone" />
+</RelativeLayout>
