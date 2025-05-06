@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F2F2">
+
+    <!-- Top Bar with Back Button and Favorite -->
+    <RelativeLayout
+        android:id="@+id/layout_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#DBA2A2">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/back_1"
+            app:tint="@color/your_color" />
+
+        <ImageView
+            android:id="@+id/btn_favorite"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/favorite"
+            app:tint="@color/black" />
+    </RelativeLayout>
+
+    <!-- Main Content ScrollView -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom_action"
+        android:layout_below="@+id/layout_top_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Product Image Slider (ViewPager) -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="#eeeeee">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager_productImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/btn_previous"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:alpha="0.7"
+                    android:background="@drawable/img_2"
+                    android:contentDescription="Previous" />
+
+                <ImageButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:alpha="0.7"
+                    android:background="@drawable/img"
+                    android:contentDescription="Next" />
+            </RelativeLayout>
+
+            <!-- Indicator Dots -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/dot_1"
+                    android:layout_width="24dp"
+                    android:layout_height="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/indicator_selected" />
+
+                <View
+                    android:id="@+id/dot_2"
+                    android:layout_width="24dp"
+                    android:layout_height="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/indicator_unselected" />
+            </LinearLayout>
+
+            <!-- Color Variants ListView -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Màu"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <ListView
+                    android:id="@+id/listview_color_variants"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <!-- Product Information -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_inventory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="Kho : 1235"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.8"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/star"
+                        app:tint="#F8CE13" />
+
+                    <TextView
+                        android:id="@+id/tv_review_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="lượt đánh giá"
+                        android:textColor="#757575"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Giày Jordan"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="300,000 đ"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Size Selection ListView -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Size"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"/>
+
+                <!-- Quantity Selection -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số lượng"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:background="#D2C9C9"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:id="@+id/btn_decrease"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/remove" />
+
+                        <TextView
+                            android:id="@+id/tv_quantity"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:background="#ffff"
+                            android:text="1"
+                            android:textColor="#FF0000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/btn_increase"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/add" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Product Description -->
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:text="Đi Êm Chân, Thiết Kế Hiện Đại, Phù Hợp Với Nhiều Lứa Tuổi. Giá Tốt Mua Ngay. Lướt Shop . Đôi Dài Lớn. Mua Sắm Thả Ga. Ở Nhà Săn Voucher Săn Mã Miễn Phí Vận Chuyển Cho Đơn Từ 0Đ. Vận chuyển Toàn Quốc. Giao Quốc Tế. Shop Cùng Vẫn Có ..."
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Action Bar -->
+    <LinearLayout
+        android:id="@+id/layout_bottom_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#F4EEEE"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/btn_buy"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#BB2525"
+            android:text="Mua" />
+
+        <ImageView
+            android:id="@+id/iv_cart"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/shopping_cart"
+            app:tint="@color/black" />
+
+        <ImageView
+            android:id="@+id/iv_chat"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/sms"
+            app:tint="@color/black" />
+    </LinearLayout>
+</RelativeLayout>
