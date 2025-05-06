@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#F5E5E5">
 
@@ -47,12 +47,12 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:layout_marginLeft="20dp"
+            android:layout_marginLeft="20dp"
             app:tint="@color/your_color"
             android:src="@drawable/more_vert" />
     </LinearLayout>
 
-
+    <!-- Thông tin người dùng -->
     <ListView
         android:id="@+id/listview_info"
         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
         android:divider="@null"
         android:dividerHeight="0dp" />
 
-    <!-- Message List -->
+    <!-- Danh sách tin nhắn -->
     <ListView
         android:id="@+id/listview_messages"
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
         android:background="@android:color/white"
         android:padding="16dp" />
 
-    <!-- Input -->
+    <!-- Nhập tin -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

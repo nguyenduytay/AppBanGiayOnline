@@ -1,8 +1,10 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.BrandHomeUserBinding
 import com.midterm22nh12.appbangiayonline.databinding.FragmentBlankHomeUserBinding
@@ -33,7 +36,6 @@ class BlankFragmentHomeUser : Fragment() {
     private lateinit var bindingBrandHomeUser: BrandHomeUserBinding
     private lateinit var bindingProductHomeUser: ProductHomeUserBinding
     private lateinit var bindingTypeProductHomeUser: TypeProductHomeUserBinding
-    private lateinit var authViewModel: AuthViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +49,6 @@ class BlankFragmentHomeUser : Fragment() {
             ProductHomeUserBinding.bind(bindingFragmentHomeUser.includeProductHome.productHome)
         bindingTypeProductHomeUser =
             TypeProductHomeUserBinding.bind(bindingFragmentHomeUser.includeTypeProductHome.typeProductHome)
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
         //hiểm  thị thông bóa
         showNotification()
@@ -61,8 +62,8 @@ class BlankFragmentHomeUser : Fragment() {
         searchHomeUser()
         // sự kiện lựa chọn sản phẩm theo loại
         showTypeProduct()
-        //sự kiện đăng xuất
-        logout()
+        //thiết lập sự kiện recyclerView ẩn hiện menu
+        setupRecyclerView()
         return bindingFragmentHomeUser.root
     }
 
@@ -206,32 +207,6 @@ class BlankFragmentHomeUser : Fragment() {
         }
     }
 
-    //sự kiện đăng xuất
-    private fun logout() {
-
-        bindingFragmentHomeUser.ivMessageHomeUser.setOnClickListener {
-            authViewModel.logoutUser()
-        }
-        //thiết lập quan sát kết quả
-        authViewModel.logoutResult.observe(viewLifecycleOwner)
-        { event ->
-            event.getContentIfNotHandled()?.let { result ->
-                result.fold(
-                    onSuccess = {
-                        //chuyển màn hinhf đăng nhập
-                        val intent = Intent(requireContext(), LoginEndCreateAccount::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        //đóng activity hiện tại
-                        requireActivity().finish()
-                    },
-                    onFailure = {
-                        Toast.makeText(requireContext(),"Đănh nhập thất bại",Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
-        }
-    }
     //thiết lập sự kiện hiển thị thông bao
     private fun showNotification()
     {
@@ -242,4 +217,26 @@ class BlankFragmentHomeUser : Fragment() {
             (activity as? MainActivityUser)?.setupItemNotification()
         }
     }
+    //thiết lập ẩn hiện trạng ẩn hiện menu chính khi vuốt xem sản phẩm
+    private fun setupRecyclerView()
+    {
+        bindingProductHomeUser.rcProductHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_IDLE -> {
+                        (activity as? MainActivityUser)?.showBottomNav()
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+                        // Người dùng đang kéo - ẩn menu
+                        (activity as? MainActivityUser)?.hideBottomNav()
+                    }
+                    RecyclerView.SCROLL_STATE_SETTLING -> {
+                        // Đang trượt tự động sau khi thả tay - ẩn menu
+                        (activity as? MainActivityUser)?.hideBottomNav()
+                    }
+                }
+            }
+        })
+    }
+
 }

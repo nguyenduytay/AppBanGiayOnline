@@ -22,7 +22,7 @@
                 android:id="@+id/btn_Back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="@null"
                 android:src="@drawable/back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,38 +42,35 @@
                 app:layout_constraintStart_toEndOf="@+id/btn_Back"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_settings"
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/setting"
+                android:background="@drawable/setting"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_Cart"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_Cart"
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/shopping_cart"
+                android:background="@drawable/shopping_cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_Chat"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/btn_Chat"
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/sms"
+                android:background="@drawable/sms"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -92,8 +89,8 @@
             android:id="@+id/iv_UserAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/account_circle"
-            app:tint="@color/black" />
+            android:background="@drawable/account_circle"
+            android:padding="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -177,8 +174,7 @@
                     android:layout_height="27dp"
                     android:paddingTop="1dp"
                     android:layout_marginTop="4dp"
-                    android:src="@drawable/back_right"
-                    app:tint="@color/black">
+                    android:background="@drawable/back_right">
                 </ImageView>
             </LinearLayout>
 
@@ -205,15 +201,14 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/article_shortcut"
-                        app:tint="@color/black" />
+                        android:src="@drawable/article_shortcut" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Chờ xác nhận"
-                        android:textColor="#242121"
+                        android:textColor="#666666"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -229,15 +224,14 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/local_shipping"
-                        app:tint="@color/black" />
+                        android:src="@drawable/local_shipping" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Đang vận chuyển"
-                        android:textColor="#1B1919"
+                        android:textColor="#666666"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -253,15 +247,14 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/stars"
-                        app:tint="@color/black" />
+                        android:src="@drawable/stars" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Đánh giá"
-                        android:textColor="@color/black"
+                        android:textColor="#666666"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>

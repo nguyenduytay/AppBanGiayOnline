@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="#EFE2E2"
             android:layout_above="@+id/main_menu_bottom_navigation_admin"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
