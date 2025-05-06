@@ -1,15 +1,10 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +22,6 @@ import com.midterm22nh12.appbangiayonline.databinding.ProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.databinding.TypeProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewTypeProductHomeUser
-import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
-import com.midterm22nh12.appbangiayonline.viewmodel.Auth.AuthViewModel
 
 class BlankFragmentHomeUser : Fragment() {
     private lateinit var bindingFragmentHomeUser: FragmentBlankHomeUserBinding
