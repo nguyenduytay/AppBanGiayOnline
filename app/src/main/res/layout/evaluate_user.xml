@@ -62,8 +62,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/icon_button_bg"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
@@ -71,7 +73,7 @@
                     android:id="@+id/img_product"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="#F0F0F0"
+                    android:background="@drawable/icon_button_bg"
                     android:scaleType="centerCrop" />
 
                 <LinearLayout
@@ -103,7 +105,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/icon_button_bg"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -117,6 +121,7 @@
                 <ListView
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
+                    android:background="@drawable/icon_button_bg"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal" />
 
@@ -125,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
+                android:background="@drawable/icon_button_bg"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
