@@ -14,8 +14,8 @@
         android:background="#DBA2A2">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/btn_favorite"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/favorite"
@@ -116,9 +116,9 @@
                     android:layout_height="wrap_content"
                     android:text="Màu"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="12sp" />
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listview_color_variants"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -145,7 +145,7 @@
                         android:layout_alignParentEnd="true"
                         android:text="Kho : 1235"
                         android:textColor="#000000"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -161,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:text="4.8"
                         android:textColor="#000000"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -178,7 +178,7 @@
                         android:layout_marginStart="8dp"
                         android:text="lượt đánh giá"
                         android:textColor="#757575"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
@@ -188,7 +188,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Giày Jordan"
                     android:textColor="#000000"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -198,7 +198,7 @@
                     android:layout_marginTop="8dp"
                     android:text="300,000 đ"
                     android:textColor="#000000"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <!-- Size Selection ListView -->
@@ -208,9 +208,10 @@
                     android:layout_marginTop="16dp"
                     android:text="Size"
                     android:textColor="#000000"
-                    android:textSize="16sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_marginTop="8dp"
@@ -228,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:text="Số lượng"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -241,16 +242,18 @@
 
                         <ImageButton
                             android:id="@+id/btn_decrease"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="0dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
                             android:background="@drawable/remove" />
 
                         <TextView
                             android:id="@+id/tv_quantity"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
                             android:background="#ffff"
+                            android:gravity="center"
                             android:text="1"
                             android:textColor="#FF0000"
                             android:textSize="16sp"
@@ -258,8 +261,9 @@
 
                         <ImageButton
                             android:id="@+id/btn_increase"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="0dp"
+                            android:layout_height="25dp"
+                            android:layout_weight="1"
                             android:background="@drawable/add" />
                     </LinearLayout>
                 </LinearLayout>
@@ -274,7 +278,7 @@
                     android:lineSpacingExtra="4dp"
                     android:text="Đi Êm Chân, Thiết Kế Hiện Đại, Phù Hợp Với Nhiều Lứa Tuổi. Giá Tốt Mua Ngay. Lướt Shop . Đôi Dài Lớn. Mua Sắm Thả Ga. Ở Nhà Săn Voucher Săn Mã Miễn Phí Vận Chuyển Cho Đơn Từ 0Đ. Vận chuyển Toàn Quốc. Giao Quốc Tế. Shop Cùng Vẫn Có ..."
                     android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:textSize="11sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -287,29 +291,32 @@
         android:layout_alignParentBottom="true"
         android:background="#F4EEEE"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:gravity="center"
+        android:paddingBottom="5dp"
+       >
 
         <Button
             android:id="@+id/btn_buy"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
             android:backgroundTint="#BB2525"
             android:text="Mua" />
 
         <ImageView
             android:id="@+id/iv_cart"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="8dp"
+            android:layout_weight="1"
             android:src="@drawable/shopping_cart"
             app:tint="@color/black" />
 
         <ImageView
             android:id="@+id/iv_chat"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
             android:src="@drawable/sms"
             app:tint="@color/black" />
     </LinearLayout>

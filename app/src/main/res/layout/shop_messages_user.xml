@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="15dp"
         android:gravity="center_vertical"
         android:background="#F5E5E5">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
             app:tint="@color/your_color"
             android:src="@drawable/back_1" />
 
@@ -26,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="12dp">
+            android:layout_marginLeft="5dp"
+           >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,24 +47,13 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             app:tint="@color/your_color"
             android:src="@drawable/more_vert" />
     </LinearLayout>
-
-    <!-- Thông tin người dùng -->
-    <ListView
-        android:id="@+id/listview_info"
-        android:layout_width="match_parent"
-        android:layout_height="83dp"
-        android:background="#FFF5F5"
-        android:divider="@null"
-        android:dividerHeight="0dp" />
-
     <!-- Danh sách tin nhắn -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listview_messages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -79,29 +70,30 @@
         android:orientation="horizontal"
         android:background="@color/nenduoi"
         android:padding="8dp"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:src="@drawable/add_circle"
-            android:padding="4dp" />
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:src="@drawable/add_circle" />
 
         <EditText
             android:id="@+id/edit_message"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_weight="1"
-            android:hint="Soạn tin"
+            android:layout_weight="10"
             android:background="@drawable/bg_input"
+            android:hint="Soạn tin"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="16sp" />
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="4dp"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
             android:padding="1dp"
             android:src="@drawable/send" />
     </LinearLayout>
