@@ -53,6 +53,7 @@
             android:src="@drawable/more_vert" />
     </LinearLayout>
     <!-- Danh sách tin nhắn -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listview_messages"
         android:layout_width="match_parent"
