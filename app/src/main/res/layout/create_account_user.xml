@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="5dp">
-    <!-- Background with diagonal effect -->
+>
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
@@ -30,335 +30,442 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
-    <!-- Main content container -->
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginTop="-15dp"
-                android:layout_weight="1"
-                android:background="@drawable/intro_logo"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="Đăng Ký"
-                android:textColor="#000000"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.848" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="-20dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="20dp"
-            app:cardBackgroundColor="#DBD0D0"
-            app:cardCornerRadius="35dp"
-            app:cardElevation="10dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginTop="-15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/intro_logo"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
-                        android:id="@+id/lastname_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Họ"
-                        android:inputType="textPersonName"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/image7" />
-                </LinearLayout>
-
-                <!-- First name input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-
-                    <EditText
-                        android:id="@+id/firstname_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Tên"
-                        android:inputType="textPersonName"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/image6" />
-                </LinearLayout>
-
-                <!-- Username input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/username_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Tên tài khoản"
-                        android:inputType="text"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="0dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/avatar" />
-                </LinearLayout>
-
-                <!-- Password input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/password_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Mật khẩu "
-                        android:inputType="textPassword"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:cropToPadding="false"
-                        android:padding="6dp"
-                        android:src="@drawable/account_login" />
-                </LinearLayout>
-
-                <!-- Password confirmation input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-
-                    <EditText
-                        android:id="@+id/password_xac_minh"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Xác minh mât khẩu"
-                        android:inputType="textPassword"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/account_login" />
-                </LinearLayout>
-
-
-                <!-- Email input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/email_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/mail" />
-                </LinearLayout>
-
-
-                <!-- Phone input -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/phone_input"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:layout_weight="1"
-                        android:hint="Phone"
-                        android:inputType="phone"
-                        android:padding="10dp"
-                        android:textColor="#0C0C0C"
-                        android:textColorHint="#595151"
-                        android:textSize="13sp" />
-
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="0dp"
-                        android:layout_weight="0.01"
-                        android:backgroundTint="#050505"
-                        android:padding="6dp"
-                        android:src="@drawable/phone" />
-                </LinearLayout>
-
-
-                <!-- Login link -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/account_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Bạn đã có tài khoản?"
-                        android:textColor="#176448"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/link_login"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Đăng Nhập"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Register button -->
-                <Button
-                    android:id="@+id/bt_register"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/gray"
+                    android:layout_marginStart="32dp"
                     android:text="Đăng Ký"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+                    android:textColor="#000000"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.848" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar_create_account"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#DBD0D0"
+                app:cardCornerRadius="35dp"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ed_lastname_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Họ"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/image7"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+                    <!-- First name input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/ed_first_name_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Tên"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/image6"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+                    <!-- Username input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ed_user_name_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Tên tài khoản"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/avatar"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+                    <!-- Password input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ed_password_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Mật khẩu "
+                            android:inputType="textPassword"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_password_create"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:cropToPadding="false"
+                            android:src="@drawable/account_login"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+                    <!-- Password confirmation input -->
+                    <LinearLayout
+                        android:id="@+id/ll_power_password_create_account"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="50dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_power_1"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tv_power_2"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tv_power_3"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tv_power_4"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tv_power_5"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_weight="1"
+                            android:background="#FFFFFF"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/tv_message_power_password_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:text="Trung bình"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/ed_re_password_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Xác minh mât khẩu"
+                            android:inputType="textPassword"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_re_password_create"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/account_login"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+
+                    <!-- Email input -->
+                    <TextView
+                        android:id="@+id/tv_re_password_create_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="50dp"
+                        android:gravity="right"
+                        android:paddingLeft="5dp"
+                        android:text="Mật khẩu không khớp"
+                        android:textColor="#FB0101"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ed_email_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/mail"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+
+                    <!-- Phone input -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/ed_phone_input_create"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:hint="Phone"
+                            android:inputType="phone"
+                            android:padding="10dp"
+                            android:textColor="#0C0C0C"
+                            android:textColorHint="#AFA1A1"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
+                            android:layout_weight="0.1"
+                            android:src="@drawable/phone"
+                            app:tint="#000000" />
+                    </LinearLayout>
+
+
+                    <!-- Login link -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_link_forgot_password_create"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="Quên mật khẩu?"
+                            android:textColor="#176448"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/tv_link_login_create"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Đăng Nhập"
+                            android:textColor="@color/black"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Register button -->
+                    <Button
+                        android:id="@+id/bt_create_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/gray"
+                        android:text="Đăng Ký"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <!-- Main content container -->
 </androidx.constraintlayout.widget.ConstraintLayout>
