@@ -1,14 +1,9 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -23,10 +18,9 @@ import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.ActivityMainUserBinding
 import com.midterm22nh12.appbangiayonline.Ui.Animations.DepthPageTransformer
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyViewpager2Adapter
-import com.midterm22nh12.appbangiayonline.databinding.ItemNotificationUserBinding
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewNotificationUser
 import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
-import com.midterm22nh12.appbangiayonline.viewmodel.Auth.AuthViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
 
 class MainActivityUser : AppCompatActivity() {
     private lateinit var bindingMainActivityUser: ActivityMainUserBinding

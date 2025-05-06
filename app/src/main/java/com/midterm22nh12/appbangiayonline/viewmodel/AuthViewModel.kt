@@ -1,4 +1,4 @@
-package com.midterm22nh12.appbangiayonline.viewmodel.Auth
+package com.midterm22nh12.appbangiayonline.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
