@@ -62,11 +62,11 @@
 
             <!-- Các EditText thông tin -->
             <EditText
-                android:id="@+id/et_name"
+                android:id="@+id/et_Ho"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Họ tên"
+                android:hint="Họ"
                 android:inputType="textPersonName"
                 android:padding="12dp"
                 android:textColor="#000000"
@@ -74,11 +74,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/et_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Giới tính"
+                android:hint="Tên"
                 android:inputType="text"
                 android:padding="12dp"
                 android:textColor="#000000"
@@ -86,23 +85,11 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/et_birthday"
+                android:id="@+id/et_name_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Ngày sinh"
-                android:inputType="date"
-                android:padding="12dp"
-                android:textColor="#000000"
-                android:textColorHint="#625E5E"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/et_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Địa chỉ thường trú"
+                android:hint="Tên tài khoản"
                 android:inputType="textPostalAddress"
                 android:padding="12dp"
                 android:textColor="#000000"
