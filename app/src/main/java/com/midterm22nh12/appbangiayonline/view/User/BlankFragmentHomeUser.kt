@@ -57,6 +57,8 @@ class BlankFragmentHomeUser : Fragment() {
         showTypeProduct()
         //thiết lập sự kiện recyclerView ẩn hiện menu
         setupRecyclerView()
+        //hiển thị giao diện tin nhắn
+        showMessageHomeUser()
         return bindingFragmentHomeUser.root
     }
 
@@ -154,7 +156,19 @@ class BlankFragmentHomeUser : Fragment() {
                 "Giày Jordan"
             ),
         )
-        val adapter = MyAdapterRecyclerViewProductHomeUser(list)
+
+        // Tạo adapter với xử lý sự kiện click
+        val adapter = MyAdapterRecyclerViewProductHomeUser(
+            list,
+            object : MyAdapterRecyclerViewProductHomeUser.OnItemClickListener {
+                override fun onItemClick(item: ItemRecyclerViewProductHomeUser, position: Int) {
+                    (activity as? MainActivityUser)?.showOrderUser(item)
+                }
+
+                override fun onFavoriteClick(item: ItemRecyclerViewProductHomeUser, position: Int) {
+                }
+            }
+        )
         bindingProductHomeUser.rcProductHome.adapter = adapter
     }
 
@@ -230,6 +244,17 @@ class BlankFragmentHomeUser : Fragment() {
                 }
             }
         })
+    }
+    //sự kiện hiển thị tin nhắn
+    private fun showMessageHomeUser()
+    {
+        bindingFragmentHomeUser.ivMessageHomeUser.setOnClickListener {
+            (activity as? MainActivityUser)?.also {
+                if (!it.isDrawerOpen()) {
+                    it.showMessagesOverlay()
+                }
+            }
+        }
     }
 
 }

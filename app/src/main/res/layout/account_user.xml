@@ -57,7 +57,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/btn_Cart"
+                android:id="@+id/iv_cart_account_user"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="16dp"
@@ -66,10 +66,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_Chat"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black"/>
+                app:tint="@color/black" />
 
             <ImageView
-                android:id="@+id/btn_Chat"
+                android:id="@+id/iv_chat_account_user"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="16dp"
@@ -78,7 +78,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black"/>
+                app:tint="@color/black" />
 
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -107,7 +107,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_Username"
+                android:id="@+id/tv_Username_account_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NDTay"
@@ -116,7 +116,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_MemberStatus"
+                android:id="@+id/tv_member_status_account_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thành viên : kim cương"
@@ -126,15 +126,13 @@
     </LinearLayout>
 
     <!-- Order Management Tabs -->
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardOrderManagement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ly_UserInfo">
@@ -177,13 +175,13 @@
                     android:text="Lịch sử mua hàng"
                     android:textColor="#666666"
                     android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="27dp"
                     android:layout_height="27dp"
-                    android:paddingTop="1dp"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/back_right">
-                </ImageView>
+                    android:background="@drawable/back_right"
+                    android:paddingTop="1dp"></ImageView>
             </LinearLayout>
 
             <View
@@ -267,7 +265,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/divider"

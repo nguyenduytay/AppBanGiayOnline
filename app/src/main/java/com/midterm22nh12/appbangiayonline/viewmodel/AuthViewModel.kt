@@ -1,6 +1,7 @@
 package com.midterm22nh12.appbangiayonline.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.midterm22nh12.appbangiayonline.model.Entity.User
@@ -33,6 +34,10 @@ class AuthViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: MutableLiveData<Boolean>
         get() = _isLoading
+
+    // LiveData cho tên người dùng
+    private val _userName = MutableLiveData<String?>()
+    val userName: LiveData<String?> get() = _userName
 
     //đăng ký
     fun registerUser(
@@ -101,6 +106,26 @@ class AuthViewModel : ViewModel() {
             })
         } else {
             callback(false)
+        }
+    }
+    // Phương thức tải tên người dùng
+    fun loadUserName() {
+        val currentUser = authService.getCurrentUser()
+        if (currentUser != null) {
+            _isLoading.value = true
+            userService.getUserById(currentUser.uid, object : UserService.UserDataCallBack {
+                override fun onSuccess(user: User) {
+                    _userName.value = user.fullName
+                    _isLoading.value = false
+                }
+
+                override fun onFailure(errorMessage: String) {
+                    _userName.value = null
+                    _isLoading.value = false
+                }
+            })
+        } else {
+            _userName.value = null
         }
     }
 }

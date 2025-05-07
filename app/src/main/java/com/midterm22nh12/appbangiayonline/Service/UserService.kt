@@ -1,5 +1,6 @@
 package com.midterm22nh12.appbangiayonline.Service
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -133,5 +134,24 @@ class UserService {
                 callback.onFailure("Lỗi khi lấy thông tin người dùng")
             }
         })
+    }
+// Trong UserService.kt
+    fun getNameUser(callback: (String?) -> Unit) {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            getUserById(userId, object : UserDataCallBack {
+                override fun onSuccess(user: User) {
+                    callback(user.fullName)
+                }
+
+                override fun onFailure(errorMessage: String) {
+                    callback(null)
+                }
+            })
+        } else {
+            callback(null)
+        }
     }
 }
