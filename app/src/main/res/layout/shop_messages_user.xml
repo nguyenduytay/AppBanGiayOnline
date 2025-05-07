@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="#F5E5E5">
+    android:background="#F5E5E5"
+    android:orientation="vertical">
 
     <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="15dp"
-        android:gravity="center_vertical"
-        android:background="#F5E5E5">
+        android:layout_height="60dp"
+        android:background="#F5E5E5"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
+            android:id="@+id/iv_back_shop_messages_user"
+            android:layout_width="0dp"
             android:layout_height="25dp"
-            app:tint="@color/your_color"
-            android:src="@drawable/back_1" />
+            android:layout_weight="1"
+            android:src="@drawable/back_1"
+            app:tint="@color/your_color" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_marginLeft="5dp"
-           >
+            android:layout_weight="10"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_name_shop_messages_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MK.shop"
                 android:textColor="#000"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_time_shop_messages_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Online 80 giây trước"
@@ -47,32 +48,98 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:tint="@color/your_color"
-            android:src="@drawable/more_vert" />
+            android:id="@+id/iv_select_menu_shop_messages_user"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:src="@drawable/more_vert"
+            app:tint="@color/your_color" />
     </LinearLayout>
     <!-- Danh sách tin nhắn -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listview_messages"
+    <LinearLayout
+        android:id="@+id/constraint_layout_messages"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:background="@android:color/white"
-        android:padding="16dp" />
+        android:layout_height="match_parent"
+        android:layout_weight="10"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/ll_suggest_shop_messages_user"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#E5C9C5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <!-- Shoe image -->
+            <ImageView
+                android:id="@+id/shoe_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_bg"
+                android:scaleType="centerCrop"
+                android:src="@drawable/shoes1" />
+
+            <!-- Product info -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giày Jordan"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/product_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="300,000 đ"
+                    android:textColor="#D0494E"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Buy now button -->
+            <Button
+                android:id="@+id/btn_buy_now"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#E2D6D6"
+                android:text="mua ngay"
+                android:textColor="#D0494E"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_message_shop_messages_user"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@android:color/white"
+            android:padding="10dp" />
+    </LinearLayout>
     <!-- Nhập tin -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="50dp"
         android:background="@color/nenduoi"
-        android:padding="8dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
+            android:id="@+id/iv_add_shop_messages_user"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"
@@ -80,7 +147,7 @@
             android:src="@drawable/add_circle" />
 
         <EditText
-            android:id="@+id/edit_message"
+            android:id="@+id/et_edit_shop_messages_user"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="10"
@@ -88,9 +155,12 @@
             android:hint="Soạn tin"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textSize="16sp" />
+            android:textColor="#050505"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/iv_send_shop_messages_user"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"

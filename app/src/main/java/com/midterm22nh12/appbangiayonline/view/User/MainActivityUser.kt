@@ -19,8 +19,10 @@ import com.midterm22nh12.appbangiayonline.databinding.ActivityMainUserBinding
 import com.midterm22nh12.appbangiayonline.Ui.Animations.DepthPageTransformer
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyViewpager2Adapter
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewNotificationUser
+import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
 import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
+import java.util.ArrayDeque
 
 class MainActivityUser : AppCompatActivity() {
     private lateinit var bindingMainActivityUser: ActivityMainUserBinding
@@ -29,6 +31,9 @@ class MainActivityUser : AppCompatActivity() {
     private lateinit var navigationViewNotification: NavigationView
     private lateinit var headerView: View
     private lateinit var authViewModel: AuthViewModel
+    private val navigationHistory = ArrayDeque<Int>()//// Lưu trữ lịch sử overlay fragment
+    private var currentPosition = 1
+    private val overlayStack = ArrayDeque<String>() // Lưu trữ lịch sử overlay include
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +75,11 @@ class MainActivityUser : AppCompatActivity() {
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                // Nếu vị trí thay đổi, lưu vị trí trước đó vào lịch sử
+                if (position != currentPosition) {
+                    navigationHistory.push(currentPosition)
+                    currentPosition = position
+                }
                 // Ẩn/hiện menu dựa vào Fragment
                 when (position) {
                     0 -> hideBottomNav() // Shopping cart - ẩn menu
@@ -153,9 +163,15 @@ class MainActivityUser : AppCompatActivity() {
         bindingMainActivityUser.mainMenuBottomNavigationUser.visibility = View.VISIBLE
     }
     // sự kiện quay về trang chủ
-    fun returnHomeUser()
-    {
-        bindingMainActivityUser.mainBodyViewPager2User.currentItem = 1
+    fun returnPageUser() {
+        // Nếu có vị trí trước đó trong lịch sử, quay lại vị trí đó
+        if (navigationHistory.isNotEmpty()) {
+            val previousPos = navigationHistory.pop()
+            bindingMainActivityUser.mainBodyViewPager2User.currentItem = previousPos
+        } else {
+            // Nếu không có vị trí trước đó, về home
+            bindingMainActivityUser.mainBodyViewPager2User.currentItem = 1
+        }
     }
     //sự kiện đăng xuất
     fun logout() {
@@ -177,6 +193,111 @@ class MainActivityUser : AppCompatActivity() {
                     }
                 )
             }
+        }
+    }
+    //hàm chuyển đến trang fragment muốn đến
+    fun navigateFromOverlayToFragment(index : Int) {
+        saveCurrentOverlayToStack()
+
+        hideAllOverlays()
+
+        // Chuyển ViewPager2 đến vị trí của fragment giỏ hàng (index 0)
+        bindingMainActivityUser.mainBodyViewPager2User.currentItem = index
+        currentPosition = index
+        // Lưu vị trí hiện tại vào lịch sử
+        navigationHistory.push(currentPosition)
+    }
+    // Hàm để quay lại overlay trước đó hoặc về trang gốc
+    fun returnToPreviousOverlay() {
+        // Ẩn tất cả overlay hiện tại
+        hideAllOverlays()
+
+        // Kiểm tra xem có overlay trước đó không
+        if (overlayStack.isNotEmpty()) {
+            // Lấy tên overlay trước đó từ stack
+            val previousOverlay = overlayStack.pop()
+
+            // Hiển thị overlay tương ứng
+            when (previousOverlay) {
+                "messages" -> bindingMainActivityUser.messagesOverlayActivityMainUser.root.visibility = View.VISIBLE
+                "order" -> bindingMainActivityUser.orderUserActivityMainUser.root.visibility = View.VISIBLE
+                "rating" -> bindingMainActivityUser.ratingUserActivityMainUser.root.visibility = View.VISIBLE
+                // Thêm các overlay khác nếu cần
+            }
+        } else {
+            // Nếu không còn overlay nào trong stack, quay về fragment
+            returnPageUser()
+        }
+    }
+    // Hàm để ẩn tất cả các overlay
+    private fun hideAllOverlays() {
+        bindingMainActivityUser.messagesOverlayActivityMainUser.root.visibility = View.GONE
+        bindingMainActivityUser.orderUserActivityMainUser.root.visibility = View.GONE
+        bindingMainActivityUser.ratingUserActivityMainUser.root.visibility = View.GONE
+        // Ẩn các overlay khác nếu có
+    }
+    // Cập nhật lại hàm showMessagesOverlay
+    fun showMessagesOverlay(item : ItemRecyclerViewProductHomeUser?=null) {
+        // Lưu overlay hiện tại vào stack (nếu có)
+        saveCurrentOverlayToStack()
+
+        navigationHistory.push( bindingMainActivityUser.mainBodyViewPager2User.currentItem)
+
+        // Ẩn tất cả overlay
+        hideAllOverlays()
+
+        // Hiển thị overlay tin nhắn
+        bindingMainActivityUser.messagesOverlayActivityMainUser.root.visibility = View.VISIBLE
+
+        // Khởi tạo handler
+        val messagesBinding = bindingMainActivityUser.messagesOverlayActivityMainUser
+        val messagesHandler = messages_user(this, messagesBinding,item)
+    }
+
+    // Cập nhật lại hàm showOrderUser
+    fun showOrderUser(item: ItemRecyclerViewProductHomeUser) {
+        // Lưu overlay hiện tại vào stack (nếu có)
+        saveCurrentOverlayToStack()
+
+        navigationHistory.push( bindingMainActivityUser.mainBodyViewPager2User.currentItem)
+
+        // Ẩn tất cả overlay
+        hideAllOverlays()
+
+        // Hiển thị overlay đặt hàng
+        bindingMainActivityUser.orderUserActivityMainUser.root.visibility = View.VISIBLE
+
+        // Khởi tạo handler
+        val orderBinding = bindingMainActivityUser.orderUserActivityMainUser
+        val orderHandler = order_user(this, orderBinding, item)
+    }
+
+    // Thêm hàm mới hiển thị overlay đánh giá
+    fun showRatingUser() {
+        // Lưu overlay hiện tại vào stack (nếu có)
+        saveCurrentOverlayToStack()
+
+        // Ẩn tất cả overlay
+        hideAllOverlays()
+
+        // Hiển thị overlay đánh giá
+        bindingMainActivityUser.ratingUserActivityMainUser.root.visibility = View.VISIBLE
+
+        // Khởi tạo handler
+        val ratingBinding = bindingMainActivityUser.ratingUserActivityMainUser
+        val ratingHandler = rating_user(this, ratingBinding)
+    }
+
+    // Hàm để lưu overlay hiện tại vào stack
+    private fun saveCurrentOverlayToStack() {
+        when {
+            bindingMainActivityUser.messagesOverlayActivityMainUser.root.visibility == View.VISIBLE ->
+                overlayStack.push("messages")
+            bindingMainActivityUser.orderUserActivityMainUser.root.visibility == View.VISIBLE ->
+                overlayStack.push("order")
+            bindingMainActivityUser.ratingUserActivityMainUser.root.visibility == View.VISIBLE ->
+                overlayStack.push("rating")
+            // Thêm các overlay khác nếu cần
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
-
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,8 +33,8 @@ class BlankFragmentShopUser : Fragment() {
         bindingFragmentShopUser.includePromotionUser.ivBackPromotionUser.setOnClickListener{
             bindingFragmentShopUser.viewFlipperShopUser.displayedChild=0
         }
-        bindingFragmentShopUser.includeShoppingCartUser.ivBackShoppingCartUser.setOnClickListener{
-            (activity as? MainActivityUser)?.returnHomeUser()
+        bindingFragmentShopUser.includeShoppingCartUser.ivBackShoppingCartUser.setOnClickListener {
+            (activity as? MainActivityUser)?.returnToPreviousOverlay()
         }
     }
 }
