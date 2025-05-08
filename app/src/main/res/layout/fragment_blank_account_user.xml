@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_blank_account_user"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.User.BlankFragmentAccountUser"
+    android:background="#EFE2E2">
+    <ViewFlipper
+        android:id="@+id/view_flipper_account_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<!--        layout tài khoản -->
+        <include
+            android:id="@+id/include_account_user"
+            layout="@layout/account_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFE2E2"/>
+ <!--       layout cài đặt tài khoản-->
+        <include
+            android:id="@+id/include_account_step_user"
+            layout="@layout/account_setup_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EFE2E2"/>
+    </ViewFlipper>
+
+
+</FrameLayout>

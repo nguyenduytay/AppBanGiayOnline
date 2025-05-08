@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFE2E2"
+    tools:context=".view.User.BlankFragmentHomeUser">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/cl_layout_home_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_hello_home_user"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/island_moments"
+                        android:paddingLeft="20dp"
+                        android:scaleX="3"
+                        android:text="Xin chào"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center|right"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/sv_search_home_user"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        app:closeIcon="@drawable/baseline_close_24"
+                        app:queryHint="Search..."
+                        app:searchIcon="@drawable/baseline_search_24"
+                        app:theme="@style/CustomSearchViewStyle"
+                        app:tint="#131111" />
+
+                    <ImageView
+                        android:id="@+id/iv_notification_home_user"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/notifications"
+                        app:tint="#131111" />
+
+                    <ImageView
+                        android:id="@+id/iv_message_home_user"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/sms"
+                        app:tint="#131111" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/include_notification_home"
+                layout="@layout/notification_product_home_user" />
+
+            <include
+                android:id="@+id/include_type_product_home"
+                layout="@layout/type_product_home_user" />
+
+            <include
+                android:id="@+id/include_brand_home"
+                layout="@layout/brand_home_user" />
+
+            <include
+                android:id="@+id/include_product_home"
+                layout="@layout/product_home_user" />
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+</FrameLayout>
