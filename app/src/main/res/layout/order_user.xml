@@ -10,10 +10,11 @@
     <RelativeLayout
         android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:background="#DBA2A2">
 
         <ImageView
+            android:id="@+id/iv_back_order_user"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentStart="true"
@@ -21,19 +22,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
             android:src="@drawable/back_1"
             app:tint="@color/your_color" />
 
-        <ImageView
-            android:id="@+id/btn_favorite"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/favorite"
-            app:tint="@color/black" />
     </RelativeLayout>
 
     <!-- Main Content ScrollView -->
@@ -55,12 +46,12 @@
                 android:background="#eeeeee">
 
                 <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager_productImages"
+                    android:id="@+id/viewPager_product_images_order_user"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
                 <ImageButton
-                    android:id="@+id/btn_previous"
+                    android:id="@+id/bt_next_left_order_user"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_centerVertical="true"
@@ -70,7 +61,7 @@
                     android:contentDescription="Previous" />
 
                 <ImageButton
-                    android:id="@+id/btn_next"
+                    android:id="@+id/bt_next_right_order_user"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_alignParentEnd="true"
@@ -113,17 +104,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:text="Màu"
                     android:textColor="#000000"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listview_color_variants"
+                    android:id="@+id/rc_list_color_order_user"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tv_color_order_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="Màu : Trắng"
+                    android:textColor="#090909"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <!-- Product Information -->
@@ -139,7 +142,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_inventory"
+                        android:id="@+id/tv_stock_product_order_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -149,14 +152,14 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_rating"
+                        android:id="@+id/tv_rating_product_order_user"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4.8"
@@ -170,19 +173,35 @@
                         android:layout_marginStart="4dp"
                         android:src="@drawable/star"
                         app:tint="#F8CE13" />
-
-                    <TextView
-                        android:id="@+id/tv_review_count"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/ll_review_count_order_user"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="lượt đánh giá"
-                        android:textColor="#757575"
-                        android:textSize="12sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_review_count"
+                            android:layout_width="0dp"
+                            android:layout_weight="15"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="lượt đánh giá"
+                            android:textColor="#757575"
+                            android:textSize="12sp"
+                            android:gravity="left"/>
+
+                        <ImageView
+                            android:id="@+id/iv_"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:src="@drawable/back_right" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_product_name"
+                    android:id="@+id/tv_name_product_order_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -192,7 +211,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_price"
+                    android:id="@+id/tv_price_order_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -212,12 +231,21 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_size_product_order_user"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
                 <!-- Quantity Selection -->
+                <TextView
+                    android:id="@+id/tv_size_order_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="35"
+                    android:textColor="#020202"
+                    android:textSize="12sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,23 +260,23 @@
                         android:textSize="12sp" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
                         android:background="#D2C9C9"
-                        android:gravity="center_vertical">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/btn_decrease"
+                            android:id="@+id/bt_remove_quantity_order_user"
                             android:layout_width="0dp"
-                            android:layout_height="25dp"
+                            android:layout_height="15dp"
                             android:layout_weight="1"
                             android:background="@drawable/remove" />
 
                         <TextView
-                            android:id="@+id/tv_quantity"
+                            android:id="@+id/tv_quantity_order_user"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="4"
@@ -256,13 +284,13 @@
                             android:gravity="center"
                             android:text="1"
                             android:textColor="#FF0000"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <ImageButton
-                            android:id="@+id/btn_increase"
+                            android:id="@+id/bt_add_quantity_order_user"
                             android:layout_width="0dp"
-                            android:layout_height="25dp"
+                            android:layout_height="15dp"
                             android:layout_weight="1"
                             android:background="@drawable/add" />
                     </LinearLayout>
@@ -270,7 +298,7 @@
 
                 <!-- Product Description -->
                 <TextView
-                    android:id="@+id/tv_description"
+                    android:id="@+id/tv_description_order_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -296,7 +324,7 @@
        >
 
         <Button
-            android:id="@+id/btn_buy"
+            android:id="@+id/bt_buy_order_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
@@ -304,7 +332,7 @@
             android:text="Mua" />
 
         <ImageView
-            android:id="@+id/iv_cart"
+            android:id="@+id/iv_cart_order_user"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginEnd="8dp"
@@ -313,7 +341,7 @@
             app:tint="@color/black" />
 
         <ImageView
-            android:id="@+id/iv_chat"
+            android:id="@+id/iv_chat_order_user"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_weight="1"

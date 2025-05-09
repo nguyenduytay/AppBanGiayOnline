@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,7 +15,7 @@ import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.ActivityLoginEndCreateAccountBinding
 import com.midterm22nh12.appbangiayonline.view.Admin.MainActivityAdmin
 import com.midterm22nh12.appbangiayonline.view.User.MainActivityUser
-import com.midterm22nh12.appbangiayonline.viewmodel.Auth.AuthViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
 
 class LoginEndCreateAccount : AppCompatActivity() {
     private lateinit var binding: ActivityLoginEndCreateAccountBinding

@@ -7,28 +7,93 @@
     android:layout_height="match_parent"
     tools:context=".view.User.MainActivityUser">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/main_body_view_pager2_user"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_above="@+id/main_menu_bottom_navigation_user"/>
+        android:layout_height="match_parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/main_menu_bottom_navigation_user"
+        <!-- Main Content with ViewPager and BottomNav -->
+        <LinearLayout
+            android:id="@+id/main_content_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="0.10"
-            android:background="#EFE2E2"
-            app:itemIconTint="@color/custom_bottom_navigation"
-            app:itemTextColor="@color/black"
-            app:menu="@menu/menu_bottom_navigation_user" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/main_body_view_pager2_user"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_above="@+id/main_menu_bottom_navigation_user"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/main_menu_bottom_navigation_user"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="0.10"
+                android:background="#EFE2E2"
+                app:itemIconTint="@color/custom_bottom_navigation"
+                app:itemTextColor="@color/black"
+                app:menu="@menu/menu_bottom_navigation_user" />
+        </LinearLayout>
+
+        <!-- Overlay Container for Messages UI -->
+        <include
+            android:id="@+id/messages_overlay_activity_main_user"
+            layout="@layout/shop_messages_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/order_user_activity_main_user"
+            layout="@layout/order_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/rating_user_activity_main_user"
+            layout="@layout/rating_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/confirmation_user_activity_main_user"
+            layout="@layout/order_confirmation_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/evaluate_user_activity_main_user"
+            layout="@layout/evaluate_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/my_review_user_activity_main_user"
+            layout="@layout/order_my_review_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/transportation_user_activity_main_user"
+            layout="@layout/order_transportation_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/account_security_user_activity_main_user"
+            layout="@layout/account_security_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/purchase_history_user_activity_main_user"
+            layout="@layout/purchase_history_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </FrameLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_notification_user"
         android:layout_width="300dp"
@@ -37,6 +102,5 @@
         android:background="#FFFFFF"
         app:headerLayout="@layout/notification_user"
         android:elevation="16dp">
-
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
