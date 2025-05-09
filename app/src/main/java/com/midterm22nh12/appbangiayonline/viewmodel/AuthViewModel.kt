@@ -39,6 +39,10 @@ class AuthViewModel : ViewModel() {
     private val _userName = MutableLiveData<String?>()
     val userName: LiveData<String?> get() = _userName
 
+    // Thêm LiveData cho thông tin người dùng đầy đủ
+    private val _currentUser = MutableLiveData<User?>()
+    val currentUser: MutableLiveData<User?> get() = _currentUser
+
     //đăng ký
     fun registerUser(
         fullName: String,
@@ -126,6 +130,28 @@ class AuthViewModel : ViewModel() {
             })
         } else {
             _userName.value = null
+        }
+    }
+    // Phương thức tải toàn bộ thông tin người dùng hiện tại
+    fun loadCurrentUserInfo() {
+        val currentUser = authService.getCurrentUser()
+        if (currentUser != null) {
+            _isLoading.value = true
+            userService.getUserById(currentUser.uid, object : UserService.UserDataCallBack {
+                override fun onSuccess(user: User) {
+                    _currentUser.value = user
+                    _isLoading.value = false
+                }
+
+                override fun onFailure(errorMessage: String) {
+                    // Có thể thêm LiveData để thông báo lỗi nếu cần
+                    _isLoading.value = false
+                    Log.e("UserInfo", "Failed to load user info: $errorMessage")
+                }
+            })
+        } else {
+            // Người dùng chưa đăng nhập
+            _currentUser.value = null
         }
     }
 }

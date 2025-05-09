@@ -9,6 +9,7 @@ class rating_user(private val context: Context, private val binding: RatingUserB
     init {
         setUpView()
     }
+
     private fun setUpView() {
         binding.ivBackRatingUser.setOnClickListener {
             // Ẩn giao diện tin nhắn

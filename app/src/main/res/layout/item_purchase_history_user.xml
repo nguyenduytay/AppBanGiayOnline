@@ -5,13 +5,15 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
+        android:background="#CEC3C3"
         android:gravity="center_vertical">
 
         <!-- Product Image -->
@@ -19,8 +21,9 @@
             android:id="@+id/img_product"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="#F0F0F0"
-            android:scaleType="centerCrop" />
+            android:background="@drawable/item_border_account"
+            android:scaleType="centerCrop"
+            android:src="@drawable/shoes"/>
 
         <!-- Product Info -->
         <LinearLayout
@@ -31,12 +34,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_product_name"
+                android:id="@+id/tv_name_product_order_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Giày Jordan"
                 android:textColor="#000000"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -46,7 +49,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Màu: 4"
                 android:textColor="#757575"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_product_size"
@@ -55,7 +58,7 @@
                 android:layout_marginTop="2dp"
                 android:text="Size: 32"
                 android:textColor="#757575"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tv_purchase_date"
@@ -75,10 +78,9 @@
             android:layout_height="36dp"
             android:layout_marginStart="12dp"
             android:backgroundTint="#4754A6"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             android:text="Mua lại"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

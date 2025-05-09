@@ -1,7 +1,6 @@
 package com.midterm22nh12.appbangiayonline.model.Entity
 
-data class BrandCategory(
+data class Category(
     val id: String = "",
-    val name: String = "",
-    val brandId: String = ""
+    val name: String = ""
 )

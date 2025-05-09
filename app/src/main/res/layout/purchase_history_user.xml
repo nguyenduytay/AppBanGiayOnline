@@ -6,22 +6,22 @@
     android:layout_height="match_parent"
     android:background="#f5f5f5">
 
-    <!-- Top Bar with Title and Menu -->
+    <!-- Top Bar with Title -->
     <RelativeLayout
         android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="15dp"
         android:background="#D28A88"
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:id="@+id/iv_back_purchase_history_user"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
-            android:padding="12dp"
             android:src="@drawable/back_1"
             app:tint="@color/your_color" />
 
@@ -30,27 +30,15 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="48dp"
-            android:text="Chờ xác nhận"
+            android:text="Lịch sử mua hàng"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/btn_menu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Menu"
-            android:padding="12dp"
-            android:src="@drawable/more_vert"
-            app:tint="@color/your_color" />
     </RelativeLayout>
 
-    <!-- Main Content ListView -->
-    <ListView
-        android:id="@+id/listview_orders"
+    <!-- Main Content - Purchase History List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listview_purchase_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_top_bar"
@@ -58,4 +46,6 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:padding="8dp" />
+
+    <!-- Empty State View (shown when history is empty) -->
 </RelativeLayout>

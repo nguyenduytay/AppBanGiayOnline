@@ -47,13 +47,6 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_select_menu_shop_messages_user"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:src="@drawable/more_vert"
-            app:tint="@color/your_color" />
     </LinearLayout>
     <!-- Danh sách tin nhắn -->
     <LinearLayout
@@ -66,20 +59,27 @@
         <LinearLayout
             android:id="@+id/ll_suggest_shop_messages_user"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:background="#E5C9C5"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#8C7676"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:id="@+id/iv_image_product_shop_messages_user"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/shoes1" />
+            </androidx.cardview.widget.CardView>
             <!-- Shoe image -->
-            <ImageView
-                android:id="@+id/shoe_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/rounded_bg"
-                android:scaleType="centerCrop"
-                android:src="@drawable/shoes1" />
+
 
             <!-- Product info -->
             <LinearLayout
@@ -90,8 +90,8 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/product_name"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_name_product_shop_message_user"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Giày Jordan"
                     android:textColor="#000000"
@@ -99,7 +99,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/product_price"
+                    android:id="@+id/tv_price_product_shop_messages_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -110,10 +110,9 @@
 
             <!-- Buy now button -->
             <Button
-                android:id="@+id/btn_buy_now"
+                android:id="@+id/bt_by_now_shop_messages_user"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="#E2D6D6"
                 android:text="mua ngay"
                 android:textColor="#D0494E"
@@ -156,6 +155,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textColor="#050505"
+            android:textColorHint="#6A6161"
             android:textSize="15sp"
             android:textStyle="bold" />
 

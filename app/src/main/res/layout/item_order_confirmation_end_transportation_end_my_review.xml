@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#CEC3C3">
 
         <!-- Notification Tag -->
         <RelativeLayout
@@ -27,8 +28,9 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
                 android:text="Chờ xác nhận"
-                android:textColor="#ED5C5C"
-                android:textSize="12sp" />
+                android:textColor="#F00505"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <!-- Product Info Section -->
@@ -42,8 +44,9 @@
                 android:id="@+id/img_product"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="#F0F0F0"
-                android:scaleType="centerCrop" />
+                android:background="@drawable/item_border_account"
+                android:scaleType="centerCrop"
+                android:src="@drawable/shoes"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -53,7 +56,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_product_name"
+                    android:id="@+id/tv_name_product_order_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Giày Jordan"
@@ -95,11 +98,11 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#BD2626"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:gravity="center"
                 android:text="Hủy"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
     </LinearLayout>

@@ -11,20 +11,17 @@
     <LinearLayout
         android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:background="#C8A4A4"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:gravity="center_vertical"
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
-            android:padding="12dp"
+            android:id="@+id/iv_back_account_security_user"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
             android:src="@drawable/back_1"
             app:tint="@color/your_color" />
 
@@ -34,7 +31,7 @@
             android:layout_marginStart="8dp"
             android:text="Tài khoản &amp; Bảo mật"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -56,24 +53,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Thông tin"
-                android:textColor="#666666"
-                android:textSize="14sp"
+                android:textColor="#000000"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <!-- Các EditText thông tin -->
             <EditText
-                android:id="@+id/et_Ho"
+                android:id="@+id/et_first_name_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Họ"
-                android:inputType="textPersonName"
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#605B5B"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <EditText
+                android:id="@+id/et_last_name_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -82,22 +79,21 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/et_name_account"
+            <TextView
+                android:id="@+id/tv_name_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Tên tài khoản"
-                android:inputType="textPostalAddress"
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/et_email"
+            <TextView
+                android:id="@+id/tv_email_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -106,10 +102,10 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_phone_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -118,7 +114,7 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <!-- Bảo mật -->
             <TextView
@@ -126,12 +122,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Bảo mật"
-                android:textColor="#666666"
-                android:textSize="14sp"
+                android:textColor="#000000"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/et_current_password"
+                android:id="@+id/et_current_password_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -140,10 +136,10 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <EditText
-                android:id="@+id/et_new_password"
+                android:id="@+id/et_new_password_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -152,10 +148,10 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <EditText
-                android:id="@+id/et_confirm_password"
+                android:id="@+id/et_confirm_password_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -164,11 +160,11 @@
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
-                android:textSize="16sp" />
+                android:textSize="15dp" />
 
             <!-- Nút Lưu -->
             <Button
-                android:id="@+id/btn_save"
+                android:id="@+id/bt_save_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"

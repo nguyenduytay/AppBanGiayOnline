@@ -3,198 +3,65 @@ package com.midterm22nh12.appbangiayonline.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Repository.ProductRepository
 import com.midterm22nh12.appbangiayonline.model.Entity.Product
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
-class ProductViewModel(
-    private val repository: ProductRepository = ProductRepository()
-) : ViewModel() {
+class ProductViewModel : ViewModel() {
+    private val repository = ProductRepository()
 
-    // LiveData cho danh sách sản phẩm
-    private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>> get() = _products
-
-    // LiveData cho sản phẩm đang được chọn
-    private val _selectedProduct = MutableLiveData<Product?>()
-    val selectedProduct: LiveData<Product?> get() = _selectedProduct
-
-    // LiveData cho trạng thái loading
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
-
-    // LiveData cho thông báo lỗi
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> get() = _errorMessage
-
-    // Lấy tất cả sản phẩm
-    fun loadAllProducts() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            repository.getAllProducts()
-                .catch { e ->
-                    _errorMessage.value = e.message
-                    _isLoading.value = false
-                }
-                .collect { productList ->
-                    _products.value = productList
-                    _isLoading.value = false
-                }
-        }
+    fun getProducts(): LiveData<List<Product>> {
+        return repository.getProducts()
     }
 
-    // Lấy sản phẩm theo ID
-    fun loadProductById(productId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            repository.getProductById(productId)
-                .catch { e ->
-                    _errorMessage.value = e.message
-                    _isLoading.value = false
-                }
-                .collect { product ->
-                    _selectedProduct.value = product
-                    _isLoading.value = false
-                }
-        }
+    fun getProductById(productId: String): MutableLiveData<Product?> {
+        return repository.getProductById(productId)
     }
 
-    // Lấy sản phẩm theo thương hiệu
-    fun loadProductsByBrandId(brandId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            repository.getProductsByBrandId(brandId)
-                .catch { e ->
-                    _errorMessage.value = e.message
-                    _isLoading.value = false
-                }
-                .collect { productList ->
-                    _products.value = productList
-                    _isLoading.value = false
-                }
-        }
+    fun getProductsByCategory(categoryId: String): LiveData<List<Product>> {
+        return repository.getProductsByCategory(categoryId)
     }
 
-    // Lấy sản phẩm theo loại sản phẩm
-    fun loadProductsByCategoryId(categoryId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            repository.getProductsByCategoryId(categoryId)
-                .catch { e ->
-                    _errorMessage.value = e.message
-                    _isLoading.value = false
-                }
-                .collect { productList ->
-                    _products.value = productList
-                    _isLoading.value = false
-                }
-        }
+    fun getProductsByBrand(brandId: String): LiveData<List<Product>> {
+        return repository.getProductsByBrand(brandId)
     }
 
-    // Lấy sản phẩm yêu thích
-    fun loadFavoriteProducts() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            repository.getFavoriteProducts()
-                .catch { e ->
-                    _errorMessage.value = e.message
-                    _isLoading.value = false
-                }
-                .collect { productList ->
-                    _products.value = productList
-                    _isLoading.value = false
-                }
-        }
+    fun searchProductsByName(query: String): LiveData<List<Product>> {
+        return repository.searchProductsByName(query)
     }
 
-    // Thêm sản phẩm mới
-    fun addProduct(price: Double, brandId: String, categoryId: String) {
-        val newProduct = Product(
-            id = "",  // ID sẽ được Firebase tạo ra
-            price = price,
-            isFavorite = false,
-            rating = 0f,
-            brandId = brandId,
-            categoryId = categoryId
-        )
-
-        viewModelScope.launch {
-            _isLoading.value = true
-            val productId = repository.addProduct(newProduct)
-            if (productId != null) {
-                // Thêm thành công, làm mới danh sách
-                loadProductsByCategoryId(categoryId)
-            } else {
-                _errorMessage.value = "Không thể thêm sản phẩm mới"
-                _isLoading.value = false
-            }
-        }
+    fun filterProductsByPriceRange(minPrice: Double, maxPrice: Double): LiveData<List<Product>> {
+        return repository.filterProductsByPriceRange(minPrice, maxPrice)
     }
 
-    // Cập nhật sản phẩm
-    fun updateProduct(product: Product) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            val success = repository.updateProduct(product)
-            if (success) {
-                // Cập nhật thành công, làm mới danh sách và cập nhật sản phẩm đang chọn
-                when {
-                    product.isFavorite -> loadFavoriteProducts()
-                    else -> loadProductsByCategoryId(product.categoryId)
-                }
-                _selectedProduct.value = product
-            } else {
-                _errorMessage.value = "Không thể cập nhật sản phẩm"
-                _isLoading.value = false
-            }
-        }
-    }
-    // Cập nhật trạng thái yêu thích
-    fun updateFavoriteStatus(productId: String, isFavorite: Boolean) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            val success = repository.updateFavoriteStatus(productId, isFavorite)
-            if (success) {
-                // Cập nhật thành công, làm mới sản phẩm đang chọn
-                loadProductById(productId)
-
-                // Nếu đang ở màn hình yêu thích, cập nhật lại danh sách
-                if (_products.value?.any { it.isFavorite } == true) {
-                    loadFavoriteProducts()
-                }
-            } else {
-                _errorMessage.value = "Không thể cập nhật trạng thái yêu thích"
-                _isLoading.value = false
-            }
-        }
+    // Add new filtering methods
+    fun filterProductsByAvailableSize(size: String): LiveData<List<Product>> {
+        return repository.filterProductsByAvailableSize(size)
     }
 
-    // Xóa sản phẩm
-    fun deleteProduct(productId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            val success = repository.deleteProduct(productId)
-            if (success) {
-                // Xóa thành công, làm mới danh sách
-                _selectedProduct.value?.let { product ->
-                    loadProductsByCategoryId(product.categoryId)
-                } ?: loadAllProducts()
-
-                if (_selectedProduct.value?.id == productId) {
-                    _selectedProduct.value = null
-                }
-            } else {
-                _errorMessage.value = "Không thể xóa sản phẩm"
-                _isLoading.value = false
-            }
-        }
+    fun filterProductsByAvailableColor(colorName: String): LiveData<List<Product>> {
+        return repository.filterProductsByAvailableColor(colorName)
     }
 
-    // Xóa thông báo lỗi
-    fun clearError() {
-        _errorMessage.value = null
+    fun addProduct(product: Product, callback: (Boolean, String?) -> Unit) {
+        repository.addProduct(product, callback)
+    }
+
+    fun updateProduct(product: Product, callback: (Boolean, String?) -> Unit) {
+        repository.updateProduct(product, callback)
+    }
+
+    fun deleteProduct(productId: String, callback: (Boolean, String?) -> Unit) {
+        repository.deleteProduct(productId, callback)
+    }
+    /**
+     * Tìm kiếm sản phẩm với nhiều tiêu chí kết hợp
+     * Tìm kiếm tên sản phẩm không phân biệt hoa thường
+     */
+    fun searchProducts(
+        categoryId: String? = null,
+        brandId: String? = null,
+        nameQuery: String? = null
+    ): LiveData<List<Product>> {
+        return repository.searchProductsWithMultipleCriteria(categoryId, brandId, nameQuery)
     }
 }
