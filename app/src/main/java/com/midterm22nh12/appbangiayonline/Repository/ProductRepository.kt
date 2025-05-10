@@ -7,7 +7,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.midterm22nh12.appbangiayonline.model.Entity.Product
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Product
 import java.util.Locale
 
 class ProductRepository {

@@ -6,7 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.midterm22nh12.appbangiayonline.model.Entity.Category
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Category
 
 class CategoryRepository {
     private val database = FirebaseDatabase.getInstance()

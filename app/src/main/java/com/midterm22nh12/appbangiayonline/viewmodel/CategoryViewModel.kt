@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.midterm22nh12.appbangiayonline.Repository.CategoryRepository
-import com.midterm22nh12.appbangiayonline.model.Entity.Category
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Category
 
 class CategoryViewModel : ViewModel() {
     private val repository = CategoryRepository()

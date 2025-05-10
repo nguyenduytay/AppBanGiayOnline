@@ -15,7 +15,7 @@ class AuthRepository(
     private val userService: UserService
 ) {
 
-    //đăng kí người dùng mới
+    // Đăng ký người dùng mới với địa chỉ mặc định là rỗng
     fun registerUser(
         fullName: String,
         username: String,
@@ -66,13 +66,14 @@ class AuthRepository(
                     authService.registerUser(email, password, object : AuthService.AuthCallback {
                         override fun onSuccess(currentUser: FirebaseUser?) {
                             if (currentUser != null) {
-                                // Lưu thông tin người dùng
+                                // Lưu thông tin người dùng với địa chỉ mặc định là rỗng
                                 userService.saveUserInfo(
                                     currentUser.uid,
                                     fullName,
                                     username,
                                     email,
                                     phone,
+                                    "", // Địa chỉ rỗng
                                     false,
                                     object : UserService.UserCallBack {
                                         override fun onSuccess() {
@@ -82,6 +83,7 @@ class AuthRepository(
                                                 username,
                                                 email,
                                                 phone,
+                                                "", // Địa chỉ rỗng
                                                 false,
                                                 System.currentTimeMillis()
                                             )
@@ -113,13 +115,13 @@ class AuthRepository(
         }
     }
 
-    //đăng nhập
+    // Đăng nhập
     fun loginUser(userInput: String, password: String, callback: (Result<User>) -> Unit) {
         if (userInput.isEmpty() || password.isEmpty()) {
             callback(Result.failure(Exception("Vui lòng nhập đầy đủ thông tin")))
             return
         }
-        //xác định xem input là email hay username
+        // Xác định xem input là email hay username
         if (isValidEmail(userInput)) {
             loginWithEmail(userInput, password, callback)
         } else {
@@ -133,7 +135,29 @@ class AuthRepository(
         }
     }
 
-    //hàm hỗ trợ đăng nhập
+    // Cập nhật địa chỉ người dùng sau khi đăng nhập
+    fun updateUserAddress(userId: String, address: String, callback: (Result<Unit>) -> Unit) {
+        if (userId.isEmpty()) {
+            callback(Result.failure(Exception("ID người dùng không hợp lệ")))
+            return
+        }
+        if (address.isEmpty()) {
+            callback(Result.failure(Exception("Vui lòng nhập địa chỉ")))
+            return
+        }
+
+        userService.updateUserAddress(userId, address, object : UserService.UserCallBack {
+            override fun onSuccess() {
+                callback(Result.success(Unit))
+            }
+
+            override fun onFailure(errorMessage: String) {
+                callback(Result.failure(Exception(errorMessage)))
+            }
+        })
+    }
+
+    // Hàm hỗ trợ đăng nhập
     private fun loginWithEmail(email: String, password: String, callback: (Result<User>) -> Unit) {
         authService.loginUser(email, password, object : AuthService.AuthCallback {
             override fun onSuccess(currentUser: FirebaseUser?) {
@@ -191,15 +215,54 @@ class AuthRepository(
             })
     }
 
-    //kiểm tra dạng email hợp lệ
+    // Kiểm tra dạng email hợp lệ
     private fun isValidEmail(email: String): Boolean {
         val pattern = Patterns.EMAIL_ADDRESS
         return pattern.matcher(email).matches()
     }
 
-    //kiểm tra dạng phone hợp lệ
+    // Kiểm tra dạng phone hợp lệ
     private fun isValidPhone(phone: String): Boolean {
         val pattern = "^0\\d{9}$".toRegex()
         return pattern.matches(phone)
+    }
+
+    // Cập nhật thông tin profile người dùng
+    fun updateUserProfile(
+        userId: String,
+        fullName: String,
+        phone: String,
+        email: String,
+        address: String,
+        callback: (Result<Unit>) -> Unit
+    ) {
+        // Kiểm tra các trường thông tin cần thiết
+        if (userId.isEmpty()) {
+            callback(Result.failure(Exception("ID người dùng không hợp lệ")))
+            return
+        }
+
+        // Kiểm tra định dạng email (nếu có)
+        if (email.isNotEmpty() && !isValidEmail(email)) {
+            callback(Result.failure(Exception("Định dạng email không hợp lệ")))
+            return
+        }
+
+        // Kiểm tra định dạng số điện thoại (nếu có)
+        if (phone.isNotEmpty() && !isValidPhone(phone)) {
+            callback(Result.failure(Exception("Định dạng số điện thoại không hợp lệ")))
+            return
+        }
+
+        // Tạo một loại interface callback để sử dụng trong userService
+        userService.updateUserProfile(userId, fullName, phone, email, address, object : UserService.UserCallBack {
+            override fun onSuccess() {
+                callback(Result.success(Unit))
+            }
+
+            override fun onFailure(errorMessage: String) {
+                callback(Result.failure(Exception(errorMessage)))
+            }
+        })
     }
 }

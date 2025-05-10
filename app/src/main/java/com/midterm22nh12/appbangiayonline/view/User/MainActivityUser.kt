@@ -30,7 +30,7 @@ class MainActivityUser : AppCompatActivity() {
     private lateinit var drawerLayoutNotification: DrawerLayout
     private lateinit var navigationViewNotification: NavigationView
     private lateinit var headerView: View
-    private lateinit var authViewModel: AuthViewModel
+    lateinit var authViewModel: AuthViewModel
     private val navigationHistory = ArrayDeque<Int>()//// Lưu trữ lịch sử overlay fragment
     private var currentPosition = 1
     private val overlayStack = ArrayDeque<String>() // Lưu trữ lịch sử overlay include
@@ -54,7 +54,10 @@ class MainActivityUser : AppCompatActivity() {
         setUpViewpager2()
 
     }
-
+    // Phương thức để lấy ViewModel đã tạo
+    fun getSharedViewModel(): AuthViewModel {
+        return authViewModel
+    }
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {
         // Chọn menu System (ở giữa) ngay từ đầu
@@ -234,6 +237,7 @@ class MainActivityUser : AppCompatActivity() {
             // Nếu không còn overlay nào trong stack, quay về fragment
             returnPageUser()
         }
+        authViewModel.loadCurrentUserInfo()
     }
     // Hàm để ẩn tất cả các overlay
     private fun hideAllOverlays() {
@@ -418,7 +422,7 @@ class MainActivityUser : AppCompatActivity() {
 
         // Khởi tạo handler
         val accountSecurityBinding = bindingMainActivityUser.accountSecurityUserActivityMainUser
-        val accountSecurityHandler = account_security_user(this, accountSecurityBinding,authViewModel,this)
+        val accountSecurityHandler = account_security_user(this, accountSecurityBinding,this)
     }
 
 }

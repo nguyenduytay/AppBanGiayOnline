@@ -1,6 +1,5 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.BrandHomeUserBinding
 import com.midterm22nh12.appbangiayonline.databinding.FragmentBlankHomeUserBinding
@@ -23,9 +21,9 @@ import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewProd
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewTypeProductHomeUser
 import com.midterm22nh12.appbangiayonline.databinding.ProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.databinding.TypeProductHomeUserBinding
-import com.midterm22nh12.appbangiayonline.model.Entity.Brand
-import com.midterm22nh12.appbangiayonline.model.Entity.Category
-import com.midterm22nh12.appbangiayonline.model.Entity.Product
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Brand
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Category
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Product
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewTypeProductHomeUser
 import com.midterm22nh12.appbangiayonline.viewmodel.BrandViewModel
@@ -261,6 +259,10 @@ class BlankFragmentHomeUser : Fragment() {
             bindingNotificationProductHomeUser.notificationHome.visibility = View.VISIBLE
             bindingTypeProductHomeUser.typeProductHome.visibility = View.GONE
             (activity as MainActivityUser).showBottomNav()
+
+            // Ẩn bàn phím
+            val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.hideSoftInputFromWindow(bindingFragmentHomeUser.svSearchHomeUser.windowToken, 0)
             // Reset tìm kiếm và hiển thị lại tất cả sản phẩm
             resetAllSearchCriteria()
             false // Trả về false để cho phép SearchView tiếp tục xử lý sự kiện đóng

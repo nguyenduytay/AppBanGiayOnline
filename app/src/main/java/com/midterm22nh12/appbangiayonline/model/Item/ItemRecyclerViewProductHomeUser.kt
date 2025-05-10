@@ -1,7 +1,7 @@
 package com.midterm22nh12.appbangiayonline.model.Item
 
-import com.midterm22nh12.appbangiayonline.model.Entity.ProductColor
-import com.midterm22nh12.appbangiayonline.model.Entity.ProductSize
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.ProductColor
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.ProductSize
 
 data class ItemRecyclerViewProductHomeUser (
     val id: String = "",

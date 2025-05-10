@@ -38,7 +38,7 @@
     <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#EBE1E1">
 
@@ -81,6 +81,18 @@
                 android:textColorHint="#625E5E"
                 android:textSize="15dp" />
 
+            <EditText
+                android:id="@+id/et_phone_account_security_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:padding="12dp"
+                android:textColor="#000000"
+                android:textColorHint="#625E5E"
+                android:textSize="15dp" />
+
             <TextView
                 android:id="@+id/tv_name_account_security_user"
                 android:layout_width="match_parent"
@@ -104,19 +116,30 @@
                 android:textColorHint="#625E5E"
                 android:textSize="15dp" />
 
-            <EditText
-                android:id="@+id/et_phone_account_security_user"
+            <TextView
+                android:id="@+id/tv_address_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Phone"
-                android:inputType="phone"
+                android:hint="Địa chỉ"
+                android:inputType="textEmailAddress"
                 android:padding="12dp"
                 android:textColor="#000000"
                 android:textColorHint="#625E5E"
                 android:textSize="15dp" />
 
             <!-- Bảo mật -->
+            <Button
+                android:id="@+id/bt_save_profile_account_security_user"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/your_color"
+                android:gravity="center"
+                android:text="Lưu thay đổi"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,7 +187,7 @@
 
             <!-- Nút Lưu -->
             <Button
-                android:id="@+id/bt_save_account_security_user"
+                android:id="@+id/bt_save_password_account_security_user"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="32dp"

@@ -10,7 +10,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
-import android.widget.TextView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -26,13 +26,19 @@ object LocationUtil {
     private lateinit var locationCallback: LocationCallback
 
     /**
-     * Hàm để lấy địa chỉ hiện tại và gán vào TextView
-     * @param context Context của Activity hoặc Fragment
-     * @param textView TextView sẽ hiển thị địa chỉ
+     * Hàm để lấy địa chỉ hiện tại và gán vào EditText
+     * @param fragment Fragment chứa EditText
+     * @param editText EditText sẽ hiển thị địa chỉ
      * @param useDetailedAddress true nếu muốn địa chỉ chi tiết, false nếu chỉ muốn thông tin ngắn gọn
+     * @param onAddressReceived callback function sẽ được gọi sau khi lấy được địa chỉ thành công
      */
     @SuppressLint("SetTextI18n")
-    fun getAddressToTextView(fragment: Fragment, textView: TextView, useDetailedAddress: Boolean = true) {
+    fun getAddressToTextView(
+        fragment: Fragment,
+        editText: EditText,
+        useDetailedAddress: Boolean = true,
+        onAddressReceived: ((String) -> Unit)? = null
+    ) {
         val context = fragment.requireContext()
 
         // Khởi tạo FusedLocationClient nếu chưa có
@@ -43,19 +49,19 @@ object LocationUtil {
         // Kiểm tra và yêu cầu quyền nếu cần
         if (!checkPermissions(context)) {
             requestPermissions(fragment)
-            textView.text = "Vui lòng cấp quyền vị trí"
+            editText.setText("Vui lòng cấp quyền vị trí")
             return
         }
 
         // Kiểm tra GPS đã bật chưa
         if (!isLocationEnabled(context)) {
-            textView.text = "Vui lòng bật dịch vụ định vị (GPS)"
+            editText.setText("Vui lòng bật dịch vụ định vị (GPS)")
             Toast.makeText(context, "Vui lòng bật dịch vụ định vị (GPS)", Toast.LENGTH_LONG).show()
             return
         }
 
         // Thông báo đang lấy vị trí
-        textView.text = "Đang lấy vị trí hiện tại..."
+        editText.setText("Đang lấy vị trí hiện tại...")
 
         try {
             // Kiểm tra quyền truy cập một lần nữa để tránh cảnh báo
@@ -67,7 +73,7 @@ object LocationUtil {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                textView.text = "Không có quyền truy cập vị trí"
+                editText.setText("Không có quyền truy cập vị trí")
                 return
             }
 
@@ -75,18 +81,18 @@ object LocationUtil {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     // Chuyển đổi vị trí thành địa chỉ
-                    getAddressFromLocation(context, location, textView, useDetailedAddress)
+                    getAddressFromLocation(context, location, editText, useDetailedAddress, onAddressReceived)
                 } else {
                     // Nếu lastLocation là null, cần yêu cầu cập nhật vị trí mới
                     createLocationRequest()
-                    createLocationCallback(context, textView, useDetailedAddress)
+                    createLocationCallback(context, editText, useDetailedAddress, onAddressReceived)
                     requestNewLocationData(context)
                 }
             }.addOnFailureListener { e ->
-                textView.text = "Lỗi khi lấy vị trí: ${e.message}"
+                editText.setText("Lỗi khi lấy vị trí: ${e.message}")
             }
         } catch (e: Exception) {
-            textView.text = "Lỗi: ${e.message}"
+            editText.setText("Lỗi: ${e.message}")
         }
     }
 
@@ -129,12 +135,17 @@ object LocationUtil {
     }
 
     // Tạo callback cho cập nhật vị trí
-    private fun createLocationCallback(context: Context, textView: TextView, useDetailedAddress: Boolean) {
+    private fun createLocationCallback(
+        context: Context,
+        editText: EditText,
+        useDetailedAddress: Boolean,
+        onAddressReceived: ((String) -> Unit)?
+    ) {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 val location = locationResult.lastLocation
                 location?.let {
-                    getAddressFromLocation(context, it, textView, useDetailedAddress)
+                    getAddressFromLocation(context, it, editText, useDetailedAddress, onAddressReceived)
                     // Ngừng cập nhật vị trí sau khi nhận được
                     fusedLocationClient.removeLocationUpdates(locationCallback)
                 }
@@ -168,7 +179,13 @@ object LocationUtil {
 
     // Chuyển đổi vị trí thành địa chỉ
     @SuppressLint("SetTextI18n")
-    private fun getAddressFromLocation(context: Context, location: Location, textView: TextView, useDetailedAddress: Boolean) {
+    private fun getAddressFromLocation(
+        context: Context,
+        location: Location,
+        editText: EditText,
+        useDetailedAddress: Boolean,
+        onAddressReceived: ((String) -> Unit)?
+    ) {
         val geocoder = Geocoder(context, Locale.getDefault())
 
         try {
@@ -181,10 +198,11 @@ object LocationUtil {
 
             if (!addresses.isNullOrEmpty()) {
                 val address = addresses[0]
+                var addressText = ""
 
                 if (useDetailedAddress) {
                     // Địa chỉ chi tiết
-                    val addressText = buildString {
+                    addressText = buildString {
                         for (i in 0..address.maxAddressLineIndex) {
                             append(address.getAddressLine(i))
                             if (i < address.maxAddressLineIndex) {
@@ -192,10 +210,10 @@ object LocationUtil {
                             }
                         }
                     }
-                    textView.text = addressText
+                    editText.setText(addressText)
                 } else {
                     // Địa chỉ ngắn gọn
-                    val shortAddress = buildString {
+                    addressText = buildString {
                         val featureName = address.featureName
                         val thoroughfare = address.thoroughfare
                         val subLocality = address.subLocality
@@ -227,13 +245,16 @@ object LocationUtil {
                             append(countryName)
                         }
                     }
-                    textView.text = shortAddress
+                    editText.setText(addressText)
                 }
+
+                // Gọi callback với địa chỉ đã lấy được
+                onAddressReceived?.invoke(addressText)
             } else {
-                textView.text = "Không tìm thấy địa chỉ"
+                editText.setText("Không tìm thấy địa chỉ")
             }
         } catch (e: IOException) {
-            textView.text = "Lỗi khi lấy địa chỉ: ${e.message}"
+            editText.setText("Lỗi khi lấy địa chỉ: ${e.message}")
             e.printStackTrace()
         }
     }

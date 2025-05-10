@@ -23,13 +23,14 @@ class UserService {
         fun onFailure(errorMessage: String)
     }
 
-    // lưu thông tin người dùng
+    // Lưu thông tin người dùng với địa chỉ
     fun saveUserInfo(
         uid: String,
         fullName: String,
         userName: String,
         email: String,
         phone: String,
+        address: String, // Thêm trường địa chỉ
         isAdmin: Boolean,
         callback: UserCallBack
     ) {
@@ -40,12 +41,13 @@ class UserService {
         userData["username"] = userName
         userData["email"] = email
         userData["phone"] = phone
+        userData["address"] = address // Thêm địa chỉ vào dữ liệu người dùng
         userData["isAdmin"] = isAdmin
         userData["createdAt"] = ServerValue.TIMESTAMP
 
         usersRef.setValue(userData)
             .addOnSuccessListener {
-                //tạo index cho username để tìm kiếm nhanh
+                // Tạo index cho username để tìm kiếm nhanh
                 usernamesRef.child(userName).setValue(uid)
                     .addOnSuccessListener {
                         callback.onSuccess()
@@ -57,10 +59,22 @@ class UserService {
             .addOnFailureListener { e ->
                 callback.onFailure("Lỗi khi lưu thông tin người dùng")
             }
-
     }
-    //kiểm tra username đã tồn tại chưa
-    fun checkUsernameExits(username : String, callback :(Boolean) -> Unit) {
+
+    // Cập nhật địa chỉ người dùng
+    fun updateUserAddress(userId: String, address: String, callback: UserCallBack) {
+        val userRef = usersRef.child(userId)
+        userRef.child("address").setValue(address)
+            .addOnSuccessListener {
+                callback.onSuccess()
+            }
+            .addOnFailureListener { e ->
+                callback.onFailure("Lỗi khi cập nhật địa chỉ: ${e.message}")
+            }
+    }
+
+    // Kiểm tra username đã tồn tại chưa
+    fun checkUsernameExits(username: String, callback: (Boolean) -> Unit) {
         usersRef.orderByChild("username").equalTo(username)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -73,9 +87,9 @@ class UserService {
                 }
             })
     }
-    //kiểm tra email đã tồn tại chưa
-    fun checkEmailExits(email : String, callBack : (Boolean) -> Unit)
-    {
+
+    // Kiểm tra email đã tồn tại chưa
+    fun checkEmailExits(email: String, callBack: (Boolean) -> Unit) {
         usersRef.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -87,9 +101,9 @@ class UserService {
                 }
             })
     }
-    //kiểm tra số điện thoại đã tồn tại
-    fun checkPhoneExits(phone : String , callback : (Boolean) -> Unit)
-    {
+
+    // Kiểm tra số điện thoại đã tồn tại
+    fun checkPhoneExits(phone: String, callback: (Boolean) -> Unit) {
         usersRef.orderByChild("phone").equalTo(phone)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -101,7 +115,8 @@ class UserService {
                 }
             })
     }
-    //lấy thông tin người dùng theo userId
+
+    // Lấy thông tin người dùng theo userId
     fun getUserById(userId: String, callback: UserDataCallBack) {
         usersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -113,11 +128,20 @@ class UserService {
                             val username = data["username"] as? String ?: ""
                             val email = data["email"] as? String ?: ""
                             val phone = data["phone"] as? String ?: ""
+                            val address = data["address"] as? String ?: "" // Lấy địa chỉ từ Firebase
                             val isAdmin = data["isAdmin"] as? Boolean ?: false
                             val createdAt = (data["createdAt"] as? Long) ?: 0L
 
-                            val user =
-                                User(userId, fullName, username, email, phone, isAdmin, createdAt)
+                            val user = User(
+                                userId,
+                                fullName,
+                                username,
+                                email,
+                                phone,
+                                address, // Thêm địa chỉ vào đối tượng User
+                                isAdmin,
+                                createdAt
+                            )
                             callback.onSuccess(user)
                         } else {
                             callback.onFailure("Dữ liệu người dùng không hợp lệ")
@@ -135,23 +159,178 @@ class UserService {
             }
         })
     }
-// Trong UserService.kt
-    fun getNameUser(callback: (String?) -> Unit) {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser != null) {
-            val userId = currentUser.uid
-            getUserById(userId, object : UserDataCallBack {
-                override fun onSuccess(user: User) {
-                    callback(user.fullName)
+    // Cập nhật thông tin profile người dùng
+    fun updateUserProfile(
+        userId: String,
+        fullName: String,
+        phone: String,
+        email: String,
+        address: String,
+        callback: UserCallBack
+    ) {
+        val userRef = usersRef.child(userId)
+
+        // Tạo Map chứa các thông tin cần cập nhật
+        val updates = HashMap<String, Any>()
+
+        // Chỉ cập nhật các trường không trống
+        if (fullName.isNotEmpty()) {
+            updates["fullName"] = fullName
+        }
+
+        if (phone.isNotEmpty()) {
+            // Kiểm tra số điện thoại có thuộc về người dùng khác không
+            checkPhoneExits(phone) { exists ->
+                if (exists) {
+                    // Nếu số điện thoại đã tồn tại, kiểm tra xem có phải của người dùng hiện tại không
+                    getUserById(userId, object : UserDataCallBack {
+                        override fun onSuccess(user: User) {
+                            if (user.phone == phone) {
+                                // Nếu là số điện thoại hiện tại của người dùng, tiếp tục cập nhật
+                                continueUpdate(userId, updates, callback)
+                            } else {
+                                // Nếu số điện thoại thuộc về người dùng khác
+                                callback.onFailure("Số điện thoại đã được sử dụng bởi người dùng khác")
+                            }
+                        }
+
+                        override fun onFailure(errorMessage: String) {
+                            callback.onFailure(errorMessage)
+                        }
+                    })
+                    return@checkPhoneExits
+                } else {
+                    // Nếu số điện thoại chưa tồn tại, thêm vào updates
+                    updates["phone"] = phone
+
+                    // Nếu đã kiểm tra số điện thoại, tiếp tục kiểm tra email
+                    if (email.isNotEmpty()) {
+                        checkEmail(userId, email, updates, address, callback)
+                    } else if (address.isNotEmpty()) {
+                        updates["address"] = address
+                        // Tiến hành cập nhật
+                        userRef.updateChildren(updates)
+                            .addOnSuccessListener {
+                                callback.onSuccess()
+                            }
+                            .addOnFailureListener { e ->
+                                callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+                            }
+                    } else {
+                        // Tiến hành cập nhật chỉ với fullName và phone
+                        userRef.updateChildren(updates)
+                            .addOnSuccessListener {
+                                callback.onSuccess()
+                            }
+                            .addOnFailureListener { e ->
+                                callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+                            }
+                    }
+                }
+            }
+            return
+        }
+
+        // Nếu có email cần cập nhật và không cần kiểm tra phone
+        if (email.isNotEmpty()) {
+            checkEmail(userId, email, updates, address, callback)
+            return
+        }
+
+        // Nếu có địa chỉ cần cập nhật
+        if (address.isNotEmpty()) {
+            updates["address"] = address
+        }
+
+        // Nếu không cần kiểm tra email hoặc phone, cập nhật ngay
+        if (updates.isNotEmpty()) {
+            userRef.updateChildren(updates)
+                .addOnSuccessListener {
+                    callback.onSuccess()
+                }
+                .addOnFailureListener { e ->
+                    callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+                }
+        } else {
+            // Không có thông tin nào cần cập nhật
+            callback.onSuccess()
+        }
+    }
+
+    // Hàm hỗ trợ để kiểm tra email
+    private fun checkEmail(
+        userId: String,
+        email: String,
+        updates: HashMap<String, Any>,
+        address: String,
+        callback: UserCallBack
+    ) {
+        checkEmailExits(email) { exists ->
+            if (exists) {
+                // Nếu email đã tồn tại, kiểm tra xem có phải của người dùng hiện tại không
+                getUserById(userId, object : UserDataCallBack {
+                    override fun onSuccess(user: User) {
+                        if (user.email == email) {
+                            // Nếu là email hiện tại của người dùng, tiếp tục cập nhật
+                            if (address.isNotEmpty()) {
+                                updates["address"] = address
+                            }
+
+                            // Tiến hành cập nhật
+                            val userRef = usersRef.child(userId)
+                            userRef.updateChildren(updates)
+                                .addOnSuccessListener {
+                                    callback.onSuccess()
+                                }
+                                .addOnFailureListener { e ->
+                                    callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+                                }
+                        } else {
+                            // Nếu email thuộc về người dùng khác
+                            callback.onFailure("Email đã được sử dụng bởi người dùng khác")
+                        }
+                    }
+
+                    override fun onFailure(errorMessage: String) {
+                        callback.onFailure(errorMessage)
+                    }
+                })
+            } else {
+                // Nếu email chưa tồn tại, thêm vào updates
+                updates["email"] = email
+
+                if (address.isNotEmpty()) {
+                    updates["address"] = address
                 }
 
-                override fun onFailure(errorMessage: String) {
-                    callback(null)
-                }
-            })
-        } else {
-            callback(null)
+                // Tiến hành cập nhật
+                val userRef = usersRef.child(userId)
+                userRef.updateChildren(updates)
+                    .addOnSuccessListener {
+                        callback.onSuccess()
+                    }
+                    .addOnFailureListener { e ->
+                        callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+                    }
+            }
         }
+    }
+
+    // Hàm hỗ trợ để tiếp tục cập nhật sau khi đã kiểm tra
+    private fun continueUpdate(userId: String, updates: HashMap<String, Any>, callback: UserCallBack) {
+        val userRef = usersRef.child(userId)
+
+        if (updates.isEmpty()) {
+            callback.onSuccess()
+            return
+        }
+
+        userRef.updateChildren(updates)
+            .addOnSuccessListener {
+                callback.onSuccess()
+            }
+            .addOnFailureListener { e ->
+                callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
+            }
     }
 }

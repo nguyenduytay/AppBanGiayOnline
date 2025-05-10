@@ -1,4 +1,4 @@
-package com.midterm22nh12.appbangiayonline.model.Entity
+package com.midterm22nh12.appbangiayonline.model.Entity.Product
 
 // Color class with additional properties
 data class ProductColor(

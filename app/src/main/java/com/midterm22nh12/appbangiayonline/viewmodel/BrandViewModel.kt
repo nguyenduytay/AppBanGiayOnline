@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.midterm22nh12.appbangiayonline.Repository.BrandRepository
-import com.midterm22nh12.appbangiayonline.model.Entity.Brand
+import com.midterm22nh12.appbangiayonline.model.Entity.Product.Brand
 
 class BrandViewModel : ViewModel() {
     private val repository = BrandRepository()
