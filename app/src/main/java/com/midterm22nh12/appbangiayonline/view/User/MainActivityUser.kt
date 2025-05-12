@@ -1,7 +1,9 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -22,6 +24,7 @@ import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewNotificatio
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
 import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.Message.ChatViewModel
 import java.util.ArrayDeque
 
 class MainActivityUser : AppCompatActivity() {
@@ -31,6 +34,7 @@ class MainActivityUser : AppCompatActivity() {
     private lateinit var navigationViewNotification: NavigationView
     private lateinit var headerView: View
     lateinit var authViewModel: AuthViewModel
+    lateinit var chatViewModel : ChatViewModel
     private val navigationHistory = ArrayDeque<Int>()//// Lưu trữ lịch sử overlay fragment
     private var currentPosition = 1
     private val overlayStack = ArrayDeque<String>() // Lưu trữ lịch sử overlay include
@@ -47,6 +51,7 @@ class MainActivityUser : AppCompatActivity() {
         headerView = navigationViewNotification.getHeaderView(0)
 
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
 
         //thiết lập sự kiện cho nút back trong header của navigationView
         setUpNavigationView()
@@ -57,6 +62,9 @@ class MainActivityUser : AppCompatActivity() {
     // Phương thức để lấy ViewModel đã tạo
     fun getSharedViewModel(): AuthViewModel {
         return authViewModel
+    }
+    fun getSharedChatViewModel() : ChatViewModel {
+        return chatViewModel
     }
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {
@@ -291,7 +299,7 @@ class MainActivityUser : AppCompatActivity() {
 
         // Khởi tạo handler
         val messagesBinding = bindingMainActivityUser.messagesOverlayActivityMainUser
-        val messagesHandler = messages_user(this, messagesBinding,item)
+        val messagesHandler = messages_user(this, messagesBinding,item,this)
     }
 
     // Cập nhật lại hàm showOrderUser
@@ -424,5 +432,4 @@ class MainActivityUser : AppCompatActivity() {
         val accountSecurityBinding = bindingMainActivityUser.accountSecurityUserActivityMainUser
         val accountSecurityHandler = account_security_user(this, accountSecurityBinding,this)
     }
-
 }

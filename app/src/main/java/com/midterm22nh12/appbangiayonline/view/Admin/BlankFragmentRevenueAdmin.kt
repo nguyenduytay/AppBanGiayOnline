@@ -17,5 +17,4 @@ class BlankFragmentRevenueAdmin : Fragment() {
         return inflater.inflate(R.layout.fragment_blank_revenue_admin, container, false)
     }
 
-
 }

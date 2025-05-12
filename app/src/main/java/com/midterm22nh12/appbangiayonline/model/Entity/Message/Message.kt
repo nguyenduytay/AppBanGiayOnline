@@ -12,7 +12,7 @@ data class Message(
     val senderName: String = "",  // Tên người gửi để hiển thị
     val content: String = "",  // Nội dung tin nhắn
     val timestamp: Long = System.currentTimeMillis(),  // Thời gian gửi
-    val isRead: Boolean = false,  // Đã đọc chưa
+    val read: Boolean = false,  // Đã đọc chưa
     val type: String = "text",  // Loại tin nhắn: text, image, attachment
     val attachmentUrl: String = "",  // URL của file đính kèm (nếu có)
     val isSystemMessage: Boolean = false  // Tin nhắn hệ thống (ví dụ: "Admin đã tham gia cuộc hội thoại")

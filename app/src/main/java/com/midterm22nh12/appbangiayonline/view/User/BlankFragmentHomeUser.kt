@@ -1,5 +1,6 @@
 package com.midterm22nh12.appbangiayonline.view.User
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewBran
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewNotificationProductHomeUser
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewTypeProductHomeUser
+import com.midterm22nh12.appbangiayonline.Utils.ChatUtils
 import com.midterm22nh12.appbangiayonline.databinding.ProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.databinding.TypeProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.model.Entity.Product.Brand
@@ -28,6 +30,7 @@ import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHome
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewTypeProductHomeUser
 import com.midterm22nh12.appbangiayonline.viewmodel.BrandViewModel
 import com.midterm22nh12.appbangiayonline.viewmodel.CategoryViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.Message.ChatViewModel
 import com.midterm22nh12.appbangiayonline.viewmodel.ProductViewModel
 
 class BlankFragmentHomeUser : Fragment() {
@@ -50,6 +53,8 @@ class BlankFragmentHomeUser : Fragment() {
     private var currentCategoryId: String? = null
     private var currentBrandId: String? = null
     private var currentSearchQuery: String? = null
+
+    private lateinit var chatViewModel : ChatViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +74,8 @@ class BlankFragmentHomeUser : Fragment() {
         brandViewModel = ViewModelProvider(this)[BrandViewModel::class.java]
         productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
 
+        chatViewModel = (activity as? MainActivityUser)?.getSharedChatViewModel()!!
+
         //hiểm  thị thông bóa
         showNotification()
         //  hiển thi thông báo sản phẩm
@@ -85,7 +92,11 @@ class BlankFragmentHomeUser : Fragment() {
         showMessageHomeUser()
         return bindingFragmentHomeUser.root
     }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //thiết lập hiển thị số tin nhắn
+        setupConversationsRealTimeListener()
+    }
     //hiển thi thông báo
     private fun showNotificationProduct() {
         bindingNotificationProductHomeUser.rcHomeNotification.layoutManager =
@@ -403,5 +414,48 @@ class BlankFragmentHomeUser : Fragment() {
             }
         }
     }
+    // phương thức lắng nghe tin nhắn gửi đến cho user
+    @SuppressLint("SetTextI18n")
+    private fun setupConversationsRealTimeListener() {
+        // Đăng ký quan sát conversationUpdates từ ViewModel
+        chatViewModel.conversationUpdates.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { result ->
+                if (result.isSuccess) {
+                    val conversation = result.getOrNull()
+                    if (conversation != null) {
+                        Log.d("BlankFragmentHomeUser", "Cuộc hội thoại cập nhật trong list_message: ${conversation.id}, " +
+                                "unreadByAdmin: ${conversation.unreadByAdmin}, " +
+                                "unreadByUser: ${conversation.unreadByUser}")
 
+                        // Nếu có tin nhắn mới và số tin nhắn chưa đọc > 0, đưa cuộc hội thoại lên đầu
+                        val unreadCount = if (ChatUtils.isCurrentUserAdmin()) {
+                            conversation.unreadByAdmin
+                        } else {
+                            conversation.unreadByUser
+                        }
+                        if(unreadCount > 0)
+                        {
+                            if(unreadCount > 9)
+                            {
+                                bindingFragmentHomeUser.ivMessageHomeUser.text= "9+"
+                            }
+                            else
+                            {
+                                bindingFragmentHomeUser.ivMessageHomeUser.text= unreadCount.toString()
+                            }
+                        }
+                        else
+                        {
+                            bindingFragmentHomeUser.ivMessageHomeUser.text = ""
+                        }
+                        Log.d("BlankFragmentHomeUser", "unreadCount: $unreadCount")
+
+                    }
+                }
+            }
+        }
+        Log.d("BlankFragmentHomeUser", "Bắt đầu lắng nghe thay đổi cuộc hội thoại")
+        // Bắt đầu lắng nghe từ ViewModel
+        chatViewModel.startListeningToConversations()
+    }
 }

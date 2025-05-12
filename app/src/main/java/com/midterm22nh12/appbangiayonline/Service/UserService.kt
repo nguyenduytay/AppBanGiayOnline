@@ -1,5 +1,7 @@
 package com.midterm22nh12.appbangiayonline.Service
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,6 +22,11 @@ class UserService {
 
     interface UserDataCallBack {
         fun onSuccess(user: User)
+        fun onFailure(errorMessage: String)
+    }
+    // Interface callback cho việc kiểm tra admin
+    interface AdminCheckCallback {
+        fun onResult(isAdmin: Boolean)
         fun onFailure(errorMessage: String)
     }
 
@@ -332,5 +339,35 @@ class UserService {
             .addOnFailureListener { e ->
                 callback.onFailure("Lỗi khi cập nhật thông tin: ${e.message}")
             }
+    }
+    /**
+     * Kiểm tra người dùng có phải là admin không
+     * @param userId ID của người dùng cần kiểm tra
+     * @param callback Callback trả về kết quả
+     */
+    fun checkUserIsAdmin(userId: String, callback: AdminCheckCallback) {
+        if (userId.isEmpty()) {
+            callback.onFailure("User ID không hợp lệ")
+            return
+        }
+
+        usersRef.child(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // Lấy giá trị isAdmin từ field trong user
+                    val isAdmin = snapshot.child("isAdmin").getValue(Boolean::class.java) ?: false
+                    Log.d(TAG, "User $userId is admin: $isAdmin")
+                    callback.onResult(isAdmin)
+                } else {
+                    Log.e(TAG, "User $userId not found")
+                    callback.onFailure("Không tìm thấy thông tin người dùng")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Error checking admin status: ${error.message}")
+                callback.onFailure("Lỗi khi kiểm tra trạng thái admin: ${error.message}")
+            }
+        })
     }
 }

@@ -6,10 +6,10 @@ import java.util.UUID
  * Đại diện cho một cuộc hội thoại giữa khách hàng và admin
  */
 data class Conversation(
-    val id: String = UUID.randomUUID().toString(),
+    var id: String = UUID.randomUUID().toString(),
     val userId: String = "",  // ID của khách hàng
     val userFullName: String = "",  // Tên của khách hàng để hiển thị
-    val adminId: String = "",  // ID của admin đang xử lý
+    val adminId: String = "system",  // ID của admin đang xử lý
     val title: String = "",  // Tiêu đề cuộc hội thoại (ví dụ: "Hỗ trợ đơn hàng #123")
     val status: String = "open",  // Trạng thái: open, resolved, closed
     val lastMessage: String = "",  // Tin nhắn cuối cùng để hiển thị trong danh sách
