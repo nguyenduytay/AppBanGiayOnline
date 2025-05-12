@@ -18,7 +18,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/btn_back"
+            android:id="@+id/iv_back_evaluate_user"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/back_1"
@@ -84,7 +84,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_product_name"
+                        android:id="@+id/tv_name_product_order_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Giày Jordan"

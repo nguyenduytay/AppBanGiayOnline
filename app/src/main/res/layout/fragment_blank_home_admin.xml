@@ -69,7 +69,7 @@
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/sv_search_home_admin"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         app:closeIcon="@drawable/baseline_close_24"
@@ -78,32 +78,48 @@
                         app:theme="@style/CustomSearchViewStyle"
                         app:tint="#131111" />
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/iv_notification_home_admin"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:text=""
+                        android:gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/notifications"
+                        android:background="@mipmap/bell_ring_foreground"
                         app:tint="#131111" />
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/iv_message_home_admin"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:text=""
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:src="@drawable/sms"
+                        android:background="@mipmap/messages_foreground"
                         app:tint="#131111" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <include
+                android:id="@+id/include_type_product_home"
+                layout="@layout/type_product_home_user" />
 
-            </androidx.recyclerview.widget.RecyclerView>
+            <include
+                android:id="@+id/include_brand_home"
+                layout="@layout/brand_home_user" />
+
+            <include
+                android:id="@+id/include_product_home"
+                layout="@layout/product_home_user" />
 
         </LinearLayout>
 

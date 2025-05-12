@@ -7,11 +7,13 @@
     android:background="#F5F5F5">
 
     <!-- Top Bar -->
-    <androidx.appcompat.widget.Toolbar
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#c49697"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,7 +21,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_back_account_user"
@@ -32,10 +38,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_marginLeft="5dp"
                 android:id="@+id/tvAccountTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="10"
                 android:text="Tài khoản"
                 android:textColor="#000000"
@@ -45,7 +51,7 @@
                 app:layout_constraintStart_toEndOf="@+id/iv_back_account_user"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/iv_setting_account_user"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
@@ -81,7 +87,7 @@
                 app:tint="@color/black" />
 
         </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- User Info Section -->
     <LinearLayout
@@ -140,7 +146,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/ly_OrderHistory"
@@ -156,8 +166,9 @@
                     android:gravity="left"
                     android:padding="8dp"
                     android:text="Đơn mua"
-                    android:textColor="#1C1C1D"
-                    android:textSize="14sp" />
+                    android:textColor="#020202"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
@@ -165,23 +176,24 @@
                     android:background="#E0E0E0" />
 
                 <TextView
-
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Lịch sử mua hàng"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
+                    android:textColor="#020202"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
+                    android:id="@+id/iv_purchase_history_account_user"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/back_right"
-                    android:paddingTop="1dp"></ImageView>
+                    android:src="@drawable/back_right"
+                    app:tint="@color/black"
+                    tools:ignore="UseAppTint" />
             </LinearLayout>
 
             <View
@@ -196,7 +208,7 @@
                 android:paddingVertical="8dp">
 
                 <LinearLayout
-                    android:id="@+id/ly_Pending"
+                    android:id="@+id/ll_confirmation_user_account_user"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -207,19 +219,21 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/article_shortcut" />
+                        android:src="@drawable/article_shortcut"
+                        app:tint="@color/black" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Chờ xác nhận"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#020202"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ly_Processing"
+                    android:id="@+id/ll_transportation_user_account_user"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -230,19 +244,21 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/local_shipping" />
+                        android:src="@drawable/local_shipping"
+                        app:tint="@color/black" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Đang vận chuyển"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#020202"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/ly_Rating"
+                    android:id="@+id/ll_my_review_user_account_user"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -253,15 +269,17 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/stars" />
+                        android:src="@drawable/stars"
+                        app:tint="@color/black" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Đánh giá"
-                        android:textColor="#666666"
-                        android:textSize="12sp" />
+                        android:textColor="#020202"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -290,11 +308,12 @@
     <ListView
         android:id="@+id/lv_RecommendedProducts"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNotes">
 
     </ListView>

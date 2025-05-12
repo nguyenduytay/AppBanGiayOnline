@@ -1,63 +1,84 @@
 package com.midterm22nh12.appbangiayonline.Adapter.User
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.ItemProductHomeUserBinding
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 
 class MyAdapterRecyclerViewProductHomeUser(
-    private val itemList: List<ItemRecyclerViewProductHomeUser>,
+    private var itemList: List<ItemRecyclerViewProductHomeUser>,
     private val onItemClickListener: OnItemClickListener? = null
-) : RecyclerView.Adapter<MyAdapterRecyclerViewProductHomeUser.MyViewHolder>() {
+) : RecyclerView.Adapter<MyAdapterRecyclerViewProductHomeUser.MyViewHolderProductHome>() {
 
-    // Interface để xử lý sự kiện click
     interface OnItemClickListener {
         fun onItemClick(item: ItemRecyclerViewProductHomeUser, position: Int)
         fun onFavoriteClick(item: ItemRecyclerViewProductHomeUser, position: Int)
     }
 
-    private lateinit var bindingItemProductHomeUser: ItemProductHomeUserBinding
-
-    class MyViewHolder(val binding: ItemProductHomeUserBinding) :
+    class MyViewHolderProductHome(val binding: ItemProductHomeUserBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolderProductHome {
         val binding = ItemProductHomeUserBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
-        return MyViewHolder(binding)
+        return MyViewHolderProductHome(binding)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = itemList[position]
+    @SuppressLint("SetTextI18n", "DefaultLocale")
+    override fun onBindViewHolder(holder: MyViewHolderProductHome, position: Int) {
+        try {
+            if (position < 0 || position >= itemList.size) return
 
-        // Hiển thị trạng thái yêu thích
-        if(currentItem.like)
-            holder.binding.ivLiveProductHomeUser.setImageResource(R.drawable.love1)
-        else
-            holder.binding.ivLiveProductHomeUser.setImageResource(R.drawable.love2)
+            val item = itemList[position]
+            val imageUrl = item.colors.firstOrNull()?.image ?: ""
+            try {
+                Glide.with(holder.binding.ivImageProductHomeUser.context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.shoes1)
+                    .error(R.drawable.shoes1)
+                    .into(holder.binding.ivImageProductHomeUser)
+            } catch (e: Exception) {
+                Log.e("Adapter", "Error loading image: ${e.message}")
+                holder.binding.ivImageProductHomeUser.setImageResource(R.drawable.shoes1)
+            }
+            holder.binding.tvEvaluateProductHomeUser.text = item.rating.toString()
+            holder.binding.tvPriceProductHomeUser.text = String.format("%,d vnđ", item.price)
 
-        holder.binding.ivImageProductHomeUser.setImageResource(currentItem.image)
-        holder.binding.tvEvaluateProductHomeUser.text = currentItem.evaluate.toString()
-        holder.binding.tvPriceProductHomeUser.text = currentItem.price.toString().plus(" vnđ")
-        holder.binding.tvNameProductHomeUser.text = currentItem.name
-
-        // Thiết lập sự kiện click cho item
-        holder.binding.root.setOnClickListener {
-            onItemClickListener?.onItemClick(currentItem, position)
-        }
-
-        // Thiết lập sự kiện click cho nút yêu thích
-        holder.binding.ivLiveProductHomeUser.setOnClickListener {
-            onItemClickListener?.onFavoriteClick(currentItem, position)
+            holder.binding.tvNameProductHomeUser.text = item.name
+            holder.itemView.setOnClickListener {
+                try {
+                    onItemClickListener?.onItemClick(item, position)
+                } catch (e: Exception) {
+                    Log.e("Adapter", "Error on item click: ${e.message}")
+                }
+            }
+            holder.binding.ivLiveProductHomeUser.setOnClickListener {
+                try {
+                    onItemClickListener?.onFavoriteClick(item, position)
+                } catch (e: Exception) {
+                    Log.e("Adapter", "Error on favorite click: ${e.message}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("Adapter", "Error in onBindViewHolder: ${e.message}")
         }
     }
 
     override fun getItemCount() = itemList.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(newProducts: List<ItemRecyclerViewProductHomeUser>) {
+        try {
+            itemList = newProducts
+            notifyDataSetChanged()
+        } catch (e: Exception) {
+            Log.e("Adapter", "Error updating data: ${e.message}")
+        }
+    }
 }
