@@ -153,11 +153,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="1000000 đ"
+                android:layout_marginRight="20dp"
+                android:text="0 VNĐ"
                 android:textColor="#FF0000"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginRight="20dp"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnBuy"
