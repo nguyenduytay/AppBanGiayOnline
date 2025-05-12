@@ -247,4 +247,6 @@ class order_user(
             binding.tvStockProductOrderUser.text = "Kho: ${colorItems[0].stock}"
         }
     }
+    //sự kiện mua hàng
+
 }

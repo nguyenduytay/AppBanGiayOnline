@@ -37,4 +37,5 @@ class BlankFragmentShopUser : Fragment() {
             (activity as? MainActivityUser)?.returnToPreviousOverlay()
         }
     }
+
 }
