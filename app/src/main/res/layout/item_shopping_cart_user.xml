@@ -106,7 +106,7 @@
                         android:textSize="15sp" />
 
                     <ImageButton
-                        android:id="@+id/iv_add_item_shopping_cart_user"
+                        android:id="@+id/ib_add_item_shopping_cart_user"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:background="@drawable/add"

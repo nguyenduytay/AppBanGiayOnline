@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#f5f5f5">
 
     <!-- Top Bar with Title and Menu -->
@@ -44,14 +45,32 @@
             app:tint="@color/your_color" />
     </RelativeLayout>
 
-    <!-- Main Content ListView -->
-    <ListView
-        android:id="@+id/listview_orders"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_top_bar"
-        android:clipToPadding="false"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:padding="8dp" />
-</RelativeLayout>
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_list_order_confirmation_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:padding="8dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBarOrderConfirmation"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rc_list_order_confirmation_user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Main Content ListView -->
+
+
+</LinearLayout>
