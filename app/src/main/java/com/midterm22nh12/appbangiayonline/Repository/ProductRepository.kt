@@ -16,7 +16,6 @@ class ProductRepository {
 
     fun getProducts(): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
         productsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val productsList = mutableListOf<Product>()
@@ -25,22 +24,17 @@ class ProductRepository {
                     product?.let { productsList.add(it) }
                 }
                 productsLiveData.value = productsList
-                Log.d("ProductRepository", "onCancelled: " + productsList.joinToString {
-                    it.name
-                })
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("ProductRepository", "onCancelled: ")
+                Log.e("ProductRepository", "getProducts cancelled: ${error.message}")
             }
         })
-
         return productsLiveData
     }
 
     fun getProductById(productId: String): MutableLiveData<Product?> {
         val productLiveData = MutableLiveData<Product?>()
-
         productsRef.child(productId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val product = snapshot.getValue(Product::class.java)
@@ -48,16 +42,14 @@ class ProductRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Xử lý lỗi
+                Log.e("ProductRepository", "getProductById cancelled: ${error.message}")
             }
         })
-
         return productLiveData
     }
 
     fun getProductsByCategory(categoryId: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
         productsRef.orderByChild("categoryId").equalTo(categoryId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -70,16 +62,14 @@ class ProductRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Xử lý lỗi
+                    Log.e("ProductRepository", "getProductsByCategory cancelled: ${error.message}")
                 }
             })
-
         return productsLiveData
     }
 
     fun getProductsByBrand(brandId: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
         productsRef.orderByChild("brandId").equalTo(brandId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -92,109 +82,97 @@ class ProductRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Xử lý lỗi
+                    Log.e("ProductRepository", "getProductsByBrand cancelled: ${error.message}")
                 }
             })
-
         return productsLiveData
     }
 
     fun searchProductsByName(query: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
-        productsRef.orderByChild("name").startAt(query).endAt(query + "\uf8ff")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val productsList = mutableListOf<Product>()
-                    for (productSnapshot in snapshot.children) {
-                        val product = productSnapshot.getValue(Product::class.java)
-                        product?.let { productsList.add(it) }
+        val formattedQuery = query.lowercase(Locale.getDefault())
+        productsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val results = mutableListOf<Product>()
+                for (productSnapshot in snapshot.children) {
+                    val product = productSnapshot.getValue(Product::class.java)
+                    if (product != null && product.name.lowercase(Locale.getDefault()).contains(formattedQuery)) {
+                        results.add(product)
                     }
-                    productsLiveData.value = productsList
                 }
+                productsLiveData.value = results
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Xử lý lỗi
-                }
-            })
-
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ProductRepository", "searchProductsByName cancelled: ${error.message}")
+            }
+        })
         return productsLiveData
     }
 
     fun filterProductsByPriceRange(minPrice: Double, maxPrice: Double): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
         productsRef.orderByChild("price").startAt(minPrice).endAt(maxPrice)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val productsList = mutableListOf<Product>()
+                    val results = mutableListOf<Product>()
                     for (productSnapshot in snapshot.children) {
                         val product = productSnapshot.getValue(Product::class.java)
-                        product?.let { productsList.add(it) }
+                        product?.let { results.add(it) }
                     }
-                    productsLiveData.value = productsList
+                    productsLiveData.value = results
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Xử lý lỗi
+                    Log.e("ProductRepository", "filterProductsByPriceRange cancelled: ${error.message}")
                 }
             })
-
         return productsLiveData
     }
 
-    // Filter products by available sizes
     fun filterProductsByAvailableSize(size: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
-        // This is more complex and requires client-side filtering
         productsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val productsList = mutableListOf<Product>()
+                val results = mutableListOf<Product>()
                 for (productSnapshot in snapshot.children) {
                     val product = productSnapshot.getValue(Product::class.java)
                     product?.let {
-                        // Check if product has the requested size with available status
                         if (it.sizes.any { s -> s.value == size && s.status == "available" }) {
-                            productsList.add(it)
+                            results.add(it)
                         }
                     }
                 }
-                productsLiveData.value = productsList
+                productsLiveData.value = results
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Xử lý lỗi
+                Log.e("ProductRepository", "filterProductsByAvailableSize cancelled: ${error.message}")
             }
         })
-
         return productsLiveData
     }
 
-    // Filter products by available colors
     fun filterProductsByAvailableColor(colorName: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
         productsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val productsList = mutableListOf<Product>()
+                val results = mutableListOf<Product>()
                 for (productSnapshot in snapshot.children) {
                     val product = productSnapshot.getValue(Product::class.java)
                     product?.let {
-                        // Check if product has the requested color with available status
                         if (it.colors.any { c -> c.name == colorName && c.status == "available" && c.stock > 0 }) {
-                            productsList.add(it)
+                            results.add(it)
                         }
                     }
                 }
-                productsLiveData.value = productsList
+                productsLiveData.value = results
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Xử lý lỗi
+                Log.e("ProductRepository", "filterProductsByAvailableColor cancelled: ${error.message}")
             }
         })
-
         return productsLiveData
     }
 
@@ -228,70 +206,36 @@ class ProductRepository {
             }
     }
 
-    /**
-     * Tìm kiếm sản phẩm với nhiều tiêu chí kết hợp
-     * Tìm kiếm tên sản phẩm không phân biệt hoa thường
-     *
-     * @param categoryId ID của loại sản phẩm (null nếu không sử dụng tiêu chí này)
-     * @param brandId ID của thương hiệu (null nếu không sử dụng tiêu chí này)
-     * @param nameQuery Chuỗi con trong tên sản phẩm (null nếu không sử dụng tiêu chí này)
-     * @return LiveData<List<Product>> Danh sách sản phẩm phù hợp
-     */
     fun searchProductsWithMultipleCriteria(
         categoryId: String? = null,
         brandId: String? = null,
         nameQuery: String? = null
     ): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
-
-        // Lấy tất cả sản phẩm và lọc ở client
         productsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val productsList = mutableListOf<Product>()
-
-                // Chuyển nameQuery sang chữ thường nếu có
+                val results = mutableListOf<Product>()
                 val lowerCaseNameQuery = nameQuery?.lowercase(Locale.getDefault())
 
                 for (productSnapshot in snapshot.children) {
                     val product = productSnapshot.getValue(Product::class.java)
                     product?.let {
-                        // Kiểm tra từng tiêu chí
-                        var matchesCategory = true
-                        var matchesBrand = true
-                        var matchesName = true
+                        val matchesCategory = categoryId.isNullOrEmpty() || it.categoryId == categoryId
+                        val matchesBrand = brandId.isNullOrEmpty() || it.brandId == brandId
+                        val matchesName = lowerCaseNameQuery.isNullOrEmpty() || it.name.lowercase(Locale.getDefault()).contains(lowerCaseNameQuery)
 
-                        // Kiểm tra loại sản phẩm nếu được chỉ định
-                        if (!categoryId.isNullOrEmpty()) {
-                            matchesCategory = (it.categoryId == categoryId)
-                        }
-
-                        // Kiểm tra thương hiệu nếu được chỉ định
-                        if (!brandId.isNullOrEmpty()) {
-                            matchesBrand = (it.brandId == brandId)
-                        }
-
-                        // Kiểm tra tên sản phẩm nếu được chỉ định, không phân biệt hoa thường
-                        if (!lowerCaseNameQuery.isNullOrEmpty()) {
-                            matchesName = it.name.lowercase(Locale.getDefault())
-                                .contains(lowerCaseNameQuery)
-                        }
-
-                        // Chỉ thêm vào danh sách kết quả nếu thỏa mãn tất cả điều kiện áp dụng
                         if (matchesCategory && matchesBrand && matchesName) {
-                            productsList.add(it)
+                            results.add(it)
                         }
                     }
                 }
-
-                productsLiveData.value = productsList
-                Log.d("ProductRepository", "Found ${productsList.size} products matching criteria")
+                productsLiveData.value = results
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("ProductRepository", "Search cancelled: ${error.message}")
+                Log.e("ProductRepository", "searchProductsWithMultipleCriteria cancelled: ${error.message}")
             }
         })
-
         return productsLiveData
     }
 }

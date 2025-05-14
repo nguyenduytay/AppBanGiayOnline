@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/green_button_background"
+            android:backgroundTint="#0F9814"
             android:text="Xác nhận"
             android:textColor="#FFFFFF" />
 
@@ -140,8 +140,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:backgroundTint="#D12121"
             android:layout_weight="1"
-            android:background="@drawable/red_button_background"
             android:text="Hủy"
             android:textColor="#FFFFFF" />
     </LinearLayout>

@@ -10,18 +10,19 @@
     <RelativeLayout
         android:id="@+id/layout_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#CFACAC"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="15dp"
+        android:background="#D28A88"
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:id="@+id/iv_back_purchase_history_user"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:contentDescription="Back"
-            android:padding="12dp"
-            android:src="@drawable/shopping_cart"
+            android:src="@drawable/back_1"
             app:tint="@color/your_color" />
 
         <TextView
@@ -31,12 +32,12 @@
             android:layout_marginStart="48dp"
             android:text="Lịch sử mua hàng"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
     <!-- Main Content - Purchase History List -->
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listview_purchase_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,38 +48,4 @@
         android:padding="8dp" />
 
     <!-- Empty State View (shown when history is empty) -->
-    <LinearLayout
-        android:id="@+id/layout_empty_state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/back_1"
-            app:tint="#CCCCCC" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Bạn chưa có lịch sử mua hàng nào"
-            android:textColor="#666666"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btn_shop_now"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:text="Mua sắm ngay"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
 </RelativeLayout>
