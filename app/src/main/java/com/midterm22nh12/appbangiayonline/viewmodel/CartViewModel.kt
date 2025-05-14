@@ -1,21 +1,23 @@
 package com.midterm22nh12.appbangiayonline.viewmodel
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Utils.UiState
 import com.midterm22nh12.appbangiayonline.model.Entity.Order.CartItem
-import com.midterm22nh12.appbangiayonline.repository.CartRepository
+import com.midterm22nh12.appbangiayonline.Repository.CartRepository
 import kotlinx.coroutines.launch
 
 /**
  * ViewModel xử lý các logic liên quan đến giỏ hàng
  */
 class CartViewModel(
-    private val cartRepository: CartRepository
-) : ViewModel() {
-
+    application: Application
+) : AndroidViewModel(application) {
+    private val cartRepository = CartRepository()
     // UI State cho giỏ hàng
     private val _cartItemsState = MutableLiveData<UiState<List<CartItem>>>()
     val cartItemsState: LiveData<UiState<List<CartItem>>> = _cartItemsState
@@ -40,7 +42,17 @@ class CartViewModel(
         viewModelScope.launch {
             _cartItemsState.value = UiState.Loading
             try {
+                Log.d("CartViewModel", "Bắt đầu lấy giỏ hàng")
+
+                // Sử dụng phương thức đồng bộ cải tiến, tránh vấn đề bất đồng bộ
                 cartRepository.getUserCart(userId).collect { cartItems ->
+                    Log.d("CartViewModel", "Nhận được ${cartItems.size} sản phẩm từ repository")
+
+                    // Debug log để kiểm tra từng sản phẩm
+                    cartItems.forEachIndexed { index, item ->
+                        Log.d("CartViewModel", "Item $index: ${item.product.name}, color: ${item.selectedColor.name}, size: ${item.selectedSize}")
+                    }
+
                     _cartItemsState.value = UiState.Success(cartItems)
 
                     // Tính toán tổng tiền
@@ -50,6 +62,33 @@ class CartViewModel(
                     _cartCountState.value = cartItems.size
                 }
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi lấy giỏ hàng: ${e.message}")
+                _cartItemsState.value = UiState.Error(e.message ?: "Lỗi không xác định")
+            }
+        }
+    }
+
+    /**
+     * Lấy danh sách sản phẩm trong giỏ hàng realtime
+     * @param userId ID người dùng
+     */
+    fun getCartItemsRealtime(userId: String) {
+        viewModelScope.launch {
+            _cartItemsState.value = UiState.Loading
+            try {
+                cartRepository.getUserCartRealtime(userId).collect { cartItems ->
+                    Log.d("CartViewModel", "Nhận được ${cartItems.size} sản phẩm từ repository (realtime)")
+
+                    _cartItemsState.value = UiState.Success(cartItems)
+
+                    // Tính toán tổng tiền
+                    calculateCartTotal(cartItems)
+
+                    // Cập nhật số lượng sản phẩm
+                    _cartCountState.value = cartItems.size
+                }
+            } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi lấy giỏ hàng realtime: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Lỗi không xác định")
             }
         }
@@ -64,6 +103,7 @@ class CartViewModel(
             // Tính tiền cho từng item: giá sản phẩm x số lượng
             item.product.price * item.quantity
         }
+        Log.d("CartViewModel", "Tổng tiền giỏ hàng: $total")
         _cartTotalState.value = total
     }
 
@@ -78,6 +118,8 @@ class CartViewModel(
     fun addToCart(userId: String, productId: String, colorName: String, size: String, quantity: Int = 1) {
         viewModelScope.launch {
             try {
+                Log.d("CartViewModel", "Thêm vào giỏ hàng: productId=$productId, colorName=$colorName, size=$size")
+
                 // Kiểm tra tình trạng sản phẩm trước khi thêm vào giỏ hàng
                 val isAvailable = cartRepository.checkProductAvailability(productId, colorName, size)
 
@@ -90,15 +132,18 @@ class CartViewModel(
                 val isInCart = cartRepository.isProductInCart(userId, productId, colorName, size)
 
                 if (isInCart) {
+                    Log.d("CartViewModel", "Sản phẩm đã có trong giỏ hàng, cập nhật số lượng")
                     // Nếu đã có, cập nhật số lượng thay vì thêm mới
                     updateCartItemQuantity(userId, productId, colorName, size, quantity)
                 } else {
+                    Log.d("CartViewModel", "Thêm sản phẩm mới vào giỏ hàng")
                     // Nếu chưa có, thêm mới vào giỏ hàng
                     cartRepository.addToCart(userId, productId, colorName, size, quantity)
                     // Cập nhật giỏ hàng sau khi thêm
                     getCartItems(userId)
                 }
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi thêm vào giỏ hàng: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Không thể thêm vào giỏ hàng")
             }
         }
@@ -121,6 +166,8 @@ class CartViewModel(
     ) {
         viewModelScope.launch {
             try {
+                Log.d("CartViewModel", "Cập nhật số lượng: productId=$productId, colorName=$colorName, size=$size, quantity=$quantity")
+
                 if (quantity > 0) {
                     // Kiểm tra tình trạng sản phẩm và số lượng có thể cập nhật
                     val isAvailable = cartRepository.checkProductAvailability(productId, colorName, size)
@@ -132,9 +179,12 @@ class CartViewModel(
                 }
 
                 cartRepository.updateCartItemQuantity(userId, productId, colorName, size, quantity)
+                Log.d("CartViewModel", "Đã cập nhật số lượng, đang lấy lại giỏ hàng")
+
                 // Cập nhật giỏ hàng sau khi thay đổi số lượng
                 getCartItems(userId)
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi cập nhật số lượng: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Không thể cập nhật số lượng")
             }
         }
@@ -170,6 +220,7 @@ class CartViewModel(
                     // Nếu tìm thấy sản phẩm
                     cartItem?.let {
                         val newQuantity = if (increment) it.quantity + 1 else it.quantity - 1
+                        Log.d("CartViewModel", "Thay đổi số lượng từ ${it.quantity} thành $newQuantity")
 
                         // Kiểm tra tình trạng nếu tăng số lượng
                         if (increment && newQuantity > 1) {
@@ -194,6 +245,7 @@ class CartViewModel(
                     }
                 }
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi thay đổi số lượng: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Không thể thay đổi số lượng")
             }
         }
@@ -209,10 +261,14 @@ class CartViewModel(
     fun removeFromCart(userId: String, productId: String, colorName: String, size: String) {
         viewModelScope.launch {
             try {
+                Log.d("CartViewModel-delete", "Xóa khỏi giỏ hàng: productId=$productId, colorName=$colorName, size=$size")
+
                 cartRepository.removeFromCart(userId, productId, colorName, size)
+
                 // Cập nhật giỏ hàng sau khi xóa
                 getCartItems(userId)
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi xóa khỏi giỏ hàng: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Không thể xóa khỏi giỏ hàng")
             }
         }
@@ -225,12 +281,16 @@ class CartViewModel(
     fun clearCart(userId: String) {
         viewModelScope.launch {
             try {
+                Log.d("CartViewModel", "Xóa toàn bộ giỏ hàng")
+
                 cartRepository.clearCart(userId)
+
                 // Cập nhật giỏ hàng sau khi xóa
                 _cartItemsState.value = UiState.Success(emptyList())
                 _cartTotalState.value = 0
                 _cartCountState.value = 0
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi xóa giỏ hàng: ${e.message}")
                 _cartItemsState.value = UiState.Error(e.message ?: "Không thể xóa giỏ hàng")
             }
         }
@@ -249,9 +309,12 @@ class CartViewModel(
 
         viewModelScope.launch {
             try {
+                Log.d("CartViewModel", "Kiểm tra sản phẩm trong giỏ hàng")
+
                 val isInCart = cartRepository.isProductInCart(userId, productId, colorName, size)
                 result.value = isInCart
             } catch (e: Exception) {
+                Log.e("CartViewModel", "Lỗi khi kiểm tra sản phẩm trong giỏ hàng: ${e.message}")
                 result.value = false
             }
         }

@@ -2,18 +2,24 @@ package com.midterm22nh12.appbangiayonline.view.User
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.FirebaseAuth
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewColorOrderView
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyAdapterRecyclerViewSizeOrderView
 import com.midterm22nh12.appbangiayonline.Adapter.User.ProductImagePagerAdapter
 import com.midterm22nh12.appbangiayonline.R
+import com.midterm22nh12.appbangiayonline.Utils.UiState
 import com.midterm22nh12.appbangiayonline.databinding.OrderUserBinding
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewColorOrderUser
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewSizeOrderView
+import com.midterm22nh12.appbangiayonline.viewmodel.CartViewModel
 
 class order_user(
     private val context: Context,
@@ -21,11 +27,17 @@ class order_user(
     private val item: ItemRecyclerViewProductHomeUser
 ) {
     private lateinit var colorAdapter: MyAdapterRecyclerViewColorOrderView
+    private var cartViewModel = (context as MainActivityUser).getSharedCartViewModel()
+    private lateinit var userId: String // ID của người dùng hiện tại
+
     init {
         setUpView()
         displayProductData()
+        initViewModel()
+        setupAddToCartButton()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setUpView() {
         binding.ivBackOrderUser.setOnClickListener {
             // Ẩn giao diện tin nhắn
@@ -43,14 +55,14 @@ class order_user(
             (context as? MainActivityUser)?.showMessagesOverlay(item)
         }
     }
+
     @SuppressLint("SetTextI18n", "DefaultLocale")
-    private fun displayProductData()
-    {
+    private fun displayProductData() {
         binding.tvNameProductOrderUser.text = item.name
         binding.tvPriceOrderUser.text = String.format("%,d vnđ", item.price)
         binding.tvRatingProductOrderUser.text = item.rating.toString()
         binding.tvDescriptionOrderUser.text = item.description
-        binding.tvSizeOrderUser.text=item.sizes[0].value
+        binding.tvSizeOrderUser.text = item.sizes[0].value
         binding.tvStockProductOrderUser.text = "Kho: ${item.colors[0].stock}"
 
         // Thiết lập danh sách màu sắc TRƯỚC
@@ -63,6 +75,7 @@ class order_user(
         setupSizes()
 
     }
+
     private fun setupSizes() {
         binding.rcSizeProductOrderUser.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -87,6 +100,7 @@ class order_user(
             binding.tvSizeOrderUser.text = sizeItems[0].size
         }
     }
+
     private fun setupViewPager() {
         try {
             // Kiểm tra dữ liệu
@@ -122,10 +136,29 @@ class order_user(
                             val color = item.colors[position]
                             binding.tvColorOrderUser.text = "Màu: ${color.name}"
                             binding.tvStockProductOrderUser.text = "Kho: ${color.stock}"
+                            binding.btAddQuantityOrderUser.setOnClickListener {
+                                val currentQuantity =
+                                    binding.tvQuantityOrderUser.text.toString().toIntOrNull() ?: 1
+                                if (currentQuantity < color.stock)
+                                    binding.tvQuantityOrderUser.text =
+                                        (currentQuantity + 1).toString()
+                            }
+                            binding.btRemoveQuantityOrderUser.setOnClickListener {
+                                val currentQuantity =
+                                    binding.tvQuantityOrderUser.text.toString().toIntOrNull() ?: 1
+                                if (currentQuantity > 1) {
+                                    binding.tvQuantityOrderUser.text =
+                                        (currentQuantity - 1).toString()
+                                }
+                            }
                         }
                     }
 
-                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int
+                    ) {
                         super.onPageScrolled(position, positionOffset, positionOffsetPixels)
 
                         // Cập nhật hiệu ứng dot indicators mượt mà hơn
@@ -170,17 +203,23 @@ class order_user(
                         // Nếu có offset (đang di chuyển), tạo hiệu ứng chuyển đổi
                         if (positionOffset < 0.5) {
                             // Chưa đi qua 50% - dot1 vẫn đậm, dot2 vẫn nhạt
-                            binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
-                            binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                            binding.dot1.background =
+                                ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                            binding.dot2.background =
+                                ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
                         } else {
                             // Đã đi qua 50% - đổi trạng thái
-                            binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
-                            binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                            binding.dot1.background =
+                                ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                            binding.dot2.background =
+                                ContextCompat.getDrawable(context, R.drawable.indicator_selected)
                         }
                     } else {
                         // Không có offset (đang đứng yên ở trang 1)
-                        binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
-                        binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                        binding.dot1.background =
+                            ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                        binding.dot2.background =
+                            ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
                     }
                 } else {
                     // Đang lướt từ trang 2 về trang 1
@@ -188,8 +227,10 @@ class order_user(
                         // Đây là trường hợp đặc biệt không thường xảy ra
                     } else {
                         // Đang đứng yên ở trang 2
-                        binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
-                        binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                        binding.dot1.background =
+                            ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                        binding.dot2.background =
+                            ContextCompat.getDrawable(context, R.drawable.indicator_selected)
                     }
                 }
                 return
@@ -200,18 +241,23 @@ class order_user(
 
             if (currentProgress <= 0.5) {
                 // Nửa đầu của tổng số trang: dot1 đậm, dot2 nhạt
-                binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
-                binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                binding.dot1.background =
+                    ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                binding.dot2.background =
+                    ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
             } else {
                 // Nửa sau của tổng số trang: dot1 nhạt, dot2 đậm
-                binding.dot1.background = ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
-                binding.dot2.background = ContextCompat.getDrawable(context, R.drawable.indicator_selected)
+                binding.dot1.background =
+                    ContextCompat.getDrawable(context, R.drawable.indicator_unselected)
+                binding.dot2.background =
+                    ContextCompat.getDrawable(context, R.drawable.indicator_selected)
             }
         } catch (e: Exception) {
             android.util.Log.e("ViewPager", "Lỗi khi cập nhật dot indicators mượt mà: ${e.message}")
             e.printStackTrace()
         }
     }
+
     @SuppressLint("SetTextI18n")
     private fun setupColorList() {
         binding.rcListColorOrderUser.layoutManager =
@@ -247,6 +293,74 @@ class order_user(
             binding.tvStockProductOrderUser.text = "Kho: ${colorItems[0].stock}"
         }
     }
-    //sự kiện mua hàng
 
+    private fun initViewModel() {
+        // Lấy userID từ Firebase Auth hoặc từ context
+        val firebaseAuth = FirebaseAuth.getInstance()
+        userId = firebaseAuth.currentUser?.uid ?: ""
+
+        // Theo dõi trạng thái thêm vào giỏ hàng
+        cartViewModel.cartItemsState.observe(context as LifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    showLoading() // Hiển thị loading
+                }
+
+                is UiState.Success -> {
+                    hideLoading() // Ẩn loading
+                    showSuccessMessage("Đã thêm sản phẩm vào giỏ hàng")
+                }
+
+                is UiState.Error -> {
+                    hideLoading() // Ẩn loading
+                    showErrorMessage(state.message) // Hiển thị thông báo lỗi
+                }
+            }
+        }
+    }
+
+    // Thêm sự kiện thêm vào giỏ hàng
+    private fun setupAddToCartButton() {
+        binding.btBuyOrderUser.setOnClickListener {
+            val selectedColorPosition = binding.viewPagerProductImagesOrderUser.currentItem
+            val selectedColor = item.colors[selectedColorPosition].name
+            val selectedSize = binding.tvSizeOrderUser.text.toString()
+            val quantity = binding.tvQuantityOrderUser.text.toString().toIntOrNull() ?: 1
+
+            // Gọi ViewModel để thêm vào giỏ hàng
+            cartViewModel.addToCart(
+                userId = userId,
+                productId = item.id,
+                colorName = selectedColor,
+                size = selectedSize,
+                quantity = quantity
+            )
+            Log.d(
+                "CheckAvailability",
+                "userId=$userId, productId=${item.id}, selectedColor=${selectedColor}, size=${selectedSize}, quantity=$quantity"
+            )
+
+            (context as? MainActivityUser)?.navigateFromOverlayToFragment(0)
+        }
+    }
+
+    // Hiển thị loading
+    private fun showLoading() {
+        binding.progressBarLoadOrderUser.visibility = View.VISIBLE
+    }
+
+    // Ẩn loading
+    private fun hideLoading() {
+        binding.progressBarLoadOrderUser.visibility = View.GONE
+    }
+
+    // Hiển thị thông báo thành công
+    private fun showSuccessMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // Hiển thị thông báo lỗi
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(context, "Lỗi " + message, Toast.LENGTH_LONG).show()
+    }
 }

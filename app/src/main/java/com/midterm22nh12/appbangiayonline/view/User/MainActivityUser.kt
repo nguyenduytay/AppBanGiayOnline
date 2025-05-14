@@ -20,11 +20,14 @@ import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.databinding.ActivityMainUserBinding
 import com.midterm22nh12.appbangiayonline.Ui.Animations.DepthPageTransformer
 import com.midterm22nh12.appbangiayonline.Adapter.User.MyViewpager2Adapter
+import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewConfirmation
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewNotificationUser
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
 import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.CartViewModel
 import com.midterm22nh12.appbangiayonline.viewmodel.Message.ChatViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.OrderViewModel
 import java.util.ArrayDeque
 
 class MainActivityUser : AppCompatActivity() {
@@ -35,6 +38,8 @@ class MainActivityUser : AppCompatActivity() {
     private lateinit var headerView: View
     lateinit var authViewModel: AuthViewModel
     lateinit var chatViewModel : ChatViewModel
+    lateinit var cartViewModel : CartViewModel
+    lateinit var orderViewModel : OrderViewModel
     private val navigationHistory = ArrayDeque<Int>()//// Lưu trữ lịch sử overlay fragment
     private var currentPosition = 1
     private val overlayStack = ArrayDeque<String>() // Lưu trữ lịch sử overlay include
@@ -52,6 +57,8 @@ class MainActivityUser : AppCompatActivity() {
 
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
+        orderViewModel = ViewModelProvider(this)[OrderViewModel::class.java]
 
         //thiết lập sự kiện cho nút back trong header của navigationView
         setUpNavigationView()
@@ -65,6 +72,12 @@ class MainActivityUser : AppCompatActivity() {
     }
     fun getSharedChatViewModel() : ChatViewModel {
         return chatViewModel
+    }
+    fun getSharedCartViewModel() : CartViewModel {
+        return cartViewModel
+    }
+    fun getSharedOrderViewModel() : OrderViewModel {
+        return orderViewModel
     }
     //sự kiện chuyển đổi fragment
     private fun setUpViewpager2() {
@@ -320,7 +333,7 @@ class MainActivityUser : AppCompatActivity() {
         val orderHandler = order_user(this, orderBinding, item)
     }
 
-    // Thêm hàm mới hiển thị overlay đánh giá
+    // đánh giá sản phẩm
     fun showRatingUser() {
         // Lưu overlay hiện tại vào stack (nếu có)
         saveCurrentOverlayToStack()
@@ -353,8 +366,8 @@ class MainActivityUser : AppCompatActivity() {
         val confirmationHandler = confirmation_user(this, confirmationBinding)
     }
 
-    // Hàm hiển thị overlay đánh giá sản phẩm
-    fun showEvaluateUser() {
+    // Hàm hiển thị đánh giá chi tiết sản phẩm
+    fun showEvaluateUser(item : ItemRecyclerViewConfirmation) {
         // Lưu overlay hiện tại vào stack (nếu có)
         saveCurrentOverlayToStack()
         navigationHistory.push( bindingMainActivityUser.mainBodyViewPager2User.currentItem)
@@ -366,7 +379,7 @@ class MainActivityUser : AppCompatActivity() {
 
         // Khởi tạo handler
         val evaluateBinding = bindingMainActivityUser.evaluateUserActivityMainUser
-        val evaluateHandler = evaluate_user(this, evaluateBinding)
+        val evaluateHandler = evaluate_user(this, evaluateBinding,item)
     }
 
     // Hàm hiển thị overlay đánh giá của tôi

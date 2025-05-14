@@ -186,9 +186,9 @@ class BlankFragmentAccountUser : Fragment() {
                 (activity as? MainActivityUser)?.showTransportationUser()
             }
 
-            // Đi đến đánh giá của tôi
+            // Đi đến đánh giá sản phẩm
             llMyReviewUserAccountUser.setOnClickListener {
-                (activity as? MainActivityUser)?.showMyReviewUser()
+                (activity as? MainActivityUser)?.showRatingUser()
             }
         }
 

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#CEC3C3">
+        android:background="#D9D9D9">
 
         <!-- Notification Tag -->
         <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_order_status"
+                android:id="@+id/tv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -38,10 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="5dp">
 
             <ImageView
-                android:id="@+id/img_product"
+                android:id="@+id/iv_image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@drawable/item_border_account"
@@ -56,25 +56,25 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_name_product_order_user"
+                    android:id="@+id/tv_name_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Giày Jordan"
                     android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_product_variant"
+                    android:id="@+id/tv_size_end_quantity_end_color_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Màu: 4  Size: 32"
                     android:textColor="#757575"
-                    android:textSize="14sp" />
+                    android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/tv_total_amount"
+                    android:id="@+id/tv_total_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -89,19 +89,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="3dp">
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/bt_click"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#BD2626"
                 android:gravity="center"
                 android:text="Hủy"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

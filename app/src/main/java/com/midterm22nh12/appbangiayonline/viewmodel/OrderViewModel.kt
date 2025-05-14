@@ -1,5 +1,8 @@
 package com.midterm22nh12.appbangiayonline.viewmodel
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,8 +14,9 @@ import com.midterm22nh12.appbangiayonline.model.Entity.Order.OrderItem
 import com.midterm22nh12.appbangiayonline.model.Entity.Order.OrderStatusHistory
 import com.midterm22nh12.appbangiayonline.model.Entity.Order.OrderWithItems
 import com.midterm22nh12.appbangiayonline.model.Entity.Order.ProductReview
-import com.midterm22nh12.appbangiayonline.repository.CartRepository
-import com.midterm22nh12.appbangiayonline.repository.OrderRepository
+import com.midterm22nh12.appbangiayonline.Repository.CartRepository
+import com.midterm22nh12.appbangiayonline.Repository.OrderRepository
+import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewConfirmation
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -20,11 +24,9 @@ import java.util.UUID
 /**
  * ViewModel xử lý các logic liên quan đến đơn hàng và giỏ hàng
  */
-class OrderViewModel(
-    private val orderRepository: OrderRepository,
-    private val cartRepository: CartRepository
-) : ViewModel() {
-
+class OrderViewModel(application: Application): AndroidViewModel(application) {
+    private val orderRepository = OrderRepository()
+    private val cartRepository = CartRepository()
     // UI State cho tạo đơn hàng
     private val _createOrderState = MutableLiveData<UiState<String>>()
     val createOrderState: LiveData<UiState<String>> = _createOrderState
@@ -52,6 +54,11 @@ class OrderViewModel(
     // UI State cho danh sách đơn hàng theo trạng thái (Admin)
     private val _ordersByStatusState = MutableLiveData<UiState<List<Order>>>()
     val ordersByStatusState: LiveData<UiState<List<Order>>> = _ordersByStatusState
+
+    // LiveData để theo dõi danh sách sản phẩm chờ xác nhận
+    private val _pendingOrderItemsState = MutableLiveData<UiState<List<ItemRecyclerViewConfirmation>>>()
+    val pendingOrderItemsState: LiveData<UiState<List<ItemRecyclerViewConfirmation>>> = _pendingOrderItemsState
+
 
     /**
      * Tạo đơn hàng mới từ giỏ hàng
@@ -135,9 +142,6 @@ class OrderViewModel(
 
                 // Lưu đơn hàng vào database
                 val orderId = orderRepository.createOrder(order, orderItems)
-
-                // Xóa giỏ hàng sau khi đặt hàng thành công
-                cartRepository.clearCart(userId)
 
                 _createOrderState.value = UiState.Success(orderId)
             } catch (e: Exception) {
@@ -360,4 +364,52 @@ class OrderViewModel(
             }
         }
     }
+    // Theo dõi đơn hàng realtime
+    fun observePendingOrderItems(userId: String) {
+        viewModelScope.launch {
+            try {
+                // Bắt đầu loading
+                _pendingOrderItemsState.value = UiState.Loading
+
+                // Lắng nghe thay đổi của đơn hàng
+                orderRepository.getPendingOrderItemsRealtime(userId)
+                    .collect { pendingProducts ->
+                        // Log để debug
+                        Log.d("OrderViewModel", "Nhận được ${pendingProducts.size} items")
+
+                        // Cập nhật state
+                        _pendingOrderItemsState.value = UiState.Success(pendingProducts)
+                    }
+            } catch (e: Exception) {
+                // Xử lý lỗi
+                Log.e("OrderViewModel", "Lỗi: ${e.message}", e)
+                _pendingOrderItemsState.value = UiState.Error(e.message ?: "Lỗi không xác định")
+            }
+        }
+    }
+    //hủy đơn hàng
+    fun cancelOrderItemByProductId(
+        productId: String,
+        orderId: String,
+        userId: String,
+        reason: String = "Khách hàng hủy"
+    ) {
+        viewModelScope.launch {
+            try {
+                // Gọi phương thức hủy item từ repository
+                orderRepository.cancelOrderItemByProductId(
+                    productId = productId,
+                    orderId = orderId,
+                    userId = userId,
+                    reason = reason
+                )
+
+            } catch (e: Exception) {
+                // Xử lý lỗi
+                Log.e("OrderViewModel", "Lỗi khi hủy item đơn hàng: ${e.message}")
+                _userOrdersState.value = UiState.Error(e.message ?: "Không thể hủy item đơn hàng")
+            }
+        }
+    }
+
 }
