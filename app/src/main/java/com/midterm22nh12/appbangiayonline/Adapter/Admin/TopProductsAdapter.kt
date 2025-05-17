@@ -12,13 +12,31 @@ import com.midterm22nh12.appbangiayonline.model.Item.TopProduct
 import java.text.NumberFormat
 import java.util.Locale
 
+/**
+ * Adapter hiển thị danh sách sản phẩm bán chạy nhất trên giao diện Admin Dashboard
+ * Sắp xếp và hiển thị sản phẩm theo thứ hạng dựa trên số lượng bán ra hoặc doanh thu
+ *
+ * @param context Context để truy cập tài nguyên và dịch vụ của ứng dụng
+ * @param topProducts Danh sách sản phẩm bán chạy cần hiển thị
+ */
 class TopProductsAdapter(
     private val context: Context,
     private var topProducts: List<TopProduct>
 ) : RecyclerView.Adapter<TopProductsAdapter.ViewHolder>() {
 
+    /**
+     * ViewHolder để lưu trữ các thành phần giao diện cho mỗi item sản phẩm bán chạy
+     * @param binding Binding tới layout của item sản phẩm bán chạy
+     */
     inner class ViewHolder(val binding: ItemTopProductBinding) : RecyclerView.ViewHolder(binding.root)
 
+    /**
+     * Tạo một ViewHolder mới khi RecyclerView cần
+     *
+     * @param parent ViewGroup cha chứa ViewHolder mới
+     * @param viewType Loại view (không sử dụng trong trường hợp này)
+     * @return ViewHolder mới được tạo
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemTopProductBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -28,6 +46,14 @@ class TopProductsAdapter(
         return ViewHolder(binding)
     }
 
+    /**
+     * Gắn dữ liệu vào ViewHolder tại vị trí cụ thể
+     * Hiển thị thông tin sản phẩm bán chạy bao gồm tên, số lượng bán, doanh thu và thứ hạng
+     * Thay đổi màu sắc thứ hạng dựa trên vị trí (3 vị trí đầu tiên có màu nổi bật)
+     *
+     * @param holder ViewHolder cần gắn dữ liệu
+     * @param position Vị trí của item trong danh sách
+     */
     @SuppressLint("CheckResult", "SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = topProducts[position]
@@ -66,8 +92,16 @@ class TopProductsAdapter(
         }
     }
 
+    /**
+     * Trả về số lượng item trong danh sách sản phẩm bán chạy
+     * @return Số lượng sản phẩm
+     */
     override fun getItemCount(): Int = topProducts.size
 
+    /**
+     * Cập nhật danh sách sản phẩm bán chạy với dữ liệu mới
+     * @param newProducts Danh sách sản phẩm bán chạy mới cần hiển thị
+     */
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newProducts: List<TopProduct>) {
         topProducts = newProducts

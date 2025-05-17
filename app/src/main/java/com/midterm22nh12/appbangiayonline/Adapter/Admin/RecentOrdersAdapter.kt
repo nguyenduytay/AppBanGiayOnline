@@ -13,13 +13,31 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Adapter hiển thị danh sách đơn hàng gần đây trên giao diện Admin Dashboard
+ * Hiển thị thông tin tóm tắt về đơn hàng bao gồm ID, ngày đặt, tổng tiền, số sản phẩm và trạng thái
+ *
+ * @param context Context để truy cập tài nguyên và dịch vụ của ứng dụng
+ * @param recentOrders Danh sách đơn hàng gần đây cần hiển thị
+ */
 class RecentOrdersAdapter(
     private val context: Context,
     private var recentOrders: List<OrderWithItems>
 ) : RecyclerView.Adapter<RecentOrdersAdapter.ViewHolder>() {
 
+    /**
+     * ViewHolder để lưu trữ các thành phần giao diện cho mỗi item đơn hàng
+     * @param binding Binding tới layout của item đơn hàng gần đây
+     */
     inner class ViewHolder(val binding: ItemRecentOrderBinding) : RecyclerView.ViewHolder(binding.root)
 
+    /**
+     * Tạo một ViewHolder mới khi RecyclerView cần
+     *
+     * @param parent ViewGroup cha chứa ViewHolder mới
+     * @param viewType Loại view (không sử dụng trong trường hợp này)
+     * @return ViewHolder mới được tạo
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRecentOrderBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -29,6 +47,14 @@ class RecentOrdersAdapter(
         return ViewHolder(binding)
     }
 
+    /**
+     * Hiển thị dữ liệu đơn hàng vào ViewHolder tại vị trí cụ thể
+     * Bao gồm ID đơn hàng, ngày đặt, tổng tiền, số sản phẩm, trạng thái thanh toán và trạng thái đơn hàng
+     *
+     * @param holder ViewHolder cần gắn dữ liệu
+     * @param position Vị trí của item trong danh sách
+     */
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val orderWithItems = recentOrders[position]
         val binding = holder.binding
@@ -80,6 +106,12 @@ class RecentOrdersAdapter(
         }
     }
 
+    /**
+     * Chuyển đổi mã trạng thái thành văn bản hiển thị cho người dùng
+     *
+     * @param status Mã trạng thái của đơn hàng
+     * @return Văn bản mô tả trạng thái bằng tiếng Việt
+     */
     private fun getStatusText(status: String): String {
         return when (status) {
             "pending" -> "Chờ xác nhận"
@@ -92,6 +124,12 @@ class RecentOrdersAdapter(
         }
     }
 
+    /**
+     * Lấy resource ID của màu dựa trên trạng thái đơn hàng
+     *
+     * @param status Mã trạng thái của đơn hàng
+     * @return Resource ID của màu tương ứng với trạng thái
+     */
     private fun getStatusColor(status: String): Int {
         return when (status) {
             "pending" -> R.color.status_pending
@@ -103,8 +141,16 @@ class RecentOrdersAdapter(
         }
     }
 
+    /**
+     * Trả về số lượng item trong danh sách đơn hàng gần đây
+     * @return Số lượng đơn hàng
+     */
     override fun getItemCount(): Int = recentOrders.size
 
+    /**
+     * Cập nhật danh sách đơn hàng với dữ liệu mới
+     * @param newOrders Danh sách đơn hàng mới cần hiển thị
+     */
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newOrders: List<OrderWithItems>) {
         recentOrders = newOrders

@@ -17,15 +17,36 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Adapter để hiển thị danh sách đơn hàng trong giao diện Admin
+ * Cung cấp chức năng xem chi tiết, lọc theo trạng thái, và cập nhật danh sách đơn hàng
+ *
+ * @param orderData Danh sách đơn hàng và chi tiết mục đơn hàng
+ * @param onItemDetailClick Callback khi người dùng nhấn vào nút xem chi tiết đơn hàng
+ * @param onProcessOrderClick Callback khi người dùng nhấn vào nút xử lý đơn hàng
+ */
 class MyAdapterRecyclerViewBillAdmin(
     private var orderData: MutableList<OrderWithItems> = mutableListOf(),
     private val onItemDetailClick: (OrderWithItems) -> Unit,
     private val onProcessOrderClick: (String) -> Unit
 ) : RecyclerView.Adapter<MyAdapterRecyclerViewBillAdmin.ViewHolder>() {
 
+    /**
+     * ViewHolder để giữ các thành phần giao diện cho mỗi item đơn hàng
+     * @param binding Binding tới layout của item đơn hàng
+     */
     inner class ViewHolder(val binding: ItemListBillAdminBinding) : RecyclerView.ViewHolder(binding.root)
 
     private lateinit var authViewModel : AuthViewModel
+
+    /**
+     * Tạo ViewHolder mới khi RecyclerView cần hiển thị một item mới
+     * Khởi tạo authViewModel từ MainActivityAdmin
+     *
+     * @param parent ViewGroup chứa ViewHolder mới
+     * @param viewType Loại view (không sử dụng trong trường hợp này)
+     * @return ViewHolder mới được tạo
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemListBillAdminBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -36,8 +57,19 @@ class MyAdapterRecyclerViewBillAdmin(
         return ViewHolder(binding)
     }
 
+    /**
+     * Trả về số lượng item trong danh sách đơn hàng
+     * @return Số lượng đơn hàng cần hiển thị
+     */
     override fun getItemCount(): Int = orderData.size
 
+    /**
+     * Gắn dữ liệu vào ViewHolder tại vị trí cụ thể
+     * Hiển thị thông tin đơn hàng, trạng thái, sản phẩm và thiết lập sự kiện click
+     *
+     * @param holder ViewHolder cần gắn dữ liệu
+     * @param position Vị trí của item trong danh sách
+     */
     @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val orderWithItems = orderData[position]
@@ -129,11 +161,13 @@ class MyAdapterRecyclerViewBillAdmin(
             btnViewDetail.setOnClickListener {
                 onItemDetailClick(orderData[position])
             }
-
         }
     }
 
-    // Cập nhật dữ liệu
+    /**
+     * Cập nhật danh sách đơn hàng với dữ liệu mới
+     * @param newData Danh sách đơn hàng mới cần hiển thị
+     */
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newData: List<OrderWithItems>) {
         orderData.clear()
@@ -141,12 +175,20 @@ class MyAdapterRecyclerViewBillAdmin(
         notifyDataSetChanged()
     }
 
-    // Lấy dữ liệu hiện tại
+    /**
+     * Lấy danh sách đơn hàng hiện tại
+     * @return Danh sách đơn hàng hiện đang được hiển thị
+     */
     fun getOrderData(): List<OrderWithItems> {
         return orderData.toList()
     }
 
-    // Lọc đơn hàng theo trạng thái
+    /**
+     * Lọc đơn hàng theo trạng thái cụ thể
+     * Nếu status là "all", hiển thị tất cả đơn hàng
+     *
+     * @param status Trạng thái cần lọc (pending, processing, shipping, delivered, evaluate, all)
+     */
     @SuppressLint("NotifyDataSetChanged")
     fun filterByStatus(status: String) {
         val allData = orderData.toList() // Tạo bản sao
@@ -164,7 +206,11 @@ class MyAdapterRecyclerViewBillAdmin(
         notifyDataSetChanged()
     }
 
-    // Helper methods để lấy text và background cho trạng thái
+    /**
+     * Chuyển đổi mã trạng thái sang văn bản hiển thị
+     * @param status Mã trạng thái (pending, processing, shipping, delivered, evaluate)
+     * @return Văn bản trạng thái hiển thị cho người dùng
+     */
     private fun getStatusText(status: String): String {
         return when (status) {
             "pending" -> "Chờ xác nhận"
@@ -176,6 +222,11 @@ class MyAdapterRecyclerViewBillAdmin(
         }
     }
 
+    /**
+     * Lấy resource ID của background tương ứng với trạng thái
+     * @param status Mã trạng thái (pending, processing, shipping, delivered, evaluate)
+     * @return Resource ID của drawable background
+     */
     private fun getStatusBackground(status: String): Int {
         return when (status) {
             "pending" -> R.drawable.bg_status_pending
