@@ -12,5 +12,6 @@ data class OrderItem(
     val size: String = "",         // Kích cỡ đã chọn
     val color: String = "",        // Màu sắc đã chọn
     val colorImage: String = "",   // Ảnh của màu sắc đã chọn
-    val productCode: String = ""   // Mã sản phẩm của màu đã chọn
+    val productCode: String = "",   // Mã sản phẩm của màu đã chọn
+    val status: String = "pending",   // Trạng thái đơn hàng (pending, processing,shipping, delivered, evaluate)
 )

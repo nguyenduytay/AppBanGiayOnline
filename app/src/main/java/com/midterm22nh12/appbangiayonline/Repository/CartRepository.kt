@@ -15,16 +15,27 @@ import kotlinx.coroutines.flow.callbackFlow
 
 /**
  * Repository xử lý các hoạt động liên quan đến giỏ hàng sử dụng Realtime Database
+ * Cung cấp các phương thức để quản lý giỏ hàng: thêm, sửa, xóa, lấy danh sách sản phẩm
  */
 class CartRepository {
+    // Khởi tạo kết nối với Firebase Realtime Database
     private val database = FirebaseDatabase.getInstance()
-    private val cartRef = database.getReference("carts")
-    private val productsRef = database.getReference("products")
+    private val cartRef = database.getReference("carts")       // Tham chiếu đến node lưu giỏ hàng
+    private val productsRef = database.getReference("products") // Tham chiếu đến node lưu sản phẩm
 
     /**
      * Lấy danh sách sản phẩm trong giỏ hàng của người dùng
-     * @param userId ID của người dùng
-     * @return Flow chứa danh sách sản phẩm trong giỏ hàng
+     * Sử dụng Flow để trả về dữ liệu bất đồng bộ
+     *
+     * Quy trình:
+     * 1. Lấy dữ liệu giỏ hàng từ database
+     * 2. Duyệt qua từng item trong giỏ hàng
+     * 3. Lấy thông tin chi tiết sản phẩm
+     * 4. Kiểm tra tính khả dụng của sản phẩm (trạng thái, tồn kho)
+     * 5. Tạo và trả về danh sách CartItem
+     *
+     * @param userId ID của người dùng cần lấy giỏ hàng
+     * @return Flow<List<CartItem>> - luồng dữ liệu chứa danh sách sản phẩm trong giỏ hàng
      */
     fun getUserCart(userId: String): Flow<List<CartItem>> = flow {
         try {
@@ -124,8 +135,15 @@ class CartRepository {
 
     /**
      * Lấy danh sách sản phẩm trong giỏ hàng (sử dụng ValueEventListener)
+     * Trả về Flow để theo dõi thay đổi theo thời gian thực
+     *
+     * Khác với getUserCart:
+     * - Sử dụng callbackFlow để lắng nghe thay đổi realtime
+     * - Có cơ chế theo dõi và đếm item đã xử lý xong
+     * - Tự động cập nhật khi dữ liệu thay đổi trên Firebase
+     *
      * @param userId ID của người dùng
-     * @return Flow chứa danh sách sản phẩm trong giỏ hàng
+     * @return Flow<List<CartItem>> - luồng dữ liệu thời gian thực chứa danh sách sản phẩm trong giỏ hàng
      */
     fun getUserCartRealtime(userId: String): Flow<List<CartItem>> = callbackFlow {
         Log.d("CartRepository", "Bắt đầu lắng nghe giỏ hàng realtime cho userId: $userId")
@@ -276,11 +294,18 @@ class CartRepository {
 
     /**
      * Thêm sản phẩm vào giỏ hàng
+     *
+     * Quy trình:
+     * 1. Kiểm tra tính khả dụng của sản phẩm
+     * 2. Tạo ID duy nhất cho item trong giỏ hàng (productId_colorName_size)
+     * 3. Lưu thông tin vào database
+     *
      * @param userId ID của người dùng
      * @param productId ID của sản phẩm
      * @param colorName Tên màu sắc đã chọn
      * @param size Kích cỡ đã chọn
-     * @param quantity Số lượng
+     * @param quantity Số lượng (mặc định là 1)
+     * @throws Exception nếu có lỗi xảy ra trong quá trình thêm
      */
     suspend fun addToCart(
         userId: String,
@@ -322,11 +347,19 @@ class CartRepository {
 
     /**
      * Cập nhật số lượng sản phẩm trong giỏ hàng
+     *
+     * Quy trình:
+     * 1. Nếu số lượng <= 0, xóa sản phẩm khỏi giỏ hàng
+     * 2. Kiểm tra tính khả dụng của sản phẩm
+     * 3. Kiểm tra số lượng tồn kho
+     * 4. Cập nhật số lượng trong database
+     *
      * @param userId ID của người dùng
      * @param productId ID của sản phẩm
      * @param colorName Tên màu sắc
      * @param size Kích cỡ
      * @param quantity Số lượng mới
+     * @throws Exception nếu có lỗi xảy ra trong quá trình cập nhật
      */
     suspend fun updateCartItemQuantity(
         userId: String,
@@ -376,10 +409,12 @@ class CartRepository {
 
     /**
      * Xóa sản phẩm khỏi giỏ hàng
+     *
      * @param userId ID của người dùng
      * @param productId ID của sản phẩm
      * @param colorName Tên màu sắc
      * @param size Kích cỡ
+     * @throws Exception nếu có lỗi xảy ra trong quá trình xóa
      */
     suspend fun removeFromCart(
         userId: String,
@@ -402,7 +437,9 @@ class CartRepository {
 
     /**
      * Xóa toàn bộ giỏ hàng sau khi tạo đơn hàng
+     *
      * @param userId ID của người dùng
+     * @throws Exception nếu có lỗi xảy ra trong quá trình xóa
      */
     suspend fun clearCart(userId: String) {
         try {
@@ -419,11 +456,13 @@ class CartRepository {
 
     /**
      * Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+     *
      * @param userId ID của người dùng
      * @param productId ID của sản phẩm
      * @param colorName Tên màu sắc
      * @param size Kích cỡ
-     * @return Kết quả kiểm tra
+     * @return true nếu sản phẩm đã có trong giỏ hàng, false nếu chưa
+     * @throws Exception nếu có lỗi xảy ra trong quá trình kiểm tra
      */
     suspend fun isProductInCart(
         userId: String,
@@ -449,10 +488,15 @@ class CartRepository {
 
     /**
      * Kiểm tra tính khả dụng của sản phẩm
+     * Một sản phẩm được coi là khả dụng khi:
+     * - Màu sắc có trạng thái "available" và có tồn kho
+     * - Kích cỡ có trạng thái "available"
+     *
      * @param productId ID sản phẩm
      * @param colorName Tên màu sắc
      * @param sizeValue Giá trị kích cỡ
-     * @return Kết quả kiểm tra
+     * @return true nếu sản phẩm khả dụng, false nếu không khả dụng
+     * @throws Exception nếu có lỗi xảy ra trong quá trình kiểm tra
      */
     suspend fun checkProductAvailability(
         productId: String,
@@ -493,9 +537,11 @@ class CartRepository {
 
     /**
      * Lấy số lượng tồn kho của sản phẩm
+     *
      * @param productId ID sản phẩm
      * @param colorName Tên màu sắc
-     * @return Số lượng tồn kho
+     * @return Số lượng tồn kho của sản phẩm với màu sắc chỉ định
+     * @throws Exception nếu không tìm thấy sản phẩm hoặc màu sắc
      */
     suspend fun getProductStock(productId: String, colorName: String): Int {
         try {
@@ -514,8 +560,10 @@ class CartRepository {
 
     /**
      * Đếm số lượng sản phẩm trong giỏ hàng
+     *
      * @param userId ID người dùng
-     * @return Số lượng sản phẩm
+     * @return Số lượng sản phẩm (số mục) trong giỏ hàng
+     * @throws Exception nếu có lỗi xảy ra trong quá trình đếm
      */
     suspend fun getCartItemCount(userId: String): Int {
         try {

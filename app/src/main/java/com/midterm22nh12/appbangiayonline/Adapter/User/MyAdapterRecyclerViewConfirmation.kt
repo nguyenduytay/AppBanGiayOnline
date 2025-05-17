@@ -18,7 +18,9 @@ class MyAdapterRecyclerViewConfirmation(
 
     // Interface để xử lý các sự kiện click
     interface OnItemClickListener {
-        fun onDeleteDetailClick(item: ItemRecyclerViewConfirmation)
+        fun onClickReview(item: ItemRecyclerViewConfirmation)
+        fun onClickOrder(item: ItemRecyclerViewConfirmation)
+        fun onCLickDeleteOrder(item: ItemRecyclerViewConfirmation)
     }
 
     // ViewHolder để binding dữ liệu
@@ -54,6 +56,13 @@ class MyAdapterRecyclerViewConfirmation(
                         btClick.setBackgroundColor(Color.parseColor("#E01C1F"))
                         btClick.isEnabled = true
                     }
+                    "processing" -> {
+                        tvStatus.text = "Đang xử lý"
+                        tvStatus.setTextColor(Color.parseColor("#595BBE"))
+                        btClick.setText("Đang xử lý")
+                        btClick.setBackgroundColor(Color.parseColor("#595BBE"))
+
+                    }
 
                     "shipping" -> {
                         tvStatus.text = "Đang vận chuyển"
@@ -71,6 +80,25 @@ class MyAdapterRecyclerViewConfirmation(
                         btClick.setBackgroundColor(Color.parseColor("#1CE046"))
                         btClick.isEnabled = true
                     }
+                    "evaluate" -> {
+                        tvStatus.text = ""
+                        tvStatus.setTextColor(Color.parseColor("#1CE046"))
+                        btClick.setText("Mua lại")
+                        btClick.setBackgroundColor(Color.parseColor("#1CE046"))
+                    }
+                }
+                btClick.setOnClickListener {
+                    when (item.status) {
+                        "pending" -> {
+                            listener.onCLickDeleteOrder(item)
+                        }
+                        "delivered" -> {
+                            listener.onClickReview(item)
+                            }
+                        "evaluate" -> {
+                            listener.onClickOrder(item)
+                        }
+                    }
                 }
                 // Load hình ảnh sản phẩm
                 Glide.with(ivImage.context)
@@ -79,9 +107,6 @@ class MyAdapterRecyclerViewConfirmation(
                     .into(ivImage)
 
                 // Xử lý sự kiện nút hủy đơn
-                btClick.setOnClickListener {
-                    listener.onDeleteDetailClick(item)
-                }
             }
 
             Log.d("OrderPendingAdapter", "Đã bind item: ${item.productName} tại vị trí $position")

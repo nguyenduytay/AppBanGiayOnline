@@ -66,7 +66,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/icon_button_bg"
+                android:background="@drawable/item_border_account_no_click"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
@@ -167,9 +167,10 @@
 
                 <!-- Rating Text Area -->
                 <EditText
+                    android:id="@+id/edt_rating"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="14dp"
                     android:background="#F9F9F9"
                     android:gravity="top"
                     android:hint="Nội dung đánh giá."
@@ -185,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="16dp"
-                android:text="LƯU Ý: văn bản phải đủ 20 chữ mới hợp lệ"
+                android:text="Hãy nhập đánh giá của bạn"
                 android:textColor="#757575"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -208,10 +209,11 @@
         android:padding="16dp">
 
         <Button
+            android:id="@+id/bt_submit"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="12dp"
-            android:backgroundTint="#D68C8C"
+            android:backgroundTint="#CA1919"
             android:text="Đánh Giá"
             android:textColor="#FFFFFF"
             android:textSize="16sp"

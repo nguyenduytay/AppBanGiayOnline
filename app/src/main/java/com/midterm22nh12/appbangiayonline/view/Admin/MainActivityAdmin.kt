@@ -19,13 +19,19 @@ import com.midterm22nh12.appbangiayonline.Adapter.Message.ConversationAdapter
 import com.midterm22nh12.appbangiayonline.R
 import com.midterm22nh12.appbangiayonline.Ui.Animations.DepthPageTransformer
 import com.midterm22nh12.appbangiayonline.Utils.ChatUtils
+import com.midterm22nh12.appbangiayonline.Utils.UiState
 import com.midterm22nh12.appbangiayonline.databinding.ActivityMainAdminBinding
 import com.midterm22nh12.appbangiayonline.model.Entity.Message.Conversation
+import com.midterm22nh12.appbangiayonline.model.Entity.Order.OrderWithItems
 import com.midterm22nh12.appbangiayonline.model.Entity.Product.Product
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
 import com.midterm22nh12.appbangiayonline.view.Auth.LoginEndCreateAccount
 import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.BrandViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.CategoryViewModel
 import com.midterm22nh12.appbangiayonline.viewmodel.Message.ChatViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.OrderViewModel
+import com.midterm22nh12.appbangiayonline.viewmodel.ProductViewModel
 import java.util.ArrayDeque
 
 class MainActivityAdmin : AppCompatActivity() {
@@ -36,6 +42,10 @@ class MainActivityAdmin : AppCompatActivity() {
     private lateinit var navigationViewNotification: NavigationView
     lateinit var authViewModel: AuthViewModel
     lateinit var chatViewModel : ChatViewModel
+    lateinit var orderViewModel: OrderViewModel
+    lateinit var productViewModel: ProductViewModel
+    lateinit var brandViewModel: BrandViewModel
+    lateinit var categoryViewModel: CategoryViewModel
     private val navigationHistory = ArrayDeque<Int>()//// Lưu trữ lịch sử overlay fragment
     private var currentPosition = 1
     private val overlayStack = ArrayDeque<String>() // Lưu trữ lịch sử overlay include
@@ -57,6 +67,10 @@ class MainActivityAdmin : AppCompatActivity() {
 
         authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        orderViewModel = ViewModelProvider(this)[OrderViewModel::class.java]
+        productViewModel = ViewModelProvider(this)[ProductViewModel::class.java]
+        brandViewModel = ViewModelProvider(this)[BrandViewModel::class.java]
+        categoryViewModel = ViewModelProvider(this)[CategoryViewModel::class.java]
 
         ChatUtils.loadAdminList { success ->
             if (success) {
@@ -70,6 +84,7 @@ class MainActivityAdmin : AppCompatActivity() {
         //đóng thông báo
         setUpNavigationView()
     }
+
     //ẩn menu
     fun hideBottomNav() {
         bindingMainActivityAdmin.mainMenuBottomNavigationAdmin.visibility=View.GONE
@@ -82,6 +97,26 @@ class MainActivityAdmin : AppCompatActivity() {
     fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    // Trong MainActivityAdmin
+    fun provideAuthViewModel(): AuthViewModel {
+        return authViewModel
+    }
+    fun provideOrderViewModel(): OrderViewModel {
+        return orderViewModel
+    }
+    fun provideProductViewModel(): ProductViewModel {
+        return productViewModel
+    }
+    fun provideBrandViewModel(): BrandViewModel {
+        return brandViewModel
+    }
+    fun provideCategoryViewModel(): CategoryViewModel {
+        return categoryViewModel
+    }
+    fun loadOrders() {
+        // Gọi ViewModel để lấy tất cả đơn hàng kèm OrderItems
+        orderViewModel.getAllOrdersWithItems()
     }
     //sự kiện đăng xuất
     fun logout() {
@@ -229,6 +264,10 @@ class MainActivityAdmin : AppCompatActivity() {
                     Log.d("OverlayDebug", "Hiển thị editEndAddProduct")
                     bindingMainActivityAdmin.editEndAddProductActivityMainAdmin.root.visibility = View.VISIBLE
                 }
+                "orderDetail" -> {
+                    Log.d("OverlayDebug", "Hiển thị orderDetail")
+                    bindingMainActivityAdmin.orderDetailAdminActivityMainAdmin.root.visibility = View.VISIBLE
+                }
                 // Thêm các overlay khác nếu cần
             }
         } else {
@@ -242,6 +281,7 @@ class MainActivityAdmin : AppCompatActivity() {
         bindingMainActivityAdmin.listMessagesActivityMainAdmin.root.visibility = View.GONE
         bindingMainActivityAdmin.messagesActivityMainAdmin.root.visibility = View.GONE
         bindingMainActivityAdmin.editEndAddProductActivityMainAdmin.root.visibility = View.GONE
+        bindingMainActivityAdmin.editEndAddProductActivityMainAdmin.root.visibility = View.GONE
         // Ẩn các overlay khác nếu có
     }
     // Hàm để lưu overlay hiện tại vào stack
@@ -253,6 +293,8 @@ class MainActivityAdmin : AppCompatActivity() {
                 overlayStack.push("message")
             bindingMainActivityAdmin.editEndAddProductActivityMainAdmin.root.visibility == View.VISIBLE ->
                 overlayStack.push("editEndAddProduct")
+            bindingMainActivityAdmin.orderDetailAdminActivityMainAdmin.root.visibility == View.VISIBLE ->
+                overlayStack.push("orderDetail")
             // Thêm các overlay khác nếu cần
         }
     }
@@ -291,7 +333,7 @@ class MainActivityAdmin : AppCompatActivity() {
         messageHandler = messages_admin(this, messageBinding, conversation, this)
     }
     //cập nhật phương thức showEditEndAddProduct
-    fun showEditEndAddProduct(product : ItemRecyclerViewProductHomeUser) {
+    fun showEditEndAddProduct(product : ItemRecyclerViewProductHomeUser?=null) {
         saveCurrentOverlayToStack()
         navigationHistory.push(bindingMainActivityAdmin.mainBodyViewPager2Admin.currentItem)
         hideAllOverlays()
@@ -299,5 +341,15 @@ class MainActivityAdmin : AppCompatActivity() {
         // Khởi tạo handler và lưu tham chiếu
         val editEndAddProductBinding = bindingMainActivityAdmin.editEndAddProductActivityMainAdmin
         editEndAddProductHandler = edit_end_add_product(this, editEndAddProductBinding, product, this)
+    }
+    fun showOrderDetail(item : OrderWithItems)
+    {
+        saveCurrentOverlayToStack()
+        navigationHistory.push(bindingMainActivityAdmin.mainBodyViewPager2Admin.currentItem)
+        hideAllOverlays()
+        bindingMainActivityAdmin.orderDetailAdminActivityMainAdmin.root.visibility = View.VISIBLE
+
+        val orderDetailBinding = bindingMainActivityAdmin.orderDetailAdminActivityMainAdmin
+        val orderDetailHandler = order_detail_admin(this, orderDetailBinding, item,this)
     }
 }

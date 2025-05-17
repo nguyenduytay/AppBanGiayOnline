@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Utils.UiState
 import com.midterm22nh12.appbangiayonline.model.Entity.Order.CartItem
@@ -17,16 +16,18 @@ import com.midterm22nh12.appbangiayonline.model.Entity.Order.ProductReview
 import com.midterm22nh12.appbangiayonline.Repository.CartRepository
 import com.midterm22nh12.appbangiayonline.Repository.OrderRepository
 import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewConfirmation
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
- * ViewModel xử lý các logic liên quan đến đơn hàng và giỏ hàng
+ * ViewModel quản lý và xử lý tất cả nghiệp vụ liên quan đến đơn hàng và giỏ hàng
+ * Cung cấp các phương thức để tạo đơn hàng, quản lý trạng thái đơn hàng và đánh giá sản phẩm
+ * @param application Application context
  */
 class OrderViewModel(application: Application): AndroidViewModel(application) {
     private val orderRepository = OrderRepository()
     private val cartRepository = CartRepository()
+
     // UI State cho tạo đơn hàng
     private val _createOrderState = MutableLiveData<UiState<String>>()
     val createOrderState: LiveData<UiState<String>> = _createOrderState
@@ -59,14 +60,24 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     private val _pendingOrderItemsState = MutableLiveData<UiState<List<ItemRecyclerViewConfirmation>>>()
     val pendingOrderItemsState: LiveData<UiState<List<ItemRecyclerViewConfirmation>>> = _pendingOrderItemsState
 
+    // UI State cho tất cả đơn hàng kèm OrderItems (cho trang Admin)
+    private val _allOrdersWithItemsState = MutableLiveData<UiState<List<OrderWithItems>>>()
+    val allOrdersWithItemsState: LiveData<UiState<List<OrderWithItems>>> = _allOrdersWithItemsState
+
+    // UI State cho tất cả đơn hàng kèm OrderItems (cho trang Admin) phân tích doanh thu
+    private val _allOrdersWithItemsStateRevenue = MutableLiveData<UiState<List<OrderWithItems>>>()
+    val allOrdersWithItemsStateRevenue: LiveData<UiState<List<OrderWithItems>>> = _allOrdersWithItemsStateRevenue
+
 
     /**
-     * Tạo đơn hàng mới từ giỏ hàng
-     * @param userId ID người dùng
+     * Tạo đơn hàng mới từ giỏ hàng của người dùng
+     * Thực hiện kiểm tra tính khả dụng và số lượng tồn kho của sản phẩm trước khi tạo đơn hàng
+     *
+     * @param userId ID người dùng đặt hàng
      * @param shippingAddress Địa chỉ giao hàng
-     * @param phoneNumber Số điện thoại
-     * @param paymentMethod Phương thức thanh toán
-     * @param note Ghi chú
+     * @param phoneNumber Số điện thoại liên hệ
+     * @param paymentMethod Phương thức thanh toán (COD, Banking,...)
+     * @param note Ghi chú cho đơn hàng (có thể để trống)
      * @param cartItems Danh sách sản phẩm trong giỏ hàng
      */
     fun createOrderFromCart(
@@ -116,16 +127,20 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                         size = cartItem.selectedSize,
                         color = cartItem.selectedColor.name,
                         colorImage = cartItem.selectedColor.image,
-                        productCode = cartItem.selectedColor.productCode
+                        productCode = cartItem.selectedColor.productCode,
+                        status = "pending" // Đặt trạng thái đơn hàng là "pending"
                     )
                 }
 
                 // Tính tổng tiền
-                val totalAmount = orderItems.sumOf { it.price * it.quantity }
+                var totalAmount = orderItems.sumOf { it.price * it.quantity }
 
                 // Phí vận chuyển (có thể tính dựa trên logic nghiệp vụ)
                 val shippingFee = calculateShippingFee(totalAmount)
 
+                if(shippingFee != 0L){
+                    totalAmount += shippingFee
+                }
                 // Tạo đối tượng Order
                 val order = Order(
                     id = UUID.randomUUID().toString(),
@@ -134,7 +149,6 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     shippingAddress = shippingAddress,
                     phoneNumber = phoneNumber,
                     paymentMethod = paymentMethod,
-                    status = "pending",
                     note = note,
                     shippingFee = shippingFee,
                     paymentStatus = if (paymentMethod == "COD") "unpaid" else "processing"
@@ -152,8 +166,10 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
 
     /**
      * Tính phí vận chuyển dựa trên tổng tiền đơn hàng
-     * @param totalAmount Tổng tiền đơn hàng
-     * @return Phí vận chuyển
+     * Áp dụng chính sách miễn phí vận chuyển cho đơn hàng có giá trị lớn
+     *
+     * @param totalAmount Tổng tiền đơn hàng (chưa bao gồm phí vận chuyển)
+     * @return Phí vận chuyển tương ứng
      */
     private fun calculateShippingFee(totalAmount: Long): Long {
         // Logic tính phí vận chuyển (ví dụ)
@@ -165,8 +181,10 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy danh sách đơn hàng của người dùng
-     * @param userId ID người dùng
+     * Lấy danh sách đơn hàng của một người dùng cụ thể
+     * Kết quả được cập nhật vào _userOrdersState
+     *
+     * @param userId ID người dùng cần lấy danh sách đơn hàng
      */
     fun getUserOrders(userId: String) {
         viewModelScope.launch {
@@ -182,8 +200,10 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy chi tiết đơn hàng
-     * @param orderId ID đơn hàng
+     * Lấy thông tin chi tiết của một đơn hàng bao gồm các sản phẩm
+     * Kết quả được cập nhật vào _orderDetailState
+     *
+     * @param orderId ID của đơn hàng cần xem chi tiết
      */
     fun getOrderDetail(orderId: String) {
         viewModelScope.launch {
@@ -198,35 +218,17 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy lịch sử trạng thái đơn hàng
-     * @param orderId ID đơn hàng
+     * Cập nhật trạng thái của một mục trong đơn hàng
+     * Thường được sử dụng để hủy một sản phẩm trong đơn hàng
+     *
+     * @param orderItemId ID của mục đơn hàng cần cập nhật trạng thái
+     * @param note Ghi chú về lý do cập nhật trạng thái
      */
-    fun getOrderStatusHistory(orderId: String) {
-        viewModelScope.launch {
-            _orderHistoryState.value = UiState.Loading
-            try {
-                orderRepository.getOrderStatusHistory(orderId).collect { history ->
-                    _orderHistoryState.value = UiState.Success(history)
-                }
-            } catch (e: Exception) {
-                _orderHistoryState.value = UiState.Error(e.message ?: "Không thể lấy lịch sử đơn hàng")
-            }
-        }
-    }
-
-    /**
-     * Hủy đơn hàng
-     * @param orderId ID đơn hàng
-     * @param reason Lý do hủy
-     * @param userId ID người dùng thực hiện hủy
-     */
-    fun cancelOrder(orderId: String, reason: String, userId: String) {
+    fun cancelOrder(orderItemId: String, note: String) {
         viewModelScope.launch {
             _orderDetailState.value = UiState.Loading
             try {
-                orderRepository.cancelOrder(orderId, reason, userId)
-                // Cập nhật lại thông tin đơn hàng sau khi hủy
-                getOrderDetail(orderId)
+                orderRepository.updateOrderStatus(orderItemId, note)
             } catch (e: Exception) {
                 _orderDetailState.value = UiState.Error(e.message ?: "Không thể hủy đơn hàng")
             }
@@ -234,20 +236,28 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Gửi đánh giá sản phẩm
+     * Thêm đánh giá cho sản phẩm đã mua
+     * Cập nhật kết quả vào _addReviewState và tự động làm mới danh sách đánh giá
+     *
      * @param orderId ID đơn hàng
      * @param orderItemId ID sản phẩm trong đơn hàng
-     * @param userId ID người dùng
-     * @param productId ID sản phẩm
-     * @param rating Số sao đánh giá
-     * @param comment Nội dung đánh giá
-     * @param images Danh sách ảnh đính kèm
+     * @param userId ID người dùng đánh giá
+     * @param productId ID sản phẩm được đánh giá
+     * @param productName Tên sản phẩm
+     * @param colorName Tên màu sắc của sản phẩm
+     * @param size Kích thước của sản phẩm
+     * @param rating Số sao đánh giá (0-5)
+     * @param comment Nội dung đánh giá chi tiết
+     * @param images Danh sách URL ảnh đính kèm (có thể để trống)
      */
     fun addProductReview(
         orderId: String,
         orderItemId: String,
         userId: String,
         productId: String,
+        productName: String,
+        colorName: String,
+        size: String,
         rating: Float,
         comment: String,
         images: List<String> = emptyList()
@@ -260,6 +270,9 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     orderItemId = orderItemId,
                     userId = userId,
                     productId = productId,
+                    productName = productName,
+                    colorName = colorName,
+                    size = size,
                     rating = rating,
                     comment = comment,
                     images = images
@@ -277,8 +290,10 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy danh sách đánh giá sản phẩm
-     * @param productId ID sản phẩm
+     * Lấy danh sách đánh giá của một sản phẩm
+     * Kết quả được cập nhật vào _productReviewsState
+     *
+     * @param productId ID của sản phẩm cần xem đánh giá
      */
     fun getProductReviews(productId: String) {
         viewModelScope.launch {
@@ -294,17 +309,18 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Cập nhật trạng thái đơn hàng (dành cho Admin)
-     * @param orderId ID đơn hàng
-     * @param newStatus Trạng thái mới
-     * @param note Ghi chú
-     * @param adminId ID của admin thực hiện cập nhật
+     * Cập nhật trạng thái đơn hàng (chức năng dành cho Admin)
+     * Sau khi cập nhật, tự động làm mới thông tin chi tiết đơn hàng
+     *
+     * @param orderId ID của đơn hàng
+     * @param orderItemId ID của mục trong đơn hàng
+     * @param newStatus Trạng thái mới (pending, processing, shipped, delivered, canceled)
      */
-    fun updateOrderStatus(orderId: String, newStatus: String, note: String = "", adminId: String) {
+    fun updateOrderStatus(orderId: String, orderItemId: String, newStatus: String) {
         viewModelScope.launch {
             _orderDetailState.value = UiState.Loading
             try {
-                orderRepository.updateOrderStatus(orderId, newStatus, note, adminId)
+                orderRepository.updateOrderStatus(orderItemId, newStatus)
                 // Cập nhật lại thông tin đơn hàng
                 getOrderDetail(orderId)
             } catch (e: Exception) {
@@ -314,9 +330,11 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Cập nhật trạng thái thanh toán (dành cho Admin hoặc hệ thống thanh toán)
-     * @param orderId ID đơn hàng
-     * @param paymentStatus Trạng thái thanh toán mới
+     * Cập nhật trạng thái thanh toán của đơn hàng
+     * Thường được gọi sau khi xác nhận thanh toán thành công
+     *
+     * @param orderId ID của đơn hàng cần cập nhật
+     * @param paymentStatus Trạng thái thanh toán mới (unpaid, processing, paid, refunded)
      */
     fun updatePaymentStatus(orderId: String, paymentStatus: String) {
         viewModelScope.launch {
@@ -331,40 +349,11 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy danh sách đơn hàng theo trạng thái (dành cho Admin)
-     * @param status Trạng thái cần lọc
+     * Theo dõi danh sách sản phẩm đang chờ xác nhận của người dùng theo thời gian thực
+     * Sử dụng để hiển thị trạng thái đơn hàng theo thời gian thực cho người dùng
+     *
+     * @param userId ID của người dùng cần theo dõi đơn hàng
      */
-    fun getOrdersByStatus(status: String) {
-        viewModelScope.launch {
-            _ordersByStatusState.value = UiState.Loading
-            try {
-                orderRepository.getOrdersByStatus(status).collect { orders ->
-                    _ordersByStatusState.value = UiState.Success(orders)
-                }
-            } catch (e: Exception) {
-                _ordersByStatusState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng theo trạng thái")
-            }
-        }
-    }
-
-    /**
-     * Lấy danh sách đơn hàng theo khoảng thời gian (dành cho Admin)
-     * @param startTime Thời điểm bắt đầu (timestamp)
-     * @param endTime Thời điểm kết thúc (timestamp)
-     */
-    fun getOrdersByTimeRange(startTime: Long, endTime: Long) {
-        viewModelScope.launch {
-            _ordersByStatusState.value = UiState.Loading
-            try {
-                orderRepository.getOrdersByTimeRange(startTime, endTime).collect { orders ->
-                    _ordersByStatusState.value = UiState.Success(orders)
-                }
-            } catch (e: Exception) {
-                _ordersByStatusState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng theo khoảng thời gian")
-            }
-        }
-    }
-    // Theo dõi đơn hàng realtime
     fun observePendingOrderItems(userId: String) {
         viewModelScope.launch {
             try {
@@ -387,12 +376,20 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
-    //hủy đơn hàng
+
+    /**
+     * Hủy một mục trong đơn hàng dựa trên thông tin sản phẩm
+     *
+     * @param productId ID của sản phẩm cần hủy
+     * @param orderId ID của đơn hàng chứa sản phẩm
+     * @param colorName Tên màu sắc của sản phẩm
+     * @param index Chỉ số của mục trong đơn hàng (nếu có nhiều mục cùng sản phẩm)
+     */
     fun cancelOrderItemByProductId(
         productId: String,
         orderId: String,
-        userId: String,
-        reason: String = "Khách hàng hủy"
+        colorName: String,
+        index: Int
     ) {
         viewModelScope.launch {
             try {
@@ -400,8 +397,8 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                 orderRepository.cancelOrderItemByProductId(
                     productId = productId,
                     orderId = orderId,
-                    userId = userId,
-                    reason = reason
+                    colorName,
+                    index
                 )
 
             } catch (e: Exception) {
@@ -412,4 +409,35 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Lấy tất cả đơn hàng kèm theo chi tiết các mục đơn hàng
+     * Chức năng dành cho Admin để quản lý đơn hàng
+     */
+    fun getAllOrdersWithItems() {
+        viewModelScope.launch {
+            _allOrdersWithItemsState.value = UiState.Loading
+            try {
+                val ordersWithItems = orderRepository.getAllOrdersWithItems()
+                _allOrdersWithItemsState.value = UiState.Success(ordersWithItems)
+            } catch (e: Exception) {
+                _allOrdersWithItemsState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng")
+            }
+        }
+    }
+
+    /**
+     * Lấy tất cả đơn hàng kèm theo chi tiết để phân tích doanh thu
+     * Chức năng dành cho Admin để xem báo cáo doanh thu
+     */
+    fun getAllOrdersWithItemsRevenue() {
+        viewModelScope.launch {
+            _allOrdersWithItemsStateRevenue.value = UiState.Loading
+            try {
+                val ordersWithItems = orderRepository.getAllOrdersWithItemsRevenue()
+                _allOrdersWithItemsStateRevenue.value = UiState.Success(ordersWithItems)
+            } catch (e: Exception) {
+                _allOrdersWithItemsStateRevenue.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng")
+            }
+        }
+    }
 }

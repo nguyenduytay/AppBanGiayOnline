@@ -51,7 +51,13 @@
         private fun setupRecyclerView() {
             pendingAdapter = MyAdapterRecyclerViewConfirmation(
                 listener = object : MyAdapterRecyclerViewConfirmation.OnItemClickListener {
-                    override fun onDeleteDetailClick(item: ItemRecyclerViewConfirmation) {
+                    override fun onClickReview(item: ItemRecyclerViewConfirmation) {
+                    }
+
+                    override fun onClickOrder(item: ItemRecyclerViewConfirmation) {
+                    }
+
+                    override fun onCLickDeleteOrder(item: ItemRecyclerViewConfirmation) {
                         showCancelOrderDialog(item)
                     }
                 }
@@ -80,7 +86,7 @@
 
                         // Lọc và chuyển đổi các item đang chờ
                         val pendingProducts = state.data
-                            .filter { it.status == "pending" }
+                            .filter { it.status == "pending" || it.status == "processing" }
                             .map { orderItem ->
                                 ItemRecyclerViewConfirmation(
                                     orderItemId = orderItem.orderItemId,
@@ -122,12 +128,23 @@
                 .setIcon(R.drawable.emoji) // Thêm icon cảnh báo
                 .setPositiveButton("Đồng ý") { dialog, _ ->
                     // Xử lý hủy đơn hàng
-                    item.orderId?.let {
-                        orderViewModel.cancelOrder(
-                            orderId = it,
-                            reason = "Khách hàng hủy",
-                            userId = authViewModel.currentUser.value?.uid ?: ""
-                        )
+                    item.let {
+                        it.orderId?.let { it1 ->
+                            item.productId?.let { it2 ->
+                                item.colorName?.let { it3 ->
+                                    item.quantity?.let { it4 ->
+                                        orderViewModel.cancelOrderItemByProductId(
+                                            orderId = it1,
+                                            productId = it2,
+                                            colorName = it3,
+                                            index = (-it4)
+                                        )
+                                    }
+
+                                }
+
+                            }
+                        }
                     }
 
                     // Hiển thị thông báo hủy thành công

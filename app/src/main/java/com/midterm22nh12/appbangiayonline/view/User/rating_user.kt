@@ -47,8 +47,14 @@ class rating_user(private val context: Context, private val binding: RatingUserB
     private fun setupRecyclerView() {
         pendingAdapter = MyAdapterRecyclerViewConfirmation(
             listener = object : MyAdapterRecyclerViewConfirmation.OnItemClickListener {
-                override fun onDeleteDetailClick(item: ItemRecyclerViewConfirmation) {
+                override fun onClickReview(item: ItemRecyclerViewConfirmation) {
                     (context as MainActivityUser).showEvaluateUser(item)
+                }
+
+                override fun onClickOrder(item: ItemRecyclerViewConfirmation) {
+                }
+
+                override fun onCLickDeleteOrder(item: ItemRecyclerViewConfirmation) {
                 }
             }
         )

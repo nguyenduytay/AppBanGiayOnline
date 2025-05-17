@@ -70,7 +70,7 @@
             android:visibility="gone" />
         <include
             android:id="@+id/my_review_user_activity_main_user"
-            layout="@layout/order_my_review_user"
+            layout="@layout/order_review_product_user"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />

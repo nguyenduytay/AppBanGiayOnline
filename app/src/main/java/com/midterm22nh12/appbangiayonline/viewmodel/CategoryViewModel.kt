@@ -1,8 +1,9 @@
 package com.midterm22nh12.appbangiayonline.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Repository.CategoryRepository
 import com.midterm22nh12.appbangiayonline.Utils.UiState
@@ -13,7 +14,7 @@ import java.util.UUID
 /**
  * ViewModel xử lý các logic liên quan đến danh mục sản phẩm
  */
-class CategoryViewModel : ViewModel() {
+class CategoryViewModel (application: Application): AndroidViewModel(application) {
     private val repository = CategoryRepository()
 
     // UI State cho thao tác thêm/sửa/xóa

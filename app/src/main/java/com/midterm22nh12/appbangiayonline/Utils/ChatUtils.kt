@@ -7,8 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
  * Lớp tiện ích cho chức năng chat
  */
 object ChatUtils {
-    private const val TAG = "ChatUtils"
-
     // Danh sách các ID người dùng có role admin
     private val adminIds = mutableListOf<String>()
 

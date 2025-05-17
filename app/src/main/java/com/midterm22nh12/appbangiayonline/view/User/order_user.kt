@@ -46,7 +46,7 @@ class order_user(
             (context as MainActivityUser).navigateFromOverlayToFragment(1)
         }
         binding.llReviewCountOrderUser.setOnClickListener {
-            (context as? MainActivityUser)?.showRatingUser()
+            (context as? MainActivityUser)?.showMyReviewUser(item)
         }
         binding.ivCartOrderUser.setOnClickListener {
             (context as? MainActivityUser)?.navigateFromOverlayToFragment(0)

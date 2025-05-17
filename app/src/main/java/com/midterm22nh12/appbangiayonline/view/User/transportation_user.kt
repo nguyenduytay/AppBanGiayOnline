@@ -49,8 +49,15 @@ class transportation_user(
     private fun setupRecyclerView() {
         pendingAdapter = MyAdapterRecyclerViewConfirmation(
             listener = object : MyAdapterRecyclerViewConfirmation.OnItemClickListener {
-                override fun onDeleteDetailClick(item: ItemRecyclerViewConfirmation) {
+                override fun onClickReview(item: ItemRecyclerViewConfirmation) {
                 }
+
+                override fun onClickOrder(item: ItemRecyclerViewConfirmation) {
+                }
+
+                override fun onCLickDeleteOrder(item: ItemRecyclerViewConfirmation) {
+                }
+
             }
         )
 
