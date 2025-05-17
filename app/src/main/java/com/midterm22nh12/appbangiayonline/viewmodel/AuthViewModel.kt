@@ -10,6 +10,10 @@ import com.midterm22nh12.appbangiayonline.Service.AuthService
 import com.midterm22nh12.appbangiayonline.Service.UserService
 import com.midterm22nh12.appbangiayonline.Utils.Event
 
+/**
+ * ViewModel để quản lý các hoạt động xác thực và thông tin người dùng
+ * Cung cấp các phương thức để đăng ký, đăng nhập, đăng xuất, và quản lý thông tin người dùng
+ */
 class AuthViewModel : ViewModel() {
     private val authService = AuthService()
     private val userService = UserService()
@@ -52,16 +56,24 @@ class AuthViewModel : ViewModel() {
     private val _currentUser = MutableLiveData<User?>()
     val currentUser: MutableLiveData<User?> get() = _currentUser
 
-    // Thêm LiveData cho cập nhật profile
+    // LiveData cho cập nhật profile
     private val _profileUpdateResult = MutableLiveData<Event<Result<Unit>>>()
     val profileUpdateResult: LiveData<Event<Result<Unit>>>
         get() = _profileUpdateResult
 
-    // Thêm vào AuthViewModel
+    // LiveData cho tên người dùng theo ID
     private val _userName_ById = MutableLiveData<Pair<String, String>>() // Pair<userId, userName>
     val userName_ById: LiveData<Pair<String, String>> get() = _userName_ById
 
-    // Đăng ký
+    /**
+     * Đăng ký người dùng mới
+     * @param fullName Họ tên đầy đủ
+     * @param username Tên đăng nhập
+     * @param email Email của người dùng
+     * @param phone Số điện thoại
+     * @param password Mật khẩu
+     * @param rePassword Xác nhận mật khẩu
+     */
     fun registerUser(
         fullName: String,
         username: String,
@@ -84,7 +96,11 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Đăng nhập
+    /**
+     * Đăng nhập người dùng
+     * @param userInput Tên đăng nhập hoặc email
+     * @param password Mật khẩu
+     */
     fun loginUser(userInput: String, password: String) {
         _isLoading.value = true
         authRepository.loginUser(userInput, password) { result ->
@@ -98,17 +114,26 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Kiểm tra người dùng đã đăng nhập chưa
+    /**
+     * Kiểm tra người dùng đã đăng nhập chưa
+     * @return true nếu người dùng đã đăng nhập, false nếu chưa
+     */
     fun isUserLoggedIn(): Boolean {
         return authService.getCurrentUser() != null
     }
 
-    // Kiểm tra địa chỉ người dùng có trống không
+    /**
+     * Kiểm tra địa chỉ người dùng có trống không
+     * @return true nếu địa chỉ trống, false nếu có địa chỉ
+     */
     fun isUserAddressEmpty(): Boolean {
         return _currentUser.value?.address.isNullOrEmpty()
     }
 
-    // Cập nhật địa chỉ người dùng
+    /**
+     * Cập nhật địa chỉ người dùng
+     * @param address Địa chỉ mới cần cập nhật
+     */
     fun updateUserAddress(address: String) {
         val currentUser = authService.getCurrentUser()
         if (currentUser != null) {
@@ -127,7 +152,10 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Đăng xuất
+    /**
+     * Đăng xuất người dùng hiện tại
+     * Xóa thông tin người dùng và cập nhật trạng thái đăng xuất
+     */
     fun logoutUser() {
         // Đăng xuất khỏi Firebase
         authService.logoutUser()
@@ -139,7 +167,10 @@ class AuthViewModel : ViewModel() {
         _userAddress.value = null
     }
 
-    // Kiểm tra người dùng đăng nhập là admin hay user
+    /**
+     * Kiểm tra người dùng đăng nhập có phải là admin hay không
+     * @param callback Hàm callback trả về kết quả kiểm tra (true nếu là admin, false nếu không)
+     */
     fun isAdminUser(callback: (Boolean) -> Unit) {
         val currentUser = authService.getCurrentUser()
         if (currentUser != null) {
@@ -162,7 +193,10 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Phương thức tải tên người dùng
+    /**
+     * Tải tên người dùng từ Firebase
+     * Cập nhật LiveData _userName khi tải xong
+     */
     fun loadUserName() {
         val currentUser = authService.getCurrentUser()
         if (currentUser != null) {
@@ -183,7 +217,10 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Phương thức tải địa chỉ người dùng
+    /**
+     * Tải địa chỉ người dùng từ Firebase
+     * Cập nhật LiveData _userAddress khi tải xong
+     */
     fun loadUserAddress() {
         val currentUser = authService.getCurrentUser()
         if (currentUser != null) {
@@ -204,7 +241,10 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // Phương thức tải toàn bộ thông tin người dùng hiện tại
+    /**
+     * Tải toàn bộ thông tin của người dùng hiện tại
+     * Cập nhật các LiveData _currentUser, _userName, _userAddress
+     */
     fun loadCurrentUserInfo() {
         val currentUser = authService.getCurrentUser()
         if (currentUser != null) {
@@ -230,7 +270,14 @@ class AuthViewModel : ViewModel() {
             _userAddress.value = null
         }
     }
-    // Cập nhật thông tin profile người dùng
+
+    /**
+     * Cập nhật thông tin profile người dùng
+     * @param fullName Họ tên mới (để trống nếu không cập nhật)
+     * @param phone Số điện thoại mới (để trống nếu không cập nhật)
+     * @param email Email mới (để trống nếu không cập nhật)
+     * @param address Địa chỉ mới (để trống nếu không cập nhật)
+     */
     fun updateUserProfile(
         fullName: String = "",
         phone: String = "",
@@ -259,6 +306,7 @@ class AuthViewModel : ViewModel() {
             _profileUpdateResult.value = Event(Result.failure(Exception("Người dùng chưa đăng nhập")))
         }
     }
+
     /**
      * Lấy tên người dùng qua ID
      * @param userId ID của người dùng cần lấy tên

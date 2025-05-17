@@ -1,5 +1,6 @@
 package com.midterm22nh12.appbangiayonline.view.Auth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -17,9 +18,17 @@ import com.midterm22nh12.appbangiayonline.view.Admin.MainActivityAdmin
 import com.midterm22nh12.appbangiayonline.view.User.MainActivityUser
 import com.midterm22nh12.appbangiayonline.viewmodel.AuthViewModel
 
+/**
+ * Activity quản lý màn hình đăng nhập và đăng ký tài khoản
+ * Xử lý các thao tác xác thực người dùng và chuyển hướng đến màn hình phù hợp
+ */
 class LoginEndCreateAccount : AppCompatActivity() {
     private lateinit var binding: ActivityLoginEndCreateAccountBinding
     private lateinit var authViewModel: AuthViewModel
+
+    /**
+     * Khởi tạo Activity, thiết lập UI và các thành phần cần thiết
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginEndCreateAccountBinding.inflate(layoutInflater)
@@ -43,7 +52,10 @@ class LoginEndCreateAccount : AppCompatActivity() {
         setupObservers()
     }
 
-    //sự kiện nhâp mật khẩu trong login
+    /**
+     * Thiết lập chức năng hiển thị/ẩn mật khẩu cho màn hình đăng nhập
+     * Sử dụng TextWatcher để cập nhật icon hiển thị mật khẩu khi người dùng nhập liệu
+     */
     private fun setupLoginPasswordVisibility() {
         var isPasswordVisible = false
         binding.loginLayout.edPasswordInputLogin.addTextChangedListener(object : TextWatcher {
@@ -70,6 +82,10 @@ class LoginEndCreateAccount : AppCompatActivity() {
         }
     }
 
+    /**
+     * Thiết lập chức năng hiển thị/ẩn mật khẩu và xác nhận mật khẩu cho màn hình đăng ký
+     * Kiểm tra tính hợp lệ của mật khẩu và hiển thị đánh giá độ mạnh mật khẩu
+     */
     private fun setupCreateAccountPasswordVisibility() {
         var isPasswordVisible = false
         var isRePasswordVisible = false
@@ -78,9 +94,11 @@ class LoginEndCreateAccount : AppCompatActivity() {
         binding.createAccountLayout.tvRePasswordCreateAccount.visibility = View.GONE
 
         // Xử lý hiển thị icon cho mật khẩu
-        binding.createAccountLayout.edPasswordInputCreate.addTextChangedListener(object : TextWatcher {
+        binding.createAccountLayout.edPasswordInputCreate.addTextChangedListener(object :
+            TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 updatePasswordVisibilityIcon(
                     s.toString(),
@@ -94,20 +112,19 @@ class LoginEndCreateAccount : AppCompatActivity() {
 
                 if (rePassword.isNotEmpty()) {
                     val passwordsMatch = password == rePassword
-                    binding.createAccountLayout.tvRePasswordCreateAccount.text = "Mật khẩu không khớp"
+                    binding.createAccountLayout.tvRePasswordCreateAccount.text =
+                        "Mật khẩu không khớp"
                     binding.createAccountLayout.tvRePasswordCreateAccount.visibility =
                         if (passwordsMatch) View.GONE else View.VISIBLE
                 }
                 //đánh giá độ mạnh của mật khẩu
-                if(password.isNotEmpty())
-                {
-                    binding.createAccountLayout.llPowerPasswordCreateAccount.visibility=View.VISIBLE
+                if (password.isNotEmpty()) {
+                    binding.createAccountLayout.llPowerPasswordCreateAccount.visibility =
+                        View.VISIBLE
                     val strength = evaluatePassword(password)
                     powerPassword(strength)
-                }
-                else
-                {
-                    binding.createAccountLayout.llPowerPasswordCreateAccount.visibility=View.GONE
+                } else {
+                    binding.createAccountLayout.llPowerPasswordCreateAccount.visibility = View.GONE
                 }
 
             }
@@ -116,9 +133,11 @@ class LoginEndCreateAccount : AppCompatActivity() {
         })
 
         // Xử lý hiển thị icon cho nhập lại mật khẩu
-        binding.createAccountLayout.edRePasswordInputCreate.addTextChangedListener(object : TextWatcher {
+        binding.createAccountLayout.edRePasswordInputCreate.addTextChangedListener(object :
+            TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            @SuppressLint("SetTextI18n")
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 updatePasswordVisibilityIcon(
                     s.toString(),
@@ -135,12 +154,14 @@ class LoginEndCreateAccount : AppCompatActivity() {
                     binding.createAccountLayout.tvRePasswordCreateAccount.visibility = View.GONE
                 } else if (password.isEmpty()) {
                     // Nếu trường mật khẩu trống nhưng trường nhập lại không trống
-                    binding.createAccountLayout.tvRePasswordCreateAccount.text = "Vui lòng nhập mật khẩu trước"
+                    binding.createAccountLayout.tvRePasswordCreateAccount.text =
+                        "Vui lòng nhập mật khẩu trước"
                     binding.createAccountLayout.tvRePasswordCreateAccount.visibility = View.VISIBLE
                 } else {
                     // Cả hai trường đều có giá trị, kiểm tra xem chúng có khớp không
                     val passwordsMatch = password == rePassword
-                    binding.createAccountLayout.tvRePasswordCreateAccount.text = "Mật khẩu không khớp"
+                    binding.createAccountLayout.tvRePasswordCreateAccount.text =
+                        "Mật khẩu không khớp"
                     binding.createAccountLayout.tvRePasswordCreateAccount.visibility =
                         if (passwordsMatch) View.GONE else View.VISIBLE
                 }
@@ -170,7 +191,13 @@ class LoginEndCreateAccount : AppCompatActivity() {
         }
     }
 
-    // Phương thức để cập nhật icon dựa trên trạng thái
+    /**
+     * Cập nhật biểu tượng hiển thị mật khẩu dựa trên trạng thái và nội dung đầu vào
+     *
+     * @param input Chuỗi văn bản đầu vào
+     * @param imageView ImageView hiển thị biểu tượng
+     * @param isVisible Trạng thái hiển thị mật khẩu hiện tại
+     */
     private fun updatePasswordVisibilityIcon(
         input: String,
         imageView: ImageView,
@@ -185,7 +212,13 @@ class LoginEndCreateAccount : AppCompatActivity() {
         }
     }
 
-    // Phương thức chuyển đổi hiển thị mật khẩu
+    /**
+     * Chuyển đổi hiển thị/ẩn mật khẩu trong EditText
+     *
+     * @param editText EditText chứa mật khẩu
+     * @param imageView ImageView hiển thị biểu tượng
+     * @param isVisible Trạng thái hiển thị mật khẩu mới
+     */
     private fun togglePasswordVisibility(
         editText: EditText,
         imageView: ImageView,
@@ -201,7 +234,9 @@ class LoginEndCreateAccount : AppCompatActivity() {
         editText.setSelection(editText.text.length)
     }
 
-    //phương thức chuyển đổi trang đăng nhập và đăng kí
+    /**
+     * Thiết lập các nút chuyển đổi giữa màn hình đăng nhập và đăng ký
+     */
     private fun setupNavigationButtons() {
         // Chuyển đến trang đăng ký
         binding.loginLayout.tvLinkCreateAccountLogin.setOnClickListener {
@@ -214,7 +249,9 @@ class LoginEndCreateAccount : AppCompatActivity() {
         }
     }
 
-    //phương thức chuyển sang màn hình chính khi đăng nhập
+    /**
+     * Chuyển hướng người dùng đến màn hình chính dựa vào quyền (admin hoặc user)
+     */
     private fun navigateToMainScreen() {
         authViewModel.isAdminUser { isAdmin ->
             if (isAdmin) {
@@ -224,10 +261,12 @@ class LoginEndCreateAccount : AppCompatActivity() {
             }
             finish()
         }
-
     }
 
-    //lắng nghe live data
+    /**
+     * Thiết lập các observer để lắng nghe sự thay đổi trạng thái từ ViewModel
+     * Xử lý kết quả đăng nhập, đăng ký và hiển thị loading
+     */
     private fun setupObservers() {
         //loading
         authViewModel.isLoading.observe(this) { isLoading ->
@@ -250,7 +289,6 @@ class LoginEndCreateAccount : AppCompatActivity() {
                         Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
                     })
             }
-
         }
         //đăng kí
         authViewModel.registrationResult.observe(this) { event ->
@@ -268,7 +306,11 @@ class LoginEndCreateAccount : AppCompatActivity() {
             }
         }
     }
-    //phương thức nhấn đăng nhập và đăng ký
+
+    /**
+     * Thiết lập các nút đăng nhập và đăng ký
+     * Thu thập thông tin đầu vào và gọi phương thức tương ứng từ ViewModel
+     */
     private fun setupLoginButton() {
         binding.loginLayout.btLogin.setOnClickListener {
             val userInput = binding.loginLayout.edUsernameInputLogin.text.toString().trim()
@@ -278,7 +320,8 @@ class LoginEndCreateAccount : AppCompatActivity() {
         }
 
         binding.createAccountLayout.btCreateAccount.setOnClickListener {
-            val fullName = binding.createAccountLayout.edFirstNameInputCreate.text.toString()+ binding.createAccountLayout.edLastnameInputCreate.text.toString()
+            val fullName =
+                binding.createAccountLayout.edFirstNameInputCreate.text.toString() + binding.createAccountLayout.edLastnameInputCreate.text.toString()
             val username = binding.createAccountLayout.edUserNameInputCreate.text.toString().trim()
             val email = binding.createAccountLayout.edEmailInputCreate.text.toString().trim()
             val phone = binding.createAccountLayout.edPhoneInputCreate.text.toString().trim()
@@ -288,23 +331,27 @@ class LoginEndCreateAccount : AppCompatActivity() {
             authViewModel.registerUser(fullName, username, email, phone, password, rePassword)
         }
     }
-    //hiển thị mức độ mạng yếu của mật khẩu
-    private fun powerPassword(index : Int)
-    {
+
+    /**
+     * Hiển thị đánh giá độ mạnh của mật khẩu bằng các thanh màu
+     *
+     * @param index Mức độ mạnh của mật khẩu (1-5)
+     */
+    private fun powerPassword(index: Int) {
         val powerPassword = arrayOf(
             binding.createAccountLayout.tvPower1,
             binding.createAccountLayout.tvPower2,
             binding.createAccountLayout.tvPower3,
             binding.createAccountLayout.tvPower4,
-            binding.createAccountLayout.tvPower5)
+            binding.createAccountLayout.tvPower5
+        )
 
         //hiển thị mức độ mật khẩu
-        for (i in 0 until index)
-        {
+        for (i in 0 until index) {
             powerPassword[i].setTextColor(Color.parseColor("#FFFFFF"))
         }
         //màu sắc dựa trên mức độ
-        val colors = when (index){
+        val colors = when (index) {
             1 -> Color.parseColor("#D02727")
             2 -> Color.parseColor("#F80303")
             3 -> Color.parseColor("#427C48")
@@ -322,16 +369,24 @@ class LoginEndCreateAccount : AppCompatActivity() {
             else -> ""
         }
         //hiển thị các thanh với màu sắc tương ứng
-        for(i in 0 until index)
-        {
+        for (i in 0 until index) {
             powerPassword[i].visibility = View.VISIBLE
             powerPassword[i].setBackgroundColor(colors)
         }
         //hiển thị thông báo về độ mạnh yếu cảu mật khẩu
-        binding.createAccountLayout.tvMessagePowerPasswordCreate.text=message
+        binding.createAccountLayout.tvMessagePowerPasswordCreate.text = message
         binding.createAccountLayout.tvMessagePowerPasswordCreate.setTextColor(colors)
     }
-    // Hàm đánh giá độ mạnh của mật khẩu
+
+    /**
+     * Đánh giá độ mạnh của mật khẩu dựa trên các tiêu chí:
+     * - Độ dài
+     * - Đa dạng ký tự (in hoa, in thường, số)
+     * - Ký tự đặc biệt
+     *
+     * @param password Mật khẩu cần đánh giá
+     * @return Mức độ mạnh từ 1-5 (1: rất yếu, 5: rất mạnh)
+     */
     private fun evaluatePassword(password: String): Int {
         if (password.isEmpty()) return 1
 
@@ -358,9 +413,8 @@ class LoginEndCreateAccount : AppCompatActivity() {
             score == 2 -> 2  // Yếu
             score == 3 -> 3  // Trung bình
             score == 4 -> 4  // Mạnh
-            score >= 5 -> 5  // Rất mạnh
+            score > 5 -> 5  // Rất mạnh
             else -> 1
         }
     }
-
 }
