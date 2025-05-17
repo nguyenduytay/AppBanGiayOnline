@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Repository.ProductRepository
 import com.midterm22nh12.appbangiayonline.model.Entity.Product.Product

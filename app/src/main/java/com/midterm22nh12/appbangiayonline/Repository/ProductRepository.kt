@@ -13,10 +13,18 @@ import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHome
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
 
+/**
+ * Repository chịu trách nhiệm quản lý tất cả các thao tác liên quan đến dữ liệu sản phẩm
+ * từ Firebase Realtime Database
+ */
 class ProductRepository {
     private val database = FirebaseDatabase.getInstance()
     private val productsRef = database.getReference("products")
 
+    /**
+     * Lấy tất cả sản phẩm từ Firebase Realtime Database
+     * @return LiveData<List<Product>> Danh sách sản phẩm được cập nhật realtime
+     */
     fun getProducts(): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -41,6 +49,11 @@ class ProductRepository {
         return productsLiveData
     }
 
+    /**
+     * Lấy sản phẩm dựa trên ID
+     * @param productId ID của sản phẩm cần lấy
+     * @return MutableLiveData<Product?> Thông tin chi tiết của sản phẩm hoặc null nếu không tìm thấy
+     */
     fun getProductById(productId: String): MutableLiveData<Product?> {
         val productLiveData = MutableLiveData<Product?>()
 
@@ -58,6 +71,11 @@ class ProductRepository {
         return productLiveData
     }
 
+    /**
+     * Lấy danh sách sản phẩm thuộc một danh mục cụ thể
+     * @param categoryId ID của danh mục cần lọc
+     * @return LiveData<List<Product>> Danh sách sản phẩm thuộc danh mục
+     */
     fun getProductsByCategory(categoryId: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -80,6 +98,11 @@ class ProductRepository {
         return productsLiveData
     }
 
+    /**
+     * Lấy danh sách sản phẩm thuộc một thương hiệu cụ thể
+     * @param brandId ID của thương hiệu cần lọc
+     * @return LiveData<List<Product>> Danh sách sản phẩm thuộc thương hiệu
+     */
     fun getProductsByBrand(brandId: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -102,6 +125,11 @@ class ProductRepository {
         return productsLiveData
     }
 
+    /**
+     * Tìm kiếm sản phẩm theo tên
+     * @param query Chuỗi tìm kiếm cho tên sản phẩm
+     * @return LiveData<List<Product>> Danh sách sản phẩm có tên phù hợp
+     */
     fun searchProductsByName(query: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -124,6 +152,12 @@ class ProductRepository {
         return productsLiveData
     }
 
+    /**
+     * Lọc sản phẩm theo khoảng giá
+     * @param minPrice Giá tối thiểu
+     * @param maxPrice Giá tối đa
+     * @return LiveData<List<Product>> Danh sách sản phẩm có giá trong khoảng chỉ định
+     */
     fun filterProductsByPriceRange(minPrice: Double, maxPrice: Double): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -146,7 +180,11 @@ class ProductRepository {
         return productsLiveData
     }
 
-    // Filter products by available sizes
+    /**
+     * Lọc sản phẩm theo kích cỡ có sẵn
+     * @param size Kích cỡ cần lọc
+     * @return LiveData<List<Product>> Danh sách sản phẩm có kích cỡ yêu cầu và trạng thái "available"
+     */
     fun filterProductsByAvailableSize(size: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -174,7 +212,11 @@ class ProductRepository {
         return productsLiveData
     }
 
-    // Filter products by available colors
+    /**
+     * Lọc sản phẩm theo màu sắc có sẵn
+     * @param colorName Tên màu cần lọc
+     * @return LiveData<List<Product>> Danh sách sản phẩm có màu yêu cầu, trạng thái "available" và còn trong kho
+     */
     fun filterProductsByAvailableColor(colorName: String): LiveData<List<Product>> {
         val productsLiveData = MutableLiveData<List<Product>>()
 
@@ -201,6 +243,11 @@ class ProductRepository {
         return productsLiveData
     }
 
+    /**
+     * Thêm sản phẩm mới vào database
+     * @param product Đối tượng Product chứa thông tin sản phẩm mới
+     * @param callback Hàm callback trả về kết quả thành công/thất bại và thông báo lỗi (nếu có)
+     */
     fun addProduct(product: Product, callback: (Boolean, String?) -> Unit) {
         productsRef.child(product.id).setValue(product)
             .addOnSuccessListener {
@@ -211,6 +258,11 @@ class ProductRepository {
             }
     }
 
+    /**
+     * Cập nhật thông tin sản phẩm
+     * @param product Đối tượng Product chứa thông tin cập nhật
+     * @param callback Hàm callback trả về kết quả thành công/thất bại và thông báo lỗi (nếu có)
+     */
     fun updateProduct(product: Product, callback: (Boolean, String?) -> Unit) {
         productsRef.child(product.id).setValue(product)
             .addOnSuccessListener {
@@ -221,6 +273,11 @@ class ProductRepository {
             }
     }
 
+    /**
+     * Xóa một sản phẩm khỏi database
+     * @param productId ID của sản phẩm cần xóa
+     * @param callback Hàm callback trả về kết quả thành công/thất bại và thông báo lỗi (nếu có)
+     */
     fun deleteProduct(productId: String, callback: (Boolean, String?) -> Unit) {
         productsRef.child(productId).removeValue()
             .addOnSuccessListener {

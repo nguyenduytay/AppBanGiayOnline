@@ -22,20 +22,32 @@ import java.util.UUID
 
 /**
  * Repository xử lý các hoạt động liên quan đến đơn hàng sử dụng Realtime Database
+ * Cung cấp các phương thức để tạo, cập nhật, truy vấn đơn hàng và đánh giá sản phẩm
  */
 class OrderRepository {
+    // Khởi tạo tham chiếu đến các node trong Firebase Realtime Database
     private val database = FirebaseDatabase.getInstance()
-    private val ordersRef = database.getReference("orders")
-    private val orderItemsRef = database.getReference("order_items")
-    private val productReviewsRef = database.getReference("product_reviews")
-    private val productsRef = database.getReference("products")
-
+    private val ordersRef = database.getReference("orders")         // Lưu thông tin đơn hàng
+    private val orderItemsRef =
+        database.getReference("order_items") // Lưu chi tiết sản phẩm trong đơn hàng
+    private val productReviewsRef =
+        database.getReference("product_reviews") // Lưu đánh giá sản phẩm
+    private val productsRef = database.getReference("products")      // Tham chiếu đến node sản phẩm
 
     /**
      * Tạo đơn hàng mới
-     * @param order Đơn hàng cần tạo
+     *
+     * Quy trình tạo đơn hàng:
+     * 1. Tạo ID cho đơn hàng nếu chưa có
+     * 2. Tạo ID cho các item và liên kết với đơn hàng
+     * 3. Lưu thông tin đơn hàng vào database
+     * 4. Lưu từng item vào node riêng
+     * 5. Cập nhật số lượng tồn kho cho sản phẩm đã mua
+     *
+     * @param order Đơn hàng cần tạo, bao gồm thông tin người mua, địa chỉ, tổng tiền, v.v.
      * @param items Danh sách sản phẩm trong đơn hàng
      * @return ID của đơn hàng mới tạo
+     * @throws Exception nếu có lỗi xảy ra trong quá trình tạo đơn hàng
      */
     suspend fun createOrder(order: Order, items: List<OrderItem>): String {
         try {
@@ -65,7 +77,6 @@ class OrderRepository {
 
                 // Cập nhật số lượng tồn kho của sản phẩm
                 updateProductStock(item.productId, item.color, item.quantity)
-
             }
 
             return orderId
@@ -76,6 +87,13 @@ class OrderRepository {
 
     /**
      * Cập nhật số lượng tồn kho của sản phẩm sau khi đặt hàng
+     *
+     * Giảm số lượng tồn kho sau khi đơn hàng được tạo:
+     * 1. Lấy thông tin sản phẩm từ database
+     * 2. Tìm màu sắc tương ứng và giảm số lượng tồn kho
+     * 3. Cập nhật trạng thái màu nếu hết hàng
+     * 4. Lưu thông tin cập nhật vào database
+     *
      * @param productId ID sản phẩm
      * @param colorName Tên màu sắc
      * @param quantity Số lượng đã mua
@@ -84,7 +102,8 @@ class OrderRepository {
         try {
             // Lấy thông tin sản phẩm
             val productSnapshot = productsRef.child(productId).get().await()
-            val product = productSnapshot.getValue(Product::class.java) ?: throw Exception("Không tìm thấy sản phẩm")
+            val product = productSnapshot.getValue(Product::class.java)
+                ?: throw Exception("Không tìm thấy sản phẩm")
 
             // Tìm và cập nhật số lượng tồn kho của màu sắc
             val updatedColors = product.colors.map { color ->
@@ -110,10 +129,10 @@ class OrderRepository {
 
     /**
      * Cập nhật trạng thái đơn hàng
-     * @param orderId ID của đơn hàng
-     * @param newStatus Trạng thái mới
-     * @param note Ghi chú cho việc cập nhật trạng thái
-     * @param updatedBy ID của người dùng thực hiện cập nhật (hoặc "system")
+     *
+     * @param orderItemId ID của item trong đơn hàng
+     * @param newStatus Trạng thái mới (pending, shipping, delivered, cancelled, evaluate)
+     * @throws Exception nếu có lỗi xảy ra trong quá trình cập nhật
      */
     suspend fun updateOrderStatus(
         orderItemId: String,
@@ -134,8 +153,10 @@ class OrderRepository {
 
     /**
      * Cập nhật trạng thái thanh toán của đơn hàng
+     *
      * @param orderId ID của đơn hàng
-     * @param paymentStatus Trạng thái thanh toán mới
+     * @param paymentStatus Trạng thái thanh toán mới (paid, unpaid)
+     * @throws Exception nếu có lỗi xảy ra trong quá trình cập nhật
      */
     suspend fun updatePaymentStatus(orderId: String, paymentStatus: String) {
         try {
@@ -152,8 +173,10 @@ class OrderRepository {
 
     /**
      * Lấy đơn hàng theo ID kèm danh sách sản phẩm
+     *
      * @param orderId ID của đơn hàng
      * @return Đơn hàng và danh sách sản phẩm
+     * @throws Exception nếu không tìm thấy đơn hàng hoặc xảy ra lỗi
      */
     suspend fun getOrderWithItems(orderId: String): OrderWithItems {
         try {
@@ -185,8 +208,9 @@ class OrderRepository {
 
     /**
      * Lấy danh sách đơn hàng của người dùng
+     *
      * @param userId ID của người dùng
-     * @return Flow chứa danh sách đơn hàng
+     * @return Flow chứa danh sách đơn hàng đã sắp xếp theo thời gian tạo (mới nhất lên đầu)
      */
     fun getUserOrders(userId: String): Flow<List<Order>> = flow {
         try {
@@ -210,8 +234,10 @@ class OrderRepository {
 
     /**
      * Thêm đánh giá sản phẩm
-     * @param review Đánh giá sản phẩm
-     * @return ID của đánh giá
+     *
+     * @param review Đánh giá sản phẩm, bao gồm ID người dùng, ID sản phẩm, rating, và nội dung
+     * @return ID của đánh giá đã thêm
+     * @throws Exception nếu có lỗi xảy ra trong quá trình thêm đánh giá
      */
     suspend fun addProductReview(review: ProductReview): String {
         try {
@@ -224,7 +250,7 @@ class OrderRepository {
             productReviewsRef.child(reviewId).setValue(updatedReview).await()
 
             // Cập nhật điểm đánh giá trung bình của sản phẩm
-            updateProductRating(review.productId,review.rating.toDouble())
+            updateProductRating(review.productId, review.rating.toDouble())
 
             return reviewId
         } catch (e: Exception) {
@@ -234,6 +260,11 @@ class OrderRepository {
 
     /**
      * Cập nhật điểm đánh giá trung bình của sản phẩm
+     *
+     * Sử dụng công thức cân bằng để tránh đánh giá đơn lẻ ảnh hưởng quá nhiều:
+     * - 90% giữ điểm hiện tại
+     * - 5% từ đánh giá mới
+     *
      * @param productId ID sản phẩm
      * @param newRating Điểm đánh giá mới (từ 1-5)
      */
@@ -286,12 +317,14 @@ class OrderRepository {
 
     /**
      * Lấy đánh giá của một sản phẩm
+     *
      * @param productId ID của sản phẩm
-     * @return Flow chứa danh sách đánh giá
+     * @return Flow chứa danh sách đánh giá đã sắp xếp theo thời gian tạo (mới nhất lên đầu)
      */
     fun getProductReviews(productId: String): Flow<List<ProductReview>> = flow {
         try {
-            val snapshot = productReviewsRef.orderByChild("productId").equalTo(productId).get().await()
+            val snapshot =
+                productReviewsRef.orderByChild("productId").equalTo(productId).get().await()
 
             val reviews = mutableListOf<ProductReview>()
             for (reviewSnapshot in snapshot.children) {
@@ -308,97 +341,126 @@ class OrderRepository {
             throw Exception("Không thể lấy đánh giá sản phẩm: ${e.message}")
         }
     }
-    fun getPendingOrderItemsRealtime(userId: String): Flow<List<ItemRecyclerViewConfirmation>> = callbackFlow {
-        // Truy vấn các đơn hàng của user
-        val ordersQuery = ordersRef
-            .orderByChild("userId")
-            .equalTo(userId)
 
-        // Sử dụng addValueEventListener để lắng nghe realtime
-        val listener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val orderItems = mutableListOf<ItemRecyclerViewConfirmation>()
-                val userOrderIds = mutableSetOf<String>()
-                val orderCreationTimes = mutableMapOf<String, Long>()
+    /**
+     * Lấy danh sách các đơn hàng đang chờ xử lý của người dùng
+     *
+     * Sử dụng callbackFlow để lắng nghe thay đổi theo thời gian thực:
+     * 1. Lấy tất cả đơn hàng của người dùng
+     * 2. Từ đó, truy xuất các item trong đơn hàng
+     * 3. Chuyển đổi thành dạng dữ liệu dễ hiển thị trên UI
+     *
+     * @param userId ID của người dùng
+     * @return Flow chứa danh sách các item đơn hàng đang chờ xử lý
+     */
+    fun getPendingOrderItemsRealtime(userId: String): Flow<List<ItemRecyclerViewConfirmation>> =
+        callbackFlow {
+            // Truy vấn các đơn hàng của user
+            val ordersQuery = ordersRef
+                .orderByChild("userId")
+                .equalTo(userId)
 
-                // Tìm tất cả các orderId của user này
-                for (orderSnapshot in snapshot.children) {
-                    val order = orderSnapshot.getValue(Order::class.java)
-                    if (order != null) {
-                        userOrderIds.add(orderSnapshot.key ?: "")
-                        orderCreationTimes[orderSnapshot.key ?: ""] = order.createdAt
+            // Sử dụng addValueEventListener để lắng nghe realtime
+            val listener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val orderItems = mutableListOf<ItemRecyclerViewConfirmation>()
+                    val userOrderIds = mutableSetOf<String>()
+                    val orderCreationTimes = mutableMapOf<String, Long>()
+
+                    // Tìm tất cả các orderId của user này
+                    for (orderSnapshot in snapshot.children) {
+                        val order = orderSnapshot.getValue(Order::class.java)
+                        if (order != null) {
+                            userOrderIds.add(orderSnapshot.key ?: "")
+                            orderCreationTimes[orderSnapshot.key ?: ""] = order.createdAt
+                        }
                     }
-                }
 
-                Log.d("OrderRepository", "Các orderId của user: $userOrderIds")
+                    Log.d("OrderRepository", "Các orderId của user: $userOrderIds")
 
-                // Nếu không có order nào, trả về list rỗng
-                if (userOrderIds.isEmpty()) {
-                    trySend(emptyList())
-                    return
-                }
+                    // Nếu không có order nào, trả về list rỗng
+                    if (userOrderIds.isEmpty()) {
+                        trySend(emptyList())
+                        return
+                    }
 
-                // Truy vấn toàn bộ order_items
-                orderItemsRef.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(allItemsSnapshot: DataSnapshot) {
-                        orderItems.clear()
+                    // Truy vấn toàn bộ order_items
+                    orderItemsRef.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(allItemsSnapshot: DataSnapshot) {
+                            orderItems.clear()
 
-                        for (itemSnapshot in allItemsSnapshot.children) {
-                            val orderItem = itemSnapshot.getValue(OrderItem::class.java)
+                            for (itemSnapshot in allItemsSnapshot.children) {
+                                val orderItem = itemSnapshot.getValue(OrderItem::class.java)
 
-                            // Kiểm tra xem orderItem có thuộc các orderId của user không
-                            if (orderItem != null && orderItem.orderId in userOrderIds) {
-                                // Lấy thời gian tạo đơn hàng
-                                val orderDate = orderCreationTimes[orderItem.orderId] ?: System.currentTimeMillis()
+                                // Kiểm tra xem orderItem có thuộc các orderId của user không
+                                if (orderItem != null && orderItem.orderId in userOrderIds) {
+                                    // Lấy thời gian tạo đơn hàng
+                                    val orderDate = orderCreationTimes[orderItem.orderId]
+                                        ?: System.currentTimeMillis()
 
-                                // Chuyển đổi OrderItem sang ItemRecyclerViewConfirmation
-                                val itemConfirmation = ItemRecyclerViewConfirmation(
-                                    orderItemId = orderItem.id,
-                                    orderId = orderItem.orderId,
-                                    productId = orderItem.productId,
-                                    productName = orderItem.productName,
-                                    price = orderItem.price,
-                                    quantity = orderItem.quantity,
-                                    colorName = orderItem.color,
-                                    size = orderItem.size,
-                                    productImage = orderItem.productImage,
-                                    orderDate = orderDate,
-                                    status = orderItem.status // Lấy status trực tiếp từ orderItem
-                                )
-                                orderItems.add(itemConfirmation)
+                                    // Chuyển đổi OrderItem sang ItemRecyclerViewConfirmation
+                                    val itemConfirmation = ItemRecyclerViewConfirmation(
+                                        orderItemId = orderItem.id,
+                                        orderId = orderItem.orderId,
+                                        productId = orderItem.productId,
+                                        productName = orderItem.productName,
+                                        price = orderItem.price,
+                                        quantity = orderItem.quantity,
+                                        colorName = orderItem.color,
+                                        size = orderItem.size,
+                                        productImage = orderItem.productImage,
+                                        orderDate = orderDate,
+                                        status = orderItem.status // Lấy status trực tiếp từ orderItem
+                                    )
+                                    orderItems.add(itemConfirmation)
+                                }
                             }
+
+                            Log.d("OrderRepository", "Tổng số items: ${orderItems.size}")
+                            trySend(orderItems)
                         }
 
-                        Log.d("OrderRepository", "Tổng số items: ${orderItems.size}")
-                        trySend(orderItems)
-                    }
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e("OrderRepository", "Lỗi truy vấn items: ${error.message}")
+                            close(error.toException())
+                        }
+                    })
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e("OrderRepository", "Lỗi truy vấn items: ${error.message}")
-                        close(error.toException())
-                    }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("OrderRepository", "Lỗi: ${error.message}")
+                    close(error.toException())
+                }
+            }
+
+            // Đăng ký listener realtime
+            ordersQuery.addValueEventListener(listener)
+
+            // Hủy đăng ký khi flow bị đóng
+            awaitClose {
+                ordersQuery.removeEventListener(listener)
+                orderItemsRef.removeEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {}
+                    override fun onCancelled(error: DatabaseError) {}
                 })
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("OrderRepository", "Lỗi: ${error.message}")
-                close(error.toException())
-            }
         }
 
-        // Đăng ký listener realtime
-        ordersQuery.addValueEventListener(listener)
-
-        // Hủy đăng ký khi flow bị đóng
-        awaitClose {
-            ordersQuery.removeEventListener(listener)
-            orderItemsRef.removeEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {}
-                override fun onCancelled(error: DatabaseError) {}
-            })
-        }
-    }
-
+    /**
+     * Hủy một item trong đơn hàng theo productId
+     *
+     * Quy trình:
+     * 1. Tìm và xóa orderItem khỏi database
+     * 2. Cập nhật lại số lượng tồn kho sản phẩm
+     * 3. Nếu không còn item nào, xóa đơn hàng
+     * 4. Nếu còn item, cập nhật lại tổng tiền đơn hàng
+     *
+     * @param productId ID sản phẩm
+     * @param orderId ID đơn hàng
+     * @param colorName Tên màu sắc
+     * @param index Vị trí của item trong danh sách
+     * @throws Exception nếu có lỗi xảy ra trong quá trình hủy
+     */
     suspend fun cancelOrderItemByProductId(
         productId: String,
         orderId: String,
@@ -423,16 +485,23 @@ class OrderRepository {
                 if (orderItemOrderId == orderId && orderItemColor == colorName) {
                     // Trước khi xóa, lưu giá và số lượng của sản phẩm để tính toán lại tổng tiền
                     removedItemPrice = childSnapshot.child("price").getValue(Long::class.java) ?: 0L
-                    removedItemQuantity = childSnapshot.child("quantity").getValue(Int::class.java) ?: 0
+                    removedItemQuantity =
+                        childSnapshot.child("quantity").getValue(Int::class.java) ?: 0
 
                     childSnapshot.ref.removeValue().await()
                     itemDeleted = true
-                    Log.d("OrderRepository", "Đã xóa item với productId: $productId, color: $colorName khỏi đơn hàng $orderId")
+                    Log.d(
+                        "OrderRepository",
+                        "Đã xóa item với productId: $productId, color: $colorName khỏi đơn hàng $orderId"
+                    )
                 }
             }
 
             if (!itemDeleted) {
-                Log.d("OrderRepository", "Không tìm thấy item với productId: $productId, color: $colorName trong đơn hàng $orderId")
+                Log.d(
+                    "OrderRepository",
+                    "Không tìm thấy item với productId: $productId, color: $colorName trong đơn hàng $orderId"
+                )
                 return
             }
 
@@ -467,7 +536,8 @@ class OrderRepository {
                             // Tính toán lại tổng tiền đơn hàng sau khi xóa item
                             val oldTotalAmount = order.totalAmount
                             val removedAmount = removedItemPrice * removedItemQuantity
-                            val newSubtotal = oldTotalAmount - removedAmount - order.shippingFee + order.discount
+                            val newSubtotal =
+                                oldTotalAmount - removedAmount - order.shippingFee + order.discount
 
                             // Tính phí vận chuyển mới dựa trên tổng tiền mới
                             val newShippingFee = calculateShippingFee(newSubtotal)
@@ -483,7 +553,10 @@ class OrderRepository {
                             )
 
                             ordersRef.child(orderId).updateChildren(updates).await()
-                            Log.d("OrderRepository", "Đã cập nhật đơn hàng $orderId: tổng tiền = $newTotalAmount, phí ship = $newShippingFee")
+                            Log.d(
+                                "OrderRepository",
+                                "Đã cập nhật đơn hàng $orderId: tổng tiền = $newTotalAmount, phí ship = $newShippingFee"
+                            )
                         }
                     }
                 }
@@ -499,6 +572,7 @@ class OrderRepository {
 
     /**
      * Tính phí vận chuyển dựa trên tổng tiền đơn hàng
+     *
      * @param totalAmount Tổng tiền đơn hàng
      * @return Phí vận chuyển
      */
@@ -510,8 +584,10 @@ class OrderRepository {
             else -> 30000L                     // Phí mặc định
         }
     }
+
     /**
      * Cập nhật trạng thái của một OrderItem cụ thể
+     *
      * @param orderItemId ID của OrderItem cần cập nhật
      * @param newStatus Trạng thái mới (pending, shipping, delivered, cancelled, evaluate)
      * @return Kết quả thành công hay không
@@ -533,7 +609,8 @@ class OrderRepository {
                 val orderId = item.orderId
 
                 // Lấy tất cả các item của đơn hàng này
-                val allItemsSnapshot = orderItemsRef.orderByChild("orderId").equalTo(orderId).get().await()
+                val allItemsSnapshot =
+                    orderItemsRef.orderByChild("orderId").equalTo(orderId).get().await()
                 var allSameStatus = true
 
                 // Kiểm tra xem tất cả item có cùng trạng thái không
@@ -550,7 +627,8 @@ class OrderRepository {
                     updateOrderStatus(orderId, newStatus)
                 }
 
-                // Nếu trạng thái là cancelled, cập nhật lại số lượng tồn kho
+// Nếu trạng thái là cancelled, cập
+// Nếu trạng thái là cancelled, cập nhật lại số lượng tồn kho
                 if (newStatus == "cancelled") {
                     restoreItemStock(item.productId, item.color, item.quantity)
                 }
@@ -565,6 +643,8 @@ class OrderRepository {
 
     /**
      * Khôi phục lại số lượng tồn kho cho một sản phẩm cụ thể
+     * Sử dụng khi hủy đơn hàng để trả lại số lượng vào kho
+     *
      * @param productId ID sản phẩm
      * @param colorName Tên màu sắc
      * @param quantity Số lượng cần khôi phục
@@ -581,7 +661,8 @@ class OrderRepository {
                     // Tính toán số lượng tồn kho mới
                     val newStock = color.stock + quantity
                     // Trạng thái mới (nếu có hàng trở lại)
-                    val newStatus = if (color.status == "out_of_stock" && newStock > 0) "available" else color.status
+                    val newStatus =
+                        if (color.status == "out_of_stock" && newStock > 0) "available" else color.status
                     // Tạo màu mới với số lượng tồn kho đã cập nhật
                     color.copy(stock = newStock, status = newStatus)
                 } else {
@@ -595,9 +676,13 @@ class OrderRepository {
             Log.e("OrderRepository", "Không thể khôi phục tồn kho cho item: ${e.message}")
         }
     }
+
     /**
-     * Lấy tất cả các đơn hàng kèm theo các OrderItem của chúng, ngoại trừ đơn hàng có trạng thái "evaluate"
-     * @return Danh sách OrderWithItems (mỗi cặp chứa một Order và các OrderItem liên quan)
+     * Lấy tất cả các đơn hàng kèm theo các OrderItem của chúng, chỉ lấy đơn hàng đang xử lý
+     * Dùng cho trang quản lý đơn hàng của Admin
+     *
+     * @return Danh sách OrderWithItems đã sắp xếp theo thời gian tạo (mới nhất lên đầu)
+     * @throws Exception nếu có lỗi xảy ra trong quá trình lấy dữ liệu
      */
     suspend fun getAllOrdersWithItems(): List<OrderWithItems> {
         try {
@@ -631,24 +716,35 @@ class OrderRepository {
                 if (order != null) {
                     // Lấy các OrderItems cho đơn hàng này
                     val items = allOrderItems[order.id] ?: mutableListOf()
-                    Log.d("OrderDebug", "  -> Đã lấy ${items.size} OrderItems cho đơn hàng: ${order.id}")
+                    Log.d(
+                        "OrderDebug",
+                        "  -> Đã lấy ${items.size} OrderItems cho đơn hàng: ${order.id}"
+                    )
 
-                    // Kiểm tra xem đơn hàng có OrderItem nào ở trạng thái "evaluate" không
+                    // Kiểm tra xem đơn hàng có OrderItem nào ở trạng thái cần hiển thị không
                     val hasPendingItems = items.any { it.status == "pending" }
                     val hasShippingItems = items.any { it.status == "shipping" }
                     val hasProcessingItems = items.any { it.status == "processing" }
                     val hasDeliveredItems = items.any { it.status == "delivered" }
                     val hasEvaluatedItems = items.any { it.status == "evaluate" }
 
-                    // Nếu không có OrderItem nào ở trạng thái "evaluate", thêm vào kết quả
-                    if (hasPendingItems || hasShippingItems || hasProcessingItems ||(hasDeliveredItems && order.paymentStatus == "unpaid") || (hasEvaluatedItems && order.paymentStatus == "unpaid")) {
+                    // Lọc chỉ lấy đơn hàng đang trong quá trình xử lý hoặc chưa thanh toán
+                    if (hasPendingItems || hasShippingItems || hasProcessingItems ||
+                        (hasDeliveredItems && order.paymentStatus == "unpaid") ||
+                        (hasEvaluatedItems && order.paymentStatus == "unpaid")
+                    ) {
                         result.add(OrderWithItems(order, items))
-                        Log.d("OrderDebug", "  -> Đã thêm OrderWithItems cho đơn hàng ${order.id}, số lượng item: ${items.size}")
-                    }else if (items.isEmpty()) {
-                        Log.d("OrderDebug", "  -> Bỏ qua đơn hàng ${order.id} vì không có OrderItem nào")
+                        Log.d(
+                            "OrderDebug",
+                            "  -> Đã thêm OrderWithItems cho đơn hàng ${order.id}, số lượng item: ${items.size}"
+                        )
+                    } else if (items.isEmpty()) {
+                        Log.d(
+                            "OrderDebug",
+                            "  -> Bỏ qua đơn hàng ${order.id} vì không có OrderItem nào"
+                        )
                     }
-                }
-                else {
+                } else {
                     Log.e("OrderDebug", "Lỗi: Không thể chuyển đổi orderSnapshot sang Order")
                 }
             }
@@ -660,9 +756,13 @@ class OrderRepository {
             throw Exception("Không thể lấy danh sách đơn hàng: ${e.message}")
         }
     }
+
     /**
-     * Lấy tất cả các đơn hàng kèm theo các OrderItem của chúng, ngoại trừ đơn hàng có trạng thái "evaluate"
-     * @return Danh sách OrderWithItems (mỗi cặp chứa một Order và các OrderItem liên quan)
+     * Lấy tất cả các đơn hàng kèm theo các OrderItem của chúng, bao gồm tất cả đơn hàng
+     * Dùng cho báo cáo doanh thu của Admin
+     *
+     * @return Danh sách OrderWithItems đã sắp xếp theo thời gian tạo (mới nhất lên đầu)
+     * @throws Exception nếu có lỗi xảy ra trong quá trình lấy dữ liệu
      */
     suspend fun getAllOrdersWithItemsRevenue(): List<OrderWithItems> {
         try {
@@ -696,16 +796,25 @@ class OrderRepository {
                 if (order != null) {
                     // Lấy các OrderItems cho đơn hàng này
                     val items = allOrderItems[order.id] ?: mutableListOf()
-                    Log.d("OrderDebug-tay", "  -> Đã lấy ${items.size} OrderItems cho đơn hàng: ${order.id}")
-                    // Nếu không có OrderItem nào ở trạng thái "evaluate", thêm vào kết quả
+                    Log.d(
+                        "OrderDebug-tay",
+                        "  -> Đã lấy ${items.size} OrderItems cho đơn hàng: ${order.id}"
+                    )
+
+                    // Chỉ lấy đơn hàng có items (tránh đơn hàng rỗng)
                     if (items.isNotEmpty()) {
                         result.add(OrderWithItems(order, items))
-                        Log.d("OrderDebug-tay", "  -> Đã thêm OrderWithItems cho đơn hàng ${order.id}, số lượng item: ${items.size}")
-                    }else if (items.isEmpty()) {
-                        Log.d("OrderDebug-tay", "  -> Bỏ qua đơn hàng ${order.id} vì không có OrderItem nào")
+                        Log.d(
+                            "OrderDebug-tay",
+                            "  -> Đã thêm OrderWithItems cho đơn hàng ${order.id}, số lượng item: ${items.size}"
+                        )
+                    } else if (items.isEmpty()) {
+                        Log.d(
+                            "OrderDebug-tay",
+                            "  -> Bỏ qua đơn hàng ${order.id} vì không có OrderItem nào"
+                        )
                     }
-                }
-                else {
+                } else {
                     Log.e("OrderDebug-tay", "Lỗi: Không thể chuyển đổi orderSnapshot sang Order")
                 }
             }
