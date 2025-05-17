@@ -10,12 +10,32 @@ import com.midterm22nh12.appbangiayonline.model.Entity.User
 import com.midterm22nh12.appbangiayonline.Service.AuthService
 import com.midterm22nh12.appbangiayonline.Service.UserService
 
+/**
+ * Repository xử lý các thao tác xác thực người dùng
+ * Kết nối với Firebase Authentication và Realtime Database thông qua các service
+ */
 class AuthRepository(
-    private val authService: AuthService,
-    private val userService: UserService
+    private val authService: AuthService,   // Service xử lý xác thực (đăng ký, đăng nhập)
+    private val userService: UserService    // Service quản lý thông tin người dùng trong database
 ) {
 
-    // Đăng ký người dùng mới với địa chỉ mặc định là rỗng
+    /**
+     * Đăng ký người dùng mới
+     *
+     * Thực hiện các bước:
+     * 1. Kiểm tra tính hợp lệ của đầu vào
+     * 2. Kiểm tra xem username, email, phone đã tồn tại chưa
+     * 3. Tạo tài khoản Firebase Authentication
+     * 4. Lưu thông tin user vào Realtime Database
+     *
+     * @param fullName Họ tên đầy đủ của người dùng
+     * @param username Tên người dùng (dùng để đăng nhập)
+     * @param email Email của người dùng
+     * @param phone Số điện thoại của người dùng
+     * @param password Mật khẩu
+     * @param rePassword Xác nhận mật khẩu
+     * @param callback Hàm callback trả về kết quả đăng ký (thành công trả về User, thất bại trả về Exception)
+     */
     fun registerUser(
         fullName: String,
         username: String,
@@ -43,7 +63,7 @@ class AuthRepository(
             return
         }
 
-        // Kiểm tra tuần tự
+        // Kiểm tra tuần tự tính duy nhất của username, email và phone
         userService.checkUsernameExits(username) { usernameExists ->
             if (usernameExists) {
                 callback(Result.failure(Exception("Username đã tồn tại")))
@@ -115,7 +135,14 @@ class AuthRepository(
         }
     }
 
-    // Đăng nhập
+    /**
+     * Đăng nhập người dùng
+     * Hỗ trợ đăng nhập bằng email hoặc username
+     *
+     * @param userInput Email hoặc username của người dùng
+     * @param password Mật khẩu
+     * @param callback Hàm callback trả về kết quả đăng nhập (thành công trả về User, thất bại trả về Exception)
+     */
     fun loginUser(userInput: String, password: String, callback: (Result<User>) -> Unit) {
         if (userInput.isEmpty() || password.isEmpty()) {
             callback(Result.failure(Exception("Vui lòng nhập đầy đủ thông tin")))
@@ -123,8 +150,10 @@ class AuthRepository(
         }
         // Xác định xem input là email hay username
         if (isValidEmail(userInput)) {
+            // Nếu là email, đăng nhập trực tiếp
             loginWithEmail(userInput, password, callback)
         } else {
+            // Nếu là username, cần tìm email tương ứng trước
             findEmailByUserName(userInput) { email ->
                 if (email.isNotEmpty()) {
                     loginWithEmail(email, password, callback)
@@ -135,7 +164,13 @@ class AuthRepository(
         }
     }
 
-    // Cập nhật địa chỉ người dùng sau khi đăng nhập
+    /**
+     * Cập nhật địa chỉ người dùng
+     *
+     * @param userId ID của người dùng cần cập nhật
+     * @param address Địa chỉ mới
+     * @param callback Hàm callback trả về kết quả cập nhật (thành công trả về Unit, thất bại trả về Exception)
+     */
     fun updateUserAddress(userId: String, address: String, callback: (Result<Unit>) -> Unit) {
         if (userId.isEmpty()) {
             callback(Result.failure(Exception("ID người dùng không hợp lệ")))
@@ -157,7 +192,13 @@ class AuthRepository(
         })
     }
 
-    // Hàm hỗ trợ đăng nhập
+    /**
+     * Đăng nhập bằng email
+     *
+     * @param email Email của người dùng
+     * @param password Mật khẩu
+     * @param callback Hàm callback trả về kết quả đăng nhập
+     */
     private fun loginWithEmail(email: String, password: String, callback: (Result<User>) -> Unit) {
         authService.loginUser(email, password, object : AuthService.AuthCallback {
             override fun onSuccess(currentUser: FirebaseUser?) {
@@ -174,6 +215,12 @@ class AuthRepository(
         })
     }
 
+    /**
+     * Lấy thông tin User từ Firebase Database dựa trên userId
+     *
+     * @param userId ID của người dùng
+     * @param callback Hàm callback trả về kết quả
+     */
     private fun getUserFromFirebase(userId: String, callback: (Result<User>) -> Unit) {
         userService.getUserById(userId, object : UserService.UserDataCallBack {
             override fun onSuccess(user: User) {
@@ -186,6 +233,12 @@ class AuthRepository(
         })
     }
 
+    /**
+     * Tìm email dựa trên username
+     *
+     * @param username Username cần tìm
+     * @param callback Hàm callback trả về email tìm được (rỗng nếu không tìm thấy)
+     */
     private fun findEmailByUserName(username: String, callback: (String) -> Unit) {
         val database = FirebaseDatabase.getInstance()
         val usersRef = database.getReference("users")
@@ -215,19 +268,39 @@ class AuthRepository(
             })
     }
 
-    // Kiểm tra dạng email hợp lệ
+    /**
+     * Kiểm tra tính hợp lệ của email
+     *
+     * @param email Email cần kiểm tra
+     * @return true nếu email hợp lệ, false nếu không
+     */
     private fun isValidEmail(email: String): Boolean {
         val pattern = Patterns.EMAIL_ADDRESS
         return pattern.matcher(email).matches()
     }
 
-    // Kiểm tra dạng phone hợp lệ
+    /**
+     * Kiểm tra tính hợp lệ của số điện thoại
+     * Số điện thoại phải bắt đầu bằng số 0 và có đúng 10 chữ số
+     *
+     * @param phone Số điện thoại cần kiểm tra
+     * @return true nếu số điện thoại hợp lệ, false nếu không
+     */
     private fun isValidPhone(phone: String): Boolean {
         val pattern = "^0\\d{9}$".toRegex()
         return pattern.matches(phone)
     }
 
-    // Cập nhật thông tin profile người dùng
+    /**
+     * Cập nhật thông tin hồ sơ người dùng
+     *
+     * @param userId ID của người dùng
+     * @param fullName Họ tên đầy đủ mới
+     * @param phone Số điện thoại mới
+     * @param email Email mới
+     * @param address Địa chỉ mới
+     * @param callback Hàm callback trả về kết quả cập nhật
+     */
     fun updateUserProfile(
         userId: String,
         fullName: String,
@@ -254,7 +327,7 @@ class AuthRepository(
             return
         }
 
-        // Tạo một loại interface callback để sử dụng trong userService
+        // Gọi service để cập nhật thông tin
         userService.updateUserProfile(userId, fullName, phone, email, address, object : UserService.UserCallBack {
             override fun onSuccess() {
                 callback(Result.success(Unit))
@@ -265,5 +338,4 @@ class AuthRepository(
             }
         })
     }
-
 }

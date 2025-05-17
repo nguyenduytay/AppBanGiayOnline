@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midterm22nh12.appbangiayonline.Repository.CategoryRepository
 import com.midterm22nh12.appbangiayonline.Utils.UiState
