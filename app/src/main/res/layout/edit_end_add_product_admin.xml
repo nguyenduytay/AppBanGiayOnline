@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0E6E6">
+    android:background="#CA7C7C">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="15dp"
         android:padding="16dp">
 
         <!-- Tiêu đề và nút quay lại -->
@@ -30,7 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Thêm/Sửa"
+                android:text="Thêm/Sửa/xóa"
+                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -39,50 +41,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-               />
+                android:layout_centerVertical="true" />
         </RelativeLayout>
-
-        <!-- Card cho phần ảnh -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="#D9D9D9"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="32dp"
-                    app:cardElevation="2dp">
-
-                    <ImageView
-                        android:id="@+id/ivProductImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#EFEFEF"
-                        android:padding="12dp"
-                        android:src="@drawable/item_brand_home_user" />
-                </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Thêm ảnh"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <!-- Card cho thông tin chính -->
         <androidx.cardview.widget.CardView
@@ -96,24 +56,56 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/item_border_account_no_click"
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="ID sản phẩm*"
+                        android:textColor="#000000"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etIdProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/edit_text_background"
+                        android:hint="Nhập tên"
+                        android:inputType="text"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="#000000"
+                        android:textColorHint="#4B4747"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
                 <!-- Tên sản phẩm/Brand/Category -->
                 <LinearLayout
                     android:id="@+id/llName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvNameLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Tên sản phẩm*"
+                        android:textColor="#000000"
                         android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etName"
@@ -124,7 +116,10 @@
                         android:inputType="text"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:textSize="14sp" />
+                        android:textColor="#000000"
+                        android:textColorHint="#4B4747"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Giá bán - Chỉ hiển thị cho sản phẩm -->
@@ -132,15 +127,17 @@
                     android:id="@+id/llPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Giá bán:"
+                        android:textColor="#000000"
                         android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etPrice"
@@ -151,7 +148,10 @@
                         android:inputType="number"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:textSize="14sp" />
+                        android:textColor="#000000"
+                        android:textColorHint="#4B4747"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Dropdown Brand - Chỉ hiển thị cho sản phẩm -->
@@ -159,78 +159,76 @@
                     android:id="@+id/llBrand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="8dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
                             android:text="Hãng Giày*"
+                            android:textColor="#000000"
                             android:textSize="14sp"
-                            android:layout_marginBottom="4dp" />
+                            android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/spinnerBrand"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="@drawable/spinner_background"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp" />
+                            android:layout_height="wrap_content"
+                            android:minWidth="120dp"
+                            android:minHeight="48dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:enabled="true"
+                            android:elevation="2dp"
+                            android:popupElevation="3dp"
+                            android:spinnerMode="dropdown"
+                            android:backgroundTint="@color/black"
+                            android:entries="@array/time_ranges" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
                             android:text="Loại"
+                            android:textColor="#000000"
                             android:textSize="14sp"
-                            android:layout_marginBottom="4dp" />
+                            android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/spinnerCategory"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="@drawable/spinner_background"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp" />
+                            android:layout_height="wrap_content"
+                            android:minWidth="120dp"
+                            android:minHeight="48dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:enabled="true"
+                            android:elevation="2dp"
+                            android:popupElevation="3dp"
+                            android:spinnerMode="dropdown"
+                            android:backgroundTint="@color/black"
+                            android:entries="@array/time_ranges" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <!-- Trạng thái - Dùng chung cho tất cả -->
-                <LinearLayout
-                    android:id="@+id/llStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Trạng thái:"
-                        android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/spinner_background"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp" />
-                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -240,13 +238,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="#D9D9D9"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/item_border_account_no_click"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -254,15 +252,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Mô tả sản phẩm:"
+                        android:textColor="#000000"
                         android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etDescription"
@@ -273,6 +273,8 @@
                         android:hint="Nhập mô tả sản phẩm"
                         android:inputType="textMultiLine"
                         android:padding="12dp"
+                        android:textColor="#090909"
+                        android:textColorHint="#625A5A"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -280,48 +282,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Kích thước:"
+                        android:textColor="#000000"
                         android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
-                    <HorizontalScrollView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSizes"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="8dp" />
 
-                        <LinearLayout
-                            android:id="@+id/llSizes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <!-- Size chips will be added here -->
-                            <com.google.android.material.chip.Chip
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="36"
-                                android:layout_marginEnd="8dp"
-                                app:chipBackgroundColor="#FFFFFF" />
-
-                            <com.google.android.material.chip.Chip
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="37"
-                                android:layout_marginEnd="8dp"
-                                app:chipBackgroundColor="#FFFFFF" />
-
-                            <com.google.android.material.chip.Chip
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="+"
-                                app:chipBackgroundColor="#EFEFEF" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
+                    <Button
+                        android:id="@+id/btnAddSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#E0E0E0"
+                        android:text="+ Thêm kích thước mới"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Colors -->
@@ -333,14 +320,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="Màu sắc:"
+                        android:textColor="#000000"
                         android:textSize="14sp"
-                        android:layout_marginBottom="4dp" />
+                        android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvColors"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="200dp"
                         android:orientation="vertical" />
 
                     <Button
@@ -348,10 +337,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:backgroundTint="#E0E0E0"
                         android:text="+ Thêm màu sắc mới"
                         android:textAllCaps="false"
-                        android:backgroundTint="#E0E0E0"
-                        android:textColor="#000000" />
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -363,9 +353,22 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/primary_button_background"
-            android:text="Thêm"
+            android:text="Cập nhật"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/primary_button_background"
+            android:text="Xóa"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 </ScrollView>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5">
+    android:background="#f5f5f5"
+    android:orientation="vertical">
 
     <!-- Top Bar with Title -->
     <RelativeLayout
@@ -15,13 +16,13 @@
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/btn_back"
+            android:id="@+id/iv_back_purchase_history_user"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:contentDescription="Back"
             android:padding="12dp"
-            android:src="@drawable/shopping_cart"
+            android:src="@drawable/back_1"
             app:tint="@color/your_color" />
 
         <TextView
@@ -35,16 +36,32 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- Main Content - Purchase History List -->
-    <ListView
-        android:id="@+id/listview_purchase_history"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_top_bar"
-        android:clipToPadding="false"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:padding="8dp" />
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar_purchase_history_user"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rc_purchase_history"
+            app:layout_constraintStart_toStartOf="@+id/rc_purchase_history"
+            app:layout_constraintTop_toTopOf="@+id/rc_purchase_history" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rc_purchase_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layout_top_bar"
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:padding="8dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Main Content - Purchase History List -->
+
 
     <!-- Empty State View (shown when history is empty) -->
     <LinearLayout
@@ -81,4 +98,4 @@
             android:text="Mua sắm ngay"
             android:textColor="#FFFFFF" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

@@ -51,6 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+        <include
+            android:id="@+id/order_detail_admin_activity_main_admin"
+            layout="@layout/order_detail_admin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
     </FrameLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_notification_admin"

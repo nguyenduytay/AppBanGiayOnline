@@ -57,6 +57,10 @@ class AuthViewModel : ViewModel() {
     val profileUpdateResult: LiveData<Event<Result<Unit>>>
         get() = _profileUpdateResult
 
+    // Thêm vào AuthViewModel
+    private val _userName_ById = MutableLiveData<Pair<String, String>>() // Pair<userId, userName>
+    val userName_ById: LiveData<Pair<String, String>> get() = _userName_ById
+
     // Đăng ký
     fun registerUser(
         fullName: String,
@@ -254,5 +258,26 @@ class AuthViewModel : ViewModel() {
         } else {
             _profileUpdateResult.value = Event(Result.failure(Exception("Người dùng chưa đăng nhập")))
         }
+    }
+    /**
+     * Lấy tên người dùng qua ID
+     * @param userId ID của người dùng cần lấy tên
+     */
+    fun getUserNameById(userId: String) {
+        _isLoading.value = true
+
+        userService.getUserById(userId, object : UserService.UserDataCallBack {
+            override fun onSuccess(user: User) {
+                _userName_ById.value = Pair(userId, user.fullName)
+                _isLoading.value = false
+            }
+
+            override fun onFailure(errorMessage: String) {
+                // Trong trường hợp lỗi, gán tên mặc định
+                _userName_ById.value = Pair(userId, "Khách hàng")
+                _isLoading.value = false
+                Log.e("UserNames", "Failed to get user name for ID $userId: $errorMessage")
+            }
+        })
     }
 }

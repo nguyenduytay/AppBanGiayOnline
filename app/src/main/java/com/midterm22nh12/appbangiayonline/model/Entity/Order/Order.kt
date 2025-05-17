@@ -9,7 +9,6 @@
         val shippingAddress: String = "", // Địa chỉ giao hàng
         val phoneNumber: String = "",     // Số điện thoại liên hệ
         val paymentMethod: String = "",   // Phương thức thanh toán (COD, Banking, etc)
-        val status: String = "pending",   // Trạng thái đơn hàng (pending, confirmed, shipping, delivered, cancelled)
         val createdAt: Long = System.currentTimeMillis(), // Thời gian tạo đơn hàng
         val updatedAt: Long = System.currentTimeMillis(), // Thời gian cập nhật gần nhất
         val note: String = "",            // Ghi chú của khách hàng

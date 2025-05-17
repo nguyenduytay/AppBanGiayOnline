@@ -59,6 +59,14 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     private val _pendingOrderItemsState = MutableLiveData<UiState<List<ItemRecyclerViewConfirmation>>>()
     val pendingOrderItemsState: LiveData<UiState<List<ItemRecyclerViewConfirmation>>> = _pendingOrderItemsState
 
+    // UI State cho tất cả đơn hàng kèm OrderItems (cho trang Admin)
+    private val _allOrdersWithItemsState = MutableLiveData<UiState<List<OrderWithItems>>>()
+    val allOrdersWithItemsState: LiveData<UiState<List<OrderWithItems>>> = _allOrdersWithItemsState
+
+    // UI State cho tất cả đơn hàng kèm OrderItems (cho trang Admin)
+    private val _allOrdersWithItemsStateRevenue = MutableLiveData<UiState<List<OrderWithItems>>>()
+    val allOrdersWithItemsStateRevenue: LiveData<UiState<List<OrderWithItems>>> = _allOrdersWithItemsStateRevenue
+
 
     /**
      * Tạo đơn hàng mới từ giỏ hàng
@@ -116,16 +124,20 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                         size = cartItem.selectedSize,
                         color = cartItem.selectedColor.name,
                         colorImage = cartItem.selectedColor.image,
-                        productCode = cartItem.selectedColor.productCode
+                        productCode = cartItem.selectedColor.productCode,
+                        status = "pending" // Đặt trạng thái đơn hàng là "pending"
                     )
                 }
 
                 // Tính tổng tiền
-                val totalAmount = orderItems.sumOf { it.price * it.quantity }
+                var totalAmount = orderItems.sumOf { it.price * it.quantity }
 
                 // Phí vận chuyển (có thể tính dựa trên logic nghiệp vụ)
                 val shippingFee = calculateShippingFee(totalAmount)
 
+                if(shippingFee != 0L){
+                    totalAmount += shippingFee
+                }
                 // Tạo đối tượng Order
                 val order = Order(
                     id = UUID.randomUUID().toString(),
@@ -134,7 +146,6 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     shippingAddress = shippingAddress,
                     phoneNumber = phoneNumber,
                     paymentMethod = paymentMethod,
-                    status = "pending",
                     note = note,
                     shippingFee = shippingFee,
                     paymentStatus = if (paymentMethod == "COD") "unpaid" else "processing"
@@ -198,35 +209,16 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
     }
 
     /**
-     * Lấy lịch sử trạng thái đơn hàng
-     * @param orderId ID đơn hàng
-     */
-    fun getOrderStatusHistory(orderId: String) {
-        viewModelScope.launch {
-            _orderHistoryState.value = UiState.Loading
-            try {
-                orderRepository.getOrderStatusHistory(orderId).collect { history ->
-                    _orderHistoryState.value = UiState.Success(history)
-                }
-            } catch (e: Exception) {
-                _orderHistoryState.value = UiState.Error(e.message ?: "Không thể lấy lịch sử đơn hàng")
-            }
-        }
-    }
-
-    /**
-     * Hủy đơn hàng
+     * Cập nhật lại trạng thái đơn hàng
      * @param orderId ID đơn hàng
      * @param reason Lý do hủy
      * @param userId ID người dùng thực hiện hủy
      */
-    fun cancelOrder(orderId: String, reason: String, userId: String) {
+    fun cancelOrder(orderItemId: String, note: String) {
         viewModelScope.launch {
             _orderDetailState.value = UiState.Loading
             try {
-                orderRepository.cancelOrder(orderId, reason, userId)
-                // Cập nhật lại thông tin đơn hàng sau khi hủy
-                getOrderDetail(orderId)
+                orderRepository.updateOrderStatus(orderItemId, note)
             } catch (e: Exception) {
                 _orderDetailState.value = UiState.Error(e.message ?: "Không thể hủy đơn hàng")
             }
@@ -248,6 +240,9 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         orderItemId: String,
         userId: String,
         productId: String,
+        productName: String,
+        colorName: String,
+        size: String,
         rating: Float,
         comment: String,
         images: List<String> = emptyList()
@@ -260,6 +255,9 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                     orderItemId = orderItemId,
                     userId = userId,
                     productId = productId,
+                    productName = productName,
+                    colorName = colorName,
+                    size = size,
                     rating = rating,
                     comment = comment,
                     images = images
@@ -300,11 +298,11 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
      * @param note Ghi chú
      * @param adminId ID của admin thực hiện cập nhật
      */
-    fun updateOrderStatus(orderId: String, newStatus: String, note: String = "", adminId: String) {
+    fun updateOrderStatus(orderId : String, orderItemId: String, newStatus: String) {
         viewModelScope.launch {
             _orderDetailState.value = UiState.Loading
             try {
-                orderRepository.updateOrderStatus(orderId, newStatus, note, adminId)
+                orderRepository.updateOrderStatus(orderItemId, newStatus)
                 // Cập nhật lại thông tin đơn hàng
                 getOrderDetail(orderId)
             } catch (e: Exception) {
@@ -330,40 +328,6 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    /**
-     * Lấy danh sách đơn hàng theo trạng thái (dành cho Admin)
-     * @param status Trạng thái cần lọc
-     */
-    fun getOrdersByStatus(status: String) {
-        viewModelScope.launch {
-            _ordersByStatusState.value = UiState.Loading
-            try {
-                orderRepository.getOrdersByStatus(status).collect { orders ->
-                    _ordersByStatusState.value = UiState.Success(orders)
-                }
-            } catch (e: Exception) {
-                _ordersByStatusState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng theo trạng thái")
-            }
-        }
-    }
-
-    /**
-     * Lấy danh sách đơn hàng theo khoảng thời gian (dành cho Admin)
-     * @param startTime Thời điểm bắt đầu (timestamp)
-     * @param endTime Thời điểm kết thúc (timestamp)
-     */
-    fun getOrdersByTimeRange(startTime: Long, endTime: Long) {
-        viewModelScope.launch {
-            _ordersByStatusState.value = UiState.Loading
-            try {
-                orderRepository.getOrdersByTimeRange(startTime, endTime).collect { orders ->
-                    _ordersByStatusState.value = UiState.Success(orders)
-                }
-            } catch (e: Exception) {
-                _ordersByStatusState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng theo khoảng thời gian")
-            }
-        }
-    }
     // Theo dõi đơn hàng realtime
     fun observePendingOrderItems(userId: String) {
         viewModelScope.launch {
@@ -387,12 +351,12 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
-    //hủy đơn hàng
+    //hủy đơn hàng xóa đơn hàng
     fun cancelOrderItemByProductId(
         productId: String,
         orderId: String,
-        userId: String,
-        reason: String = "Khách hàng hủy"
+        colorName: String,
+        index : Int
     ) {
         viewModelScope.launch {
             try {
@@ -400,14 +364,42 @@ class OrderViewModel(application: Application): AndroidViewModel(application) {
                 orderRepository.cancelOrderItemByProductId(
                     productId = productId,
                     orderId = orderId,
-                    userId = userId,
-                    reason = reason
+                    colorName,
+                    index
                 )
 
             } catch (e: Exception) {
                 // Xử lý lỗi
                 Log.e("OrderViewModel", "Lỗi khi hủy item đơn hàng: ${e.message}")
                 _userOrdersState.value = UiState.Error(e.message ?: "Không thể hủy item đơn hàng")
+            }
+        }
+    }
+    /**
+     * Lấy tất cả đơn hàng kèm OrderItems
+     */
+    fun getAllOrdersWithItems() {
+        viewModelScope.launch {
+            _allOrdersWithItemsState.value = UiState.Loading
+            try {
+                val ordersWithItems = orderRepository.getAllOrdersWithItems()
+                _allOrdersWithItemsState.value = UiState.Success(ordersWithItems)
+            } catch (e: Exception) {
+                _allOrdersWithItemsState.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng")
+            }
+        }
+    }
+    /**
+     * Lấy tất cả đơn hàng kèm OrderItems
+     */
+    fun getAllOrdersWithItemsRevenue() {
+        viewModelScope.launch {
+            _allOrdersWithItemsStateRevenue.value = UiState.Loading
+            try {
+                val ordersWithItems = orderRepository.getAllOrdersWithItemsRevenue()
+                _allOrdersWithItemsStateRevenue.value = UiState.Success(ordersWithItems)
+            } catch (e: Exception) {
+                _allOrdersWithItemsStateRevenue.value = UiState.Error(e.message ?: "Không thể lấy danh sách đơn hàng")
             }
         }
     }

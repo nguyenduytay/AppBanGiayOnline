@@ -18,7 +18,7 @@
 
         <!-- Product Image -->
         <ImageView
-            android:id="@+id/img_product"
+            android:id="@+id/iv_image_product"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/item_border_account"
@@ -43,7 +43,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_product_variant"
+                android:id="@+id/tv_color_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -73,7 +73,7 @@
 
         <!-- Buy Again Button -->
         <Button
-            android:id="@+id/btn_buy_again"
+            android:id="@+id/bt_buy_again"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginStart="12dp"

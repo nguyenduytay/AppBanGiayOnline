@@ -84,7 +84,7 @@ class BlankFragmentHomeAdmin : Fragment() {
     private fun setupClickIconView() {
         binding.ivNotificationHomeAdmin.setOnClickListener {
             //(activity as MainActivityAdmin).openNotificationDrawer()
-            (activity as MainActivityAdmin).logout()
+
         }
 
         binding.ivMessageHomeAdmin.setOnClickListener {
@@ -108,6 +108,10 @@ class BlankFragmentHomeAdmin : Fragment() {
             (activity as MainActivityAdmin).showBottomNav()
             (activity as MainActivityAdmin).hideKeyboard(binding.svSearchHomeAdmin)
             false
+        }
+        //sự kiện thêm sản phẩm mới
+        binding.btAddProductHomeAdmin.setOnClickListener {
+            (activity as MainActivityAdmin).showEditEndAddProduct()
         }
         // Xử lý sự kiện tìm kiếm
         binding.svSearchHomeAdmin.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {

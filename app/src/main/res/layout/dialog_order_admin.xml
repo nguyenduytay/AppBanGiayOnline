@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/item_brand_home_user">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cập nhật trạng thái đơn hàng"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tvOrderIdProcess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Mã đơn hàng: #ODR123456"
+        android:textColor="#2E2C2C"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Trạng thái hiện tại:"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/llOrderStatusProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Trạng thái "Chờ xác nhận" -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivStatusPending"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_circle_check"
+               />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Chờ xác nhận"
+                android:textColor="#613C00"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Đường nối -->
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="16dp"
+            android:layout_height="2dp"
+            android:background="#CCCCCC" />
+
+        <!-- Trạng thái "Đang xử lý" -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivStatusProcessing"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_circle"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Đang xử lý"
+                android:textColor="#613C00"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Đường nối -->
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="16dp"
+            android:layout_height="2dp"
+            android:background="#CCCCCC" />
+
+        <!-- Trạng thái "Đang vận chuyển" -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivStatusShipping"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_circle"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Đang vận chuyển"
+                android:textColor="#613C00"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Đường nối -->
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="16dp"
+            android:layout_height="2dp"
+            android:background="#CCCCCC" />
+
+        <!-- Trạng thái "Giao hàng thành công" -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivStatusDelivered"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_circle"
+                 />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Giao thành công"
+                android:textColor="#613C00"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Thêm RadioGroup để chọn trạng thái -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Chọn trạng thái mới:"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/rgOrderStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbStatusPending"
+            app:buttonTint="@color/status_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chờ xác nhận"
+            android:textColor="#FF9800"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbStatusProcessing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đang xử lý"
+            app:buttonTint="@color/status_processing"
+            android:textColor="#2196F3"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbStatusShipping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đang vận chuyển"
+            app:buttonTint="@color/status_shipping"
+            android:textColor="#3F51B5"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbStatusDelivered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đã giao hàng"
+            app:buttonTint="@color/status_delivered"
+            android:textColor="#4CAF50"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Ghi chú (tùy chọn):"
+        android:textSize="14sp"
+        android:textColor="#757575" />
+
+    <EditText
+        android:id="@+id/etNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/item_border_account_no_click"
+        android:gravity="top"
+        android:hint="Nhập ghi chú về việc cập nhật"
+        android:maxLines="5"
+        android:minLines="3"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#373333" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_outline"
+            android:text="Hủy"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_primary"
+            android:text="Lưu thay đổi"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

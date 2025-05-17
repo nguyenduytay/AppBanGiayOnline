@@ -8,6 +8,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.midterm22nh12.appbangiayonline.model.Entity.Product.Product
+import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewConfirmation
+import com.midterm22nh12.appbangiayonline.model.Item.ItemRecyclerViewProductHomeUser
+import kotlinx.coroutines.tasks.await
 import java.util.Locale
 
 class ProductRepository {
@@ -293,5 +296,45 @@ class ProductRepository {
         })
 
         return productsLiveData
+    }
+
+    /**
+     * Lấy thông tin chi tiết sản phẩm từ ItemRecyclerViewConfirmation
+     * @param confirmation Thông tin confirmation cần chuyển đổi
+     * @return Thông tin chi tiết sản phẩm hoặc null nếu không tìm thấy
+     */
+    suspend fun getProductHomeUserFromConfirmation(confirmation: ItemRecyclerViewConfirmation): ItemRecyclerViewProductHomeUser? {
+        try {
+            // Nếu productId null thì trả về null
+            val productId = confirmation.productId ?: return null
+
+            // Truy vấn Firebase để lấy thông tin sản phẩm
+            val productSnapshot = productsRef.child(productId).get().await()
+
+            if (productSnapshot.exists()) {
+                val product = productSnapshot.getValue(Product::class.java)
+
+                if (product != null) {
+                    // Chuyển đổi từ Product sang ItemRecyclerViewProductHomeUser
+                    return ItemRecyclerViewProductHomeUser(
+                        id = product.id,
+                        brandId = product.brandId,
+                        categoryId = product.categoryId,
+                        name = product.name,
+                        price = product.price,
+                        rating = product.rating,
+                        description = product.description,
+                        sizes = product.sizes,
+                        colors = product.colors
+                    )
+                }
+            }
+
+            // Trả về null nếu không tìm thấy sản phẩm
+            return null
+        } catch (e: Exception) {
+            Log.e("ProductRepository", "Lỗi khi lấy thông tin sản phẩm: ${e.message}")
+            return null
+        }
     }
 }
