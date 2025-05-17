@@ -1,6 +1,7 @@
 package com.midterm22nh12.appbangiayonline.Adapter.Admin
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,6 +91,7 @@ class MyAdapterRecyclerViewBillAdmin(
             // Lấy 8 ký tự đầu tiên của ID đơn hàng
             tvOrderId.text = "Mã đơn: #${order.id.take(8)}"
             authViewModel.getUserNameById(order.userId)
+            Log.d("MyAdapterRecyclerViewBillAdmin--", "UserId: ${order.userId}")
             // Quan sát kết quả
             authViewModel.userName_ById.observe(holder.itemView.context as LifecycleOwner) { pair ->
                 val fetchedUserId = pair.first
@@ -97,6 +99,7 @@ class MyAdapterRecyclerViewBillAdmin(
                 // Chỉ cập nhật UI nếu userId trùng khớp với đơn hàng hiện tại
                 if (fetchedUserId == order.userId) {
                     holder.binding.tvCustomerName.text = "Khách hàng: $fetchedUserName"
+                    Log.d("MyAdapterRecyclerViewBillAdmin", "UserId: $fetchedUserId, UserName: $fetchedUserName")
                 }
             }
             tvOrderDate.text = "Ngày đặt: ${dateFormat.format(Date(order.createdAt))}"

@@ -270,12 +270,6 @@ class OrderRepository {
      */
     private suspend fun updateProductRating(productId: String, newRating: Double) {
         try {
-            // Kiểm tra giới hạn đầu vào
-            val validatedRating = when {
-                newRating < 1.0 -> 1.0
-                newRating > 5.0 -> 5.0
-                else -> newRating
-            }
 
             // Lấy thông tin sản phẩm từ Firebase
             val productSnapshot = productsRef.child(productId).get().await()
@@ -284,18 +278,20 @@ class OrderRepository {
             // Lấy rating hiện tại, mặc định là 0.0 nếu chưa có
             val currentRating = productSnapshot.child("rating").getValue(Double::class.java) ?: 0.0
 
+            Log.d("OrderRepository", "Đã cập nhật điểm đánh giá: $currentRating")
+
             // Tính điểm trung bình mới
             var updatedRating: Double
 
             if (currentRating == 0.0) {
                 // Nếu chưa có đánh giá nào trước đó
-                updatedRating = validatedRating
+                updatedRating = newRating
             } else {
                 // Sử dụng công thức cân bằng hợp lý:
                 // - 95% cho điểm hiện tại (giữ ổn định)
                 // - 5% cho đánh giá mới (cập nhật từ từ)
                 // Điều này sẽ ngăn chặn đánh giá đơn lẻ ảnh hưởng quá nhiều
-                updatedRating = currentRating * 0.90 + validatedRating * 0.5
+                updatedRating = currentRating * 0.90 + newRating * 0.1
 
                 // Làm tròn đến 1 chữ số thập phân
                 val roundedRating = Math.round(updatedRating * 10.0) / 10.0
@@ -307,7 +303,7 @@ class OrderRepository {
                     else -> roundedRating
                 }
             }
-
+            Log.d("OrderRepository", "Đã cập nhật điểm đánh giá: $updatedRating")
             // Cập nhật rating vào database
             productsRef.child(productId).child("rating").setValue(updatedRating).await()
         } catch (e: Exception) {
