@@ -6,4 +6,14 @@
     <color name="nen">#C78A8A</color>
     <color name="nenduoi">#F1DDDD</color>
     <color name="your_color">#FF5722</color>
+    <color name="status_pending">#FF9800</color>
+    <color name="status_processing">#2196F3</color>
+    <color name="status_shipping">#3F51B5</color>
+    <color name="status_delivered">#4CAF50</color>
+    <color name="status_cancelled">#F44336</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+    <color name="blue">#2196F3</color>
 </resources>

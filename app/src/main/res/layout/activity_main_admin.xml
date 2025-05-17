@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.Admin.MainActivityAdmin">
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +32,33 @@
             app:itemTextColor="@color/black"
             app:menu="@menu/menu_bottom_navigation_admin" />
     </LinearLayout>
+        <!-- Overlay Container for Messages UI -->
+        <include
+            android:id="@+id/list_messages_activity_main_admin"
+            layout="@layout/list_message_admin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/messages_activity_main_admin"
+            layout="@layout/shop_messages_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/edit_end_add_product_activity_main_admin"
+            layout="@layout/edit_end_add_product_admin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/order_detail_admin_activity_main_admin"
+            layout="@layout/order_detail_admin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </FrameLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view_notification_admin"
         android:layout_width="300dp"

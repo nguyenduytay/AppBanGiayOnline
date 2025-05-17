@@ -127,4 +127,7 @@ dependencies {
     implementation(libs.google.services)
 
     implementation(libs.google.firebase.messaging.ktx)
+
+    implementation("com.google.android.gms:play-services-location:20.0.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

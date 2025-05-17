@@ -1,50 +1,86 @@
-package com.midterm22nh12.appbangiayonline.Repository
+    package com.midterm22nh12.appbangiayonline.Repository
 
-import com.midterm22nh12.appbangiayonline.model.Entity.Brand
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+    import android.util.Log
+    import androidx.lifecycle.LiveData
+    import androidx.lifecycle.MutableLiveData
+    import com.google.firebase.database.DataSnapshot
+    import com.google.firebase.database.DatabaseError
+    import com.google.firebase.database.FirebaseDatabase
+    import com.google.firebase.database.ValueEventListener
+    import com.midterm22nh12.appbangiayonline.model.Entity.Product.Brand
 
-class BrandRepository(
-    private val firebaseRepository: FirebaseRepository = FirebaseRepository()
-) {
-    companion object {
-        private const val COLLECTION_BRANDS = "brands"
+    class BrandRepository {
+        private val database = FirebaseDatabase.getInstance()
+        private val brandsRef = database.getReference("brands")
+
+        fun getBrands(): LiveData<List<Brand>> {
+            val brandsLiveData = MutableLiveData<List<Brand>>()
+
+            brandsRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val brandsList = mutableListOf<Brand>()
+                    for (brandSnapshot in snapshot.children) {
+                        val brand = brandSnapshot.getValue(Brand::class.java)
+                        brand?.let { brandsList.add(it) }
+                    }
+                    brandsLiveData.value = brandsList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Xử lý lỗi
+                }
+            })
+
+            return brandsLiveData
+        }
+
+        fun getBrandById(brandId: String): MutableLiveData<Brand?> {
+            val brandLiveData = MutableLiveData<Brand?>()
+
+            brandsRef.child(brandId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val brand = snapshot.getValue(Brand::class.java)
+                    brandLiveData.value = brand
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Xử lý lỗi
+                }
+            })
+
+            return brandLiveData
+        }
+
+        // Thêm thương hiệu mới
+        fun addBrand(brand: Brand, callback: (Boolean, String?) -> Unit) {
+            brandsRef.child(brand.id).setValue(brand)
+                .addOnSuccessListener {
+                    callback(true, null)
+                }
+                .addOnFailureListener { e ->
+                    callback(false, e.message)
+                }
+        }
+
+        // Cập nhật thương hiệu
+        fun updateBrand(brand: Brand, callback: (Boolean, String?) -> Unit) {
+            brandsRef.child(brand.id).setValue(brand)
+                .addOnSuccessListener {
+                    callback(true, null)
+                }
+                .addOnFailureListener { e ->
+                    callback(false, e.message)
+                }
+        }
+
+        // Xóa thương hiệu
+        fun deleteBrand(brandId: String, callback: (Boolean, String?) -> Unit) {
+            brandsRef.child(brandId).removeValue()
+                .addOnSuccessListener {
+                    callback(true, null)
+                }
+                .addOnFailureListener { e ->
+                    callback(false, e.message)
+                }
+        }
     }
-
-    /**
-     * Lấy tất cả thương hiệu
-     */
-    fun getAllBrands(): Flow<List<Brand>> = flow {
-        val brands = firebaseRepository.getAll(COLLECTION_BRANDS, Brand::class.java)
-        emit(brands)
-    }
-
-    /**
-     * Lấy thương hiệu theo ID
-     */
-    fun getBrandById(brandId: String): Flow<Brand?> = flow {
-        val brand = firebaseRepository.getById(COLLECTION_BRANDS, brandId, Brand::class.java)
-        emit(brand)
-    }
-
-    /**
-     * Thêm thương hiệu mới
-     */
-    suspend fun addBrand(brand: Brand): String? {
-        return firebaseRepository.add(COLLECTION_BRANDS, brand)
-    }
-
-    /**
-     * Cập nhật thương hiệu
-     */
-    suspend fun updateBrand(brand: Brand): Boolean {
-        return firebaseRepository.update(COLLECTION_BRANDS, brand.id, brand)
-    }
-
-    /**
-     * Xóa thương hiệu
-     */
-    suspend fun deleteBrand(brandId: String): Boolean {
-        return firebaseRepository.delete(COLLECTION_BRANDS, brandId)
-    }
-}

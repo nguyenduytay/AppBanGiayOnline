@@ -8,6 +8,7 @@
     tools:ignore="ExtraText">
 
     <!-- Top bar with title and buttons -->
+
     <LinearLayout
         android:id="@+id/layoutTopBar"
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/btn_Delete"
+            android:id="@+id/bt_delete_shopping_cart_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -60,16 +61,18 @@
     </LinearLayout>
 
     <!-- ListView to display cart items -->
-    <ListView
-        android:id="@+id/listViewCart"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_shopping_cart_user"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#F1EBEB"
+        android:backgroundTint="#F8F4F4"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
-        android:backgroundTint="#F8F4F4"
         android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/layoutCheckout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutTopBar" />
 
     <!-- Promotion section -->
@@ -129,7 +132,7 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/cb_check_All"
+                android:id="@+id/cb_all_shopping_cart_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -149,18 +152,18 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_Total"
+                android:id="@+id/tv_total_price_shopping_cart_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="1000000 đ"
+                android:layout_marginRight="20dp"
+                android:text="0 VNĐ"
                 android:textColor="#FF0000"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginRight="20dp"/>
+                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnBuy"
+                android:id="@+id/bt_by_shopping_cart_user"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -172,5 +175,15 @@
                 app:cornerRadius="10dp" />
         </LinearLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar_shopping_cart_user"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/ll_promotion_shopping_cart_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

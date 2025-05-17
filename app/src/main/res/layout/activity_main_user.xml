@@ -56,6 +56,42 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+        <include
+            android:id="@+id/confirmation_user_activity_main_user"
+            layout="@layout/order_confirmation_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/evaluate_user_activity_main_user"
+            layout="@layout/evaluate_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/my_review_user_activity_main_user"
+            layout="@layout/order_review_product_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/transportation_user_activity_main_user"
+            layout="@layout/order_transportation_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/account_security_user_activity_main_user"
+            layout="@layout/account_security_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/purchase_history_user_activity_main_user"
+            layout="@layout/purchase_history_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
