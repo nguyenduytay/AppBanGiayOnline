@@ -65,6 +65,9 @@ class AuthViewModel : ViewModel() {
     private val _userName_ById = MutableLiveData<Pair<String, String>>() // Pair<userId, userName>
     val userName_ById: LiveData<Pair<String, String>> get() = _userName_ById
 
+    // Tạo cache để lưu tên người dùng đã lấy về
+    private val userNameCache = HashMap<String, String>()
+
     /**
      * Đăng ký người dùng mới
      * @param fullName Họ tên đầy đủ
@@ -324,6 +327,37 @@ class AuthViewModel : ViewModel() {
                 // Trong trường hợp lỗi, gán tên mặc định
                 _userName_ById.value = Pair(userId, "Khách hàng")
                 _isLoading.value = false
+                Log.e("UserNames", "Failed to get user name for ID $userId: $errorMessage")
+            }
+        })
+    }
+    /**
+     * Lấy tên người dùng theo ID (phiên bản đồng bộ sử dụng callback)
+     * @param userId ID của người dùng cần lấy tên
+     * @param callback Hàm callback trả về tên người dùng
+     */
+    fun getUserNameByIdSync(userId: String, callback: (String) -> Unit) {
+        // Kiểm tra cache trước, nếu đã có thì trả về ngay
+        if (userNameCache.containsKey(userId)) {
+            callback(userNameCache[userId] ?: "Khách hàng")
+            return
+        }
+
+        // Nếu chưa có trong cache, gọi API lấy thông tin
+        _isLoading.value = true
+
+        userService.getUserById(userId, object : UserService.UserDataCallBack {
+            override fun onSuccess(user: User) {
+                // Lưu vào cache để sử dụng lần sau
+                userNameCache[userId] = user.fullName
+                _isLoading.value = false
+                callback(user.fullName)
+            }
+
+            override fun onFailure(errorMessage: String) {
+                // Trong trường hợp lỗi, gán tên mặc định
+                _isLoading.value = false
+                callback("Khách hàng")
                 Log.e("UserNames", "Failed to get user name for ID $userId: $errorMessage")
             }
         })

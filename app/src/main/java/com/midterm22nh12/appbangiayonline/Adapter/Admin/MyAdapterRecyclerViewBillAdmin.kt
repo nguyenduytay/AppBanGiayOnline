@@ -1,6 +1,7 @@
 package com.midterm22nh12.appbangiayonline.Adapter.Admin
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,14 +90,15 @@ class MyAdapterRecyclerViewBillAdmin(
         holder.binding.apply {
             // Lấy 8 ký tự đầu tiên của ID đơn hàng
             tvOrderId.text = "Mã đơn: #${order.id.take(8)}"
-            authViewModel.getUserNameById(order.userId)
+            // Đặt giá trị mặc định cho tên khách hàng
+            tvCustomerName.text = "Khách hàng: Đang tải..."
+            Log.d("MyAdapterRecyclerViewBillAdmin--", "UserId: ${order.userId}")
             // Quan sát kết quả
-            authViewModel.userName_ById.observe(holder.itemView.context as LifecycleOwner) { pair ->
-                val fetchedUserId = pair.first
-                val fetchedUserName = pair.second
-                // Chỉ cập nhật UI nếu userId trùng khớp với đơn hàng hiện tại
-                if (fetchedUserId == order.userId) {
-                    holder.binding.tvCustomerName.text = "Khách hàng: $fetchedUserName"
+            authViewModel.getUserNameByIdSync(order.userId) { userName ->
+                // Kiểm tra xem ViewHolder này còn hiển thị đơn hàng này không
+                if (holder.adapterPosition != RecyclerView.NO_POSITION &&
+                    position == holder.adapterPosition) {
+                    holder.binding.tvCustomerName.text = "Khách hàng: $userName"
                 }
             }
             tvOrderDate.text = "Ngày đặt: ${dateFormat.format(Date(order.createdAt))}"
